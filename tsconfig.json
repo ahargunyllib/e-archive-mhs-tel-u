@@ -1,0 +1,40 @@
+{
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"target": "esnext",
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"moduleDetection": "force",
+		"isolatedModules": true,
+		"verbatimModuleSyntax": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"lib": ["dom", "dom.iterable"],
+		"noEmit": true,
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"jsx": "react-jsx",
+		"incremental": true,
+		"plugins": [
+			{
+				"name": "next"
+			},
+			{
+				"name": "ts-plugin-sort-import-suggestions",
+				"moveUpPatterns": ["@/", "\\.{1,2}/"],
+				"moveDownPatterns": ["@radix-ui", "lucide-react"]
+			}
+		],
+		"paths": {
+			"@/*": ["./resources/js/*"],
+			"ziggy-js": ["./vendor/tightenco/ziggy"]
+		}
+	},
+	"include": [
+		"resources/js/**/*.ts",
+		"resources/js/**/*.tsx",
+		"resources/js/**/*.d.ts"
+	],
+	"exclude": ["node_modules"]
+}
