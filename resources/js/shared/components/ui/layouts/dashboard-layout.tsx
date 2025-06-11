@@ -117,12 +117,12 @@ export default function DashboardLayout({
 
 			<div className={cn("py-10 px-20 space-y-6", className)}>{children}</div>
 
+			<div className="absolute -z-20 bg-[#F9FAFB] w-full h-full bottom-0" />
 			<img
 				src="/background.png"
 				alt="Background"
-				className="absolute inset-0 -z-20 object-cover w-full h-full"
+				className="absolute inset-0 -z-10 object-cover w-full h-64"
 			/>
-			<div className="absolute -z-10 bg-[#F9FAFB] w-full h-[70%] bottom-0" />
 		</section>
 	);
 }
