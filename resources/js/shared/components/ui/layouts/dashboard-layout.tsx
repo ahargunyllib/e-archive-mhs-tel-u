@@ -42,8 +42,10 @@ const navItems = [
 
 export default function DashboardLayout({
 	children,
+	className = "",
 }: {
 	children: React.ReactNode;
+	className?: string;
 }) {
 	const { url } = usePage();
 	return (
@@ -113,7 +115,7 @@ export default function DashboardLayout({
 				</div>
 			</nav>
 
-			<div className="py-10 px-20">{children}</div>
+			<div className={cn("py-10 px-20 space-y-24", className)}>{children}</div>
 
 			<img
 				src="/background.png"
