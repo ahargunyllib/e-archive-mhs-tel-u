@@ -122,7 +122,7 @@ export default function DashboardLayout({
 				alt="Background"
 				className="absolute inset-0 -z-20 object-cover w-full h-full"
 			/>
-			<div className="absolute -z-10 bg-white w-full h-[70%] bottom-0" />
+			<div className="absolute -z-10 bg-[#F9FAFB] w-full h-[70%] bottom-0" />
 		</section>
 	);
 }
