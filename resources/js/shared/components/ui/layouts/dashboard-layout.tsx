@@ -115,7 +115,7 @@ export default function DashboardLayout({
 				</div>
 			</nav>
 
-			<div className={cn("py-10 px-20 space-y-24", className)}>{children}</div>
+			<div className={cn("py-10 px-20 space-y-6", className)}>{children}</div>
 
 			<img
 				src="/background.png"
