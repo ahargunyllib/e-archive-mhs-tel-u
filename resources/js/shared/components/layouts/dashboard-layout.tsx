@@ -10,15 +10,15 @@ import {
 	UserIcon,
 	UsersIcon,
 } from "lucide-react";
-import { cn } from "../../../lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
-import { Button } from "../button";
+import { cn } from "../../lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "../dropdown-menu";
+} from "../ui/dropdown-menu";
 
 const navItems = [
 	{ name: "Dashboard", icon: HomeIcon, href: "/dashboard/home" },
