@@ -19,6 +19,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/users', function () {
         return Inertia::render('dashboard/users');
     })->name('dashboard.users');
+
+    Route::get('/dashboard/members', function () {
+        return Inertia::render('dashboard/members');
+    })->name('dashboard.members');
 });
 
 require __DIR__ . '/auth.php';
