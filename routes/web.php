@@ -8,9 +8,13 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return redirect()->route('dashboard.home');
+    })->name('dashboard');
+
     Route::get('/dashboard/home', function () {
         return Inertia::render('dashboard/home');
     })->name('dashboard.home');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
