@@ -31,6 +31,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/achievements', function () {
         return Inertia::render('dashboard/achievements');
     })->name('dashboard.achievements');
+
+    Route::get('/dashboard/profile', function () {
+        return Inertia::render('dashboard/profile');
+    })->name('dashboard.profile');
 });
 
 require __DIR__ . '/auth.php';
