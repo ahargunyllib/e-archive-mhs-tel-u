@@ -48,7 +48,7 @@ export default function Agendas() {
 						<UploadIcon className="size-4" />
 						Export data ke csv
 					</Button>
-					<Link href="/dashboard/members/create">
+					<Link href="/dashboard/agendas/create">
 						<Button className="bg-[#00332D] hover:bg-[#00332D]/80 text-[#F9FAFB] rounded-full font-medium text-xs p-1 pr-2">
 							<div className="bg-[#17C3AF] p-1 rounded-full aspect-square">
 								<PlusIcon className="size-4" />
