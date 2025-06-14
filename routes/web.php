@@ -36,6 +36,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard/agendas');
     })->name('dashboard.agendas');
 
+    Route::get('/dashboard/agendas/create', function () {
+        return Inertia::render('dashboard/create-agenda');
+    })->name('dashboard.agendas.create');
+
     Route::get('/dashboard/achievements', function () {
         return Inertia::render('dashboard/achievements');
     })->name('dashboard.achievements');
