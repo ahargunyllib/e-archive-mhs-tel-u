@@ -25,7 +25,7 @@ import {
 	SelectValue,
 } from "@/shared/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PaperclipIcon, XIcon } from "lucide-react";
+import { PaperclipIcon, Trash2Icon, XIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -284,7 +284,7 @@ export default function CreateUser() {
 												Upload File
 											</Button>
 											{value ? (
-												<>
+												<div className="w-full flex flex-row items-center justify-between">
 													<span className="text-sm text-[#101828]">
 														{value.name}
 													</span>
@@ -294,9 +294,9 @@ export default function CreateUser() {
 														className="h-8 w-8 p-0"
 														onClick={() => onChange(undefined)}
 													>
-														<XIcon className="size-4" />
+														<Trash2Icon className="size-4" />
 													</Button>
-												</>
+												</div>
 											) : (
 												<span className="text-sm text-muted-foreground/80">
 													Tidak ada file yang dipilih
