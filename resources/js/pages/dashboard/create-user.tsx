@@ -50,7 +50,7 @@ const CreateUserSchema = z
 
 type CreateUserRequest = z.infer<typeof CreateUserSchema>;
 
-export default function Users() {
+export default function CreateUser() {
 	const form = useForm<CreateUserRequest>({
 		resolver: zodResolver(CreateUserSchema),
 		defaultValues: {

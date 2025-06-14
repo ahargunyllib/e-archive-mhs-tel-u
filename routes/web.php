@@ -21,7 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard.users');
 
     Route::get('/dashboard/users/create', function () {
-        return Inertia::render('dashboard/create-users');
+        return Inertia::render('dashboard/create-user');
     })->name('dashboard.users.create');
 
     Route::get('/dashboard/members', function () {
