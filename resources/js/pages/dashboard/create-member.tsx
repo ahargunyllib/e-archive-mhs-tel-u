@@ -38,17 +38,17 @@ const CreateMemberSchema = z.object({
 	batch_year: z.number().min(1, "Angkatan tidak boleh kosong"),
 	period: z.number().min(1, "Periode tidak boleh kosong"),
 	ipk: z
-		.number()
-		.min(0, "IPK tidak boleh kurang dari 0")
-		.max(4, "IPK tidak boleh lebih dari 4"),
+		.string()
+		.min(1, "IPK tidak boleh kosong")
+		.regex(/^\d*\.?\d*$/, "IPK harus berupa angka desimal"),
 	tak: z
-		.number()
-		.min(0, "TAK tidak boleh kurang dari 0")
-		.max(4, "TAK tidak boleh lebih dari 4"),
+		.string()
+		.min(1, "IPK tidak boleh kosong")
+		.regex(/^\d*\.?\d*$/, "TAK harus berupa angka desimal"),
 	erpt_score: z
-		.number()
-		.min(0, "Skor ERPT tidak boleh kurang dari 0")
-		.max(100, "Skor ERPT tidak boleh lebih dari 100"),
+		.string()
+		.min(1, "IPK tidak boleh kosong")
+		.regex(/^\d*\.?\d*$/, "Skor ERPT harus berupa angka desimal"),
 });
 
 type CreateMemberRequest = z.infer<typeof CreateMemberSchema>;
@@ -62,11 +62,11 @@ export default function CreateMember() {
 			contact: "",
 			division: 1,
 			set_type: 1,
-			batch_year: 2023,
+			batch_year: 1,
 			period: 1,
-			ipk: 0,
-			tak: 0,
-			erpt_score: 0,
+			ipk: "",
+			tak: "",
+			erpt_score: "",
 		},
 	});
 
@@ -284,13 +284,23 @@ export default function CreateMember() {
 											Periode
 											<span className="text-red-500">*</span>
 										</FormLabel>
-										<FormControl>
-											<Input
-												id="period"
-												placeholder="Konfirmasi password"
-												{...field}
-											/>
-										</FormControl>
+										<Select
+											onValueChange={(val) =>
+												field.onChange(Number.parseInt(val))
+											}
+											value={field.value.toString()}
+										>
+											<FormControl>
+												<SelectTrigger className="w-full">
+													<SelectValue placeholder="Pilih periode" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												<SelectItem value="1">Periode 1</SelectItem>
+												<SelectItem value="2">Periode 2</SelectItem>
+												<SelectItem value="3">Periode 3</SelectItem>
+											</SelectContent>
+										</Select>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -312,9 +322,17 @@ export default function CreateMember() {
 										<FormControl>
 											<Input
 												id="ipk"
-												inputMode="decimal"
 												placeholder="Masukkan IPK"
 												{...field}
+												inputMode="decimal"
+												type="text"
+												pattern="^\d*\.?\d*$"
+												onChange={(e) => {
+													const val = e.target.value;
+													if (/^\d*\.?\d*$/.test(val) || val === "") {
+														field.onChange(val);
+													}
+												}}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -336,9 +354,17 @@ export default function CreateMember() {
 										<FormControl>
 											<Input
 												id="tak"
-												inputMode="decimal"
 												placeholder="Masukkan TAK"
 												{...field}
+												inputMode="decimal"
+												type="text"
+												pattern="^\d*\.?\d*$"
+												onChange={(e) => {
+													const val = e.target.value;
+													if (/^\d*\.?\d*$/.test(val) || val === "") {
+														field.onChange(val);
+													}
+												}}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -361,9 +387,17 @@ export default function CreateMember() {
 									<FormControl>
 										<Input
 											id="erpt_score"
-											inputMode="decimal"
 											placeholder="Masukkan skor ERPT"
 											{...field}
+											inputMode="decimal"
+											type="text"
+											pattern="^\d*\.?\d*$"
+											onChange={(e) => {
+												const val = e.target.value;
+												if (/^\d*\.?\d*$/.test(val) || val === "") {
+													field.onChange(val);
+												}
+											}}
 										/>
 									</FormControl>
 									<FormMessage />
