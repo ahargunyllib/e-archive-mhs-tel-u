@@ -25,7 +25,8 @@ import {
 	SelectValue,
 } from "@/shared/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PaperclipIcon, Trash2Icon, XIcon } from "lucide-react";
+import { Link } from "@inertiajs/react";
+import { PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -309,6 +310,14 @@ export default function CreateUser() {
 							)}
 						/>
 						<div className="flex flex-row gap-2 justify-end">
+							<Button
+								type="button"
+								variant="outline"
+								className="font-medium text-xs py-3 px-8 rounded-md h-fit"
+								asChild
+							>
+								<Link href="/dashboard/users">Batal</Link>
+							</Button>
 							<Button
 								type="submit"
 								className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-xs py-3 px-8 rounded-md h-fit"
