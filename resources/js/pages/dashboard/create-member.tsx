@@ -37,18 +37,18 @@ const CreateMemberSchema = z.object({
 	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
 	batch_year: z.number().min(1, "Angkatan tidak boleh kosong"),
 	period: z.number().min(1, "Periode tidak boleh kosong"),
-	ipk: z
-		.string()
-		.min(1, "IPK tidak boleh kosong")
-		.regex(/^\d*\.?\d*$/, "IPK harus berupa angka desimal"),
-	tak: z
-		.string()
-		.min(1, "IPK tidak boleh kosong")
-		.regex(/^\d*\.?\d*$/, "TAK harus berupa angka desimal"),
-	erpt_score: z
-		.string()
-		.min(1, "IPK tidak boleh kosong")
-		.regex(/^\d*\.?\d*$/, "Skor ERPT harus berupa angka desimal"),
+	ipk: z.coerce
+		.number()
+		.min(0, "IPK tidak boleh kurang dari 0")
+		.max(4, "IPK tidak boleh lebih dari 4"),
+	tak: z.coerce
+		.number()
+		.min(0, "TAK tidak boleh kurang dari 0")
+		.max(100, "TAK tidak boleh lebih dari 100"),
+	erpt_score: z.coerce
+		.number()
+		.min(0, "Skor ERPT tidak boleh kurang dari 0")
+		.max(100, "Skor ERPT tidak boleh lebih dari 100"),
 });
 
 type CreateMemberRequest = z.infer<typeof CreateMemberSchema>;
@@ -64,9 +64,9 @@ export default function CreateMember() {
 			set_type: 1,
 			batch_year: 1,
 			period: 1,
-			ipk: "",
-			tak: "",
-			erpt_score: "",
+			ipk: 0,
+			tak: 0,
+			erpt_score: 0,
 		},
 	});
 
@@ -323,16 +323,8 @@ export default function CreateMember() {
 											<Input
 												id="ipk"
 												placeholder="Masukkan IPK"
+												className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 												{...field}
-												inputMode="decimal"
-												type="text"
-												pattern="^\d*\.?\d*$"
-												onChange={(e) => {
-													const val = e.target.value;
-													if (/^\d*\.?\d*$/.test(val) || val === "") {
-														field.onChange(val);
-													}
-												}}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -355,16 +347,8 @@ export default function CreateMember() {
 											<Input
 												id="tak"
 												placeholder="Masukkan TAK"
+												className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 												{...field}
-												inputMode="decimal"
-												type="text"
-												pattern="^\d*\.?\d*$"
-												onChange={(e) => {
-													const val = e.target.value;
-													if (/^\d*\.?\d*$/.test(val) || val === "") {
-														field.onChange(val);
-													}
-												}}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -388,16 +372,8 @@ export default function CreateMember() {
 										<Input
 											id="erpt_score"
 											placeholder="Masukkan skor ERPT"
+											className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 											{...field}
-											inputMode="decimal"
-											type="text"
-											pattern="^\d*\.?\d*$"
-											onChange={(e) => {
-												const val = e.target.value;
-												if (/^\d*\.?\d*$/.test(val) || val === "") {
-													field.onChange(val);
-												}
-											}}
 										/>
 									</FormControl>
 									<FormMessage />
