@@ -41,7 +41,7 @@ const CreateAchievementSchema = z.object({
 	date: z.date({
 		message: "Tanggal tidak valid",
 	}),
-	type: z.number().min(1, "Tipe tidak boleh kosong"),
+	type: z.number().min(1, "Jenis prestasi tidak boleh kosong"),
 	name: z.string().min(1, "Nama prestasi tidak boleh kosong"),
 	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
 	certificate: z.instanceof(File),
