@@ -28,6 +28,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard/members');
     })->name('dashboard.members');
 
+    Route::get('/dashboard/members/create', function () {
+        return Inertia::render('dashboard/create-member');
+    })->name('dashboard.members.create');
+
     Route::get('/dashboard/agendas', function () {
         return Inertia::render('dashboard/agendas');
     })->name('dashboard.agendas');
