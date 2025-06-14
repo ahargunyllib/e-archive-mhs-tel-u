@@ -44,6 +44,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard/achievements');
     })->name('dashboard.achievements');
 
+    Route::get('/dashboard/achievements/create', function () {
+        return Inertia::render('dashboard/create-achievement');
+    })->name('dashboard.achievements.create');
+
     Route::get('/dashboard/profile', function () {
         return Inertia::render('dashboard/profile');
     })->name('dashboard.profile');
