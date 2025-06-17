@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,13 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard/home');
     })->name('dashboard.home');
 
-    Route::get('/dashboard/users', function () {
-        return Inertia::render('dashboard/users');
-    })->name('dashboard.users');
-
-    Route::get('/dashboard/users/create', function () {
-        return Inertia::render('dashboard/create-user');
-    })->name('dashboard.users.create');
+    Route::get('/dashboard/users', [UserController::class, 'index'])->name('dashboard.users');
+    Route::get('/dashboard/users/create', [UserController::class, 'create'])->name('dashboard.users.create');
 
     Route::get('/dashboard/members', function () {
         return Inertia::render('dashboard/members');

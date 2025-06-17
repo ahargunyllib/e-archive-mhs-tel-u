@@ -5,18 +5,17 @@ import {
 	AvatarImage,
 } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
+import type { User } from "@/shared/types";
 import type { ColumnDef } from "@tanstack/react-table";
 import { PenLineIcon, Trash2Icon } from "lucide-react";
+import { UserRoleMap } from "../../../../shared/lib/enums";
 
-export default function UsersTable() {
-	const columns: ColumnDef<{
-		id: string;
-		name: string;
-		username: string;
-		email: string;
-		role: string;
-		avatar: string | null;
-	}>[] = [
+type Props = {
+	users: User[];
+};
+
+export default function UsersTable({ users }: Props) {
+	const columns: ColumnDef<User>[] = [
 		{
 			header: "No",
 			cell: ({ row }) => row.index + 1,
@@ -36,14 +35,18 @@ export default function UsersTable() {
 		{
 			accessorKey: "role",
 			header: "Role",
+			cell: ({ row }) => {
+				const role = row.original.role;
+				return UserRoleMap[role] || "Unknown";
+			},
 		},
 		{
-			accessorKey: "avatar",
+			accessorKey: "photo_profile",
 			header: "Avatar",
 			cell: ({ row }) => (
 				<Avatar className="rounded-lg size-12">
 					<AvatarImage
-						src={row.original.avatar || ""}
+						src={row.original.photo_profile || ""}
 						alt={row.original.name}
 					/>
 					<AvatarFallback className="rounded-lg">
@@ -70,96 +73,5 @@ export default function UsersTable() {
 		},
 	];
 
-	// Sample data for the table
-	const data: {
-		id: string;
-		name: string;
-		username: string;
-		email: string;
-		role: string;
-		avatar: string | null;
-	}[] = [
-		{
-			id: "1",
-			name: "John Doe",
-			username: "johndoe",
-			email: "johndoe@example.com",
-			role: "Admin",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "2",
-			name: "Jane Smith",
-			username: "janesmith",
-			email: "janesmith@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "3",
-			name: "Alice Johnson",
-			username: "alicej",
-			email: "alicej@example.com",
-			role: "Moderator",
-			avatar: null,
-		},
-		{
-			id: "4",
-			name: "Bob Brown",
-			username: "bobbrown",
-			email: "bobbrown@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "5",
-			name: "Charlie Davis",
-			username: "charlied",
-			email: "charlied@example.com",
-			role: "Admin",
-			avatar: null,
-		},
-		{
-			id: "6",
-			name: "Emily White",
-			username: "emilyw",
-			email: "emilyw@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "7",
-			name: "Frank Green",
-			username: "frankg",
-			email: "frankg@example.com",
-			role: "Moderator",
-			avatar: null,
-		},
-		{
-			id: "8",
-			name: "Grace Lee",
-			username: "gracel",
-			email: "gracel@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "9",
-			name: "Henry Adams",
-			username: "henrya",
-			email: "henrya@example.com",
-			role: "Admin",
-			avatar: null,
-		},
-		{
-			id: "10",
-			name: "Ivy Clark",
-			username: "ivyc",
-			email: "ivyc@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-	];
-
-	return <DataTable columns={columns} data={data} />;
+	return <DataTable columns={columns} data={users} />;
 }
