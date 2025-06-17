@@ -20,6 +20,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "../../../../shared/components/ui/alert-dialog";
+import { useAuth } from "../../../../shared/hooks/use-auth";
 import { UserRoleMap } from "../../../../shared/lib/enums";
 
 type Props = {
@@ -72,45 +73,52 @@ export default function UsersTable({ users }: Props) {
 		},
 		{
 			header: "Aksi",
-			cell: ({ row }) => (
-				<div className="flex flex-row items-center">
-					<Link href={`/dashboard/users/${row.original.id}/edit`}>
-						<Button variant="ghost" size="icon">
-							<PenLineIcon className="size-4 text-[#FFBD00]" />
-						</Button>
-					</Link>
-					<AlertDialog>
-						<AlertDialogTrigger asChild>
+			cell: ({ row }) => {
+				const { user } = useAuth();
+				return (
+					<div className="flex flex-row items-center">
+						<Link href={`/dashboard/users/${row.original.id}/edit`}>
 							<Button variant="ghost" size="icon">
-								<Trash2Icon className="size-4 text-[#DC2625]" />
+								<PenLineIcon className="size-4 text-[#FFBD00]" />
 							</Button>
-						</AlertDialogTrigger>
-						<AlertDialogContent>
-							<AlertDialogHeader>
-								<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-								<AlertDialogDescription>
-									This action cannot be undone. This will permanently delete the
-									user and remove the data from our servers.
-								</AlertDialogDescription>
-							</AlertDialogHeader>
-							<AlertDialogFooter>
-								<AlertDialogCancel>Cancel</AlertDialogCancel>
-								<AlertDialogAction asChild>
-									<Button
-										variant="destructive"
-										className="bg-[#DC2625] hover:bg-[#B91C1C]"
-										onClick={() => {
-											router.delete(`/dashboard/users/${row.original.id}`);
-										}}
-									>
-										Delete
+						</Link>
+						{user.role === 1 && (
+							<AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button variant="ghost" size="icon">
+										<Trash2Icon className="size-4 text-[#DC2625]" />
 									</Button>
-								</AlertDialogAction>
-							</AlertDialogFooter>
-						</AlertDialogContent>
-					</AlertDialog>
-				</div>
-			),
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>
+											Are you absolutely sure?
+										</AlertDialogTitle>
+										<AlertDialogDescription>
+											This action cannot be undone. This will permanently delete
+											the user and remove the data from our servers.
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>Cancel</AlertDialogCancel>
+										<AlertDialogAction asChild>
+											<Button
+												variant="destructive"
+												className="bg-[#DC2625] hover:bg-[#B91C1C]"
+												onClick={() => {
+													router.delete(`/dashboard/users/${row.original.id}`);
+												}}
+											>
+												Delete
+											</Button>
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
+						)}
+					</div>
+				);
+			},
 		},
 	];
 
