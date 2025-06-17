@@ -11,6 +11,7 @@ import {
 	UsersIcon,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
+import type { SharedData } from "../../types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import {
@@ -47,7 +48,12 @@ export default function DashboardLayout({
 	children: React.ReactNode;
 	className?: string;
 }) {
-	const { url } = usePage();
+	const {
+		url,
+		props: {
+			auth: { user },
+		},
+	} = usePage<SharedData>();
 	return (
 		<section className="min-h-dvh relative">
 			<nav className="w-full flex items-center justify-between px-20 py-4">
@@ -85,10 +91,10 @@ export default function DashboardLayout({
 							<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full h-13">
 								<Avatar>
 									<AvatarImage
-										src="" // TODO
+										src={user.photo_profile ?? undefined} // TODO
 										alt="Avatar"
 									/>
-									<AvatarFallback>CN</AvatarFallback>
+									<AvatarFallback>{user.name[0]}</AvatarFallback>
 								</Avatar>
 								<ChevronDownIcon className="size-4" />
 							</Button>
