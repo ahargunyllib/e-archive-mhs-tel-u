@@ -24,6 +24,7 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import { useAuth } from "@/shared/hooks/use-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "@inertiajs/react";
 import { PenLineIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -53,8 +54,8 @@ export default function Profile() {
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		// Handle form submission logic here
-		console.log("Form submitted with data:", data);
+		router.post("/dashboard/profile", data);
+		setIsEditing(false);
 	});
 
 	return (

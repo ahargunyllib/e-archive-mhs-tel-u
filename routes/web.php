@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -48,9 +49,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard/create-achievement');
     })->name('dashboard.achievements.create');
 
-    Route::get('/dashboard/profile', function () {
-        return Inertia::render('dashboard/profile');
-    })->name('dashboard.profile');
+    Route::get('/dashboard/profile', [ProfileController::class, 'index'])
+        ->name('dashboard.profile');
+    Route::post('/dashboard/profile', [ProfileController::class, 'update'])
+        ->name('dashboard.profile.update');
 });
 
 require __DIR__ . '/auth.php';
