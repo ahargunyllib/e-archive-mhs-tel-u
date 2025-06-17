@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Uuid;
 
 class UserController extends Controller
 {
@@ -42,7 +43,12 @@ class UserController extends Controller
         ]);
     }
 
-    function create(Request $request)
+    function create()
+    {
+        return inertia('dashboard/create-user');
+    }
+
+    function store(Request $request)
     {
         try {
             $request->validate([
@@ -50,10 +56,11 @@ class UserController extends Controller
                 'username' => 'required|string|max:255|alpha_dash',
                 'email' => 'required|string|email|max:255|unique:users',
                 'role' => 'required|numeric',
-                'password' => 'required|string|min:8|confirmed',
+                'password' => 'required|string|min:8',
             ]);
 
             DB::table('users')->insert([
+                'id' => Uuid::uuid7(),
                 'name' => $request->input('name'),
                 'username' => $request->input('username'),
                 'email' => $request->input('email'),

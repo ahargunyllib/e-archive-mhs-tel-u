@@ -25,10 +25,11 @@ import {
 	SelectValue,
 } from "@/shared/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { UserRoles } from "../../shared/lib/enums";
 
 const CreateUserSchema = z
 	.object({
@@ -66,8 +67,7 @@ export default function CreateUser() {
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		// Handle form submission logic here
-		console.log("Form submitted with data:", data);
+		router.post("/dashboard/users", data);
 	});
 
 	return (
@@ -189,9 +189,16 @@ export default function CreateUser() {
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												<SelectItem value="1">Admin</SelectItem>
-												<SelectItem value="2">User</SelectItem>
-												<SelectItem value="3">Guest</SelectItem>
+												{UserRoles.map((role) => {
+													return (
+														<SelectItem
+															key={role.key}
+															value={role.key.toString()}
+														>
+															{role.value}
+														</SelectItem>
+													);
+												})}
 											</SelectContent>
 										</Select>
 										<FormMessage />
