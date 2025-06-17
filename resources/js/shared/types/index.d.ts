@@ -1,4 +1,5 @@
 import type { Config } from "ziggy-js";
+import type { UserRoleMap } from "../lib/enums";
 
 export interface Auth {
 	user: User;
@@ -10,16 +11,20 @@ export type SharedData = {
 	auth: Auth;
 	ziggy: Config & { location: string };
 	sidebarOpen: boolean;
+	flash: {
+		success?: string;
+		error?: string;
+	};
 	[key: string]: unknown;
 };
 
 export type User = {
-	id: number;
+	id: string;
 	name: string;
+	username: string;
 	email: string;
-	avatar?: string;
-	email_verified_at: string | null;
+	photo_profile: string | null;
+	role: keyof typeof UserRoleMap;
 	created_at: string;
 	updated_at: string;
-	[key: string]: unknown; // This allows for additional properties...
 };

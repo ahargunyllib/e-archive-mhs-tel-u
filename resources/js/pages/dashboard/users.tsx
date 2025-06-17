@@ -11,17 +11,21 @@ import {
 	BreadcrumbSeparator,
 } from "@/shared/components/ui/breadcrumb";
 import { Button } from "@/shared/components/ui/button";
+import type { User } from "@/shared/types";
 import { Link } from "@inertiajs/react";
 import { PlusIcon, UploadIcon } from "lucide-react";
 
-export default function Users() {
-	const paginationData = {
-		page: 1,
-		limit: 10,
-		total: 100,
-		totalPages: 10,
+type Props = {
+	users: User[]; // Adjust type as needed
+	pagination: {
+		page: number;
+		limit: number;
+		total: number;
+		totalPages: number;
 	};
+};
 
+export default function Users({ users, pagination }: Props) {
 	return (
 		<DashboardLayout>
 			<div className="flex flex-row justify-between items-center">
@@ -60,12 +64,12 @@ export default function Users() {
 			<div className="flex flex-col gap-6 bg-white rounded-2xl px-6 py-5 border border-[#EAECF0]">
 				<FilterUsers />
 
-				<UsersTable />
+				<UsersTable users={users} />
 
 				<Pagination
-					currentPage={paginationData.page}
-					totalPages={paginationData.totalPages}
-					limit={paginationData.limit}
+					currentPage={pagination.page}
+					totalPages={pagination.totalPages}
+					limit={pagination.limit}
 				/>
 			</div>
 		</DashboardLayout>

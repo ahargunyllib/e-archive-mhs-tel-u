@@ -22,7 +22,9 @@ import {
 	FormMessage,
 } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
+import { useAuth } from "@/shared/hooks/use-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "@inertiajs/react";
 import { PenLineIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -40,19 +42,20 @@ const UpdateProfileSchema = z.object({
 type UpdateProfileRequest = z.infer<typeof UpdateProfileSchema>;
 
 export default function Profile() {
+	const { user } = useAuth();
 	const [isEditing, setIsEditing] = useState(false);
 	const form = useForm<UpdateProfileRequest>({
 		resolver: zodResolver(UpdateProfileSchema),
 		defaultValues: {
-			name: "Name",
-			username: "Username",
-			email: "Email@email.com",
+			name: user.name,
+			username: user.username,
+			email: user.email,
 		},
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		// Handle form submission logic here
-		console.log("Form submitted with data:", data);
+		router.post("/dashboard/profile", data);
+		setIsEditing(false);
 	});
 
 	return (

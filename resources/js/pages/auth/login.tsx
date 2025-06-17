@@ -1,6 +1,6 @@
 import { Card } from "@/shared/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -40,8 +40,7 @@ export default function Login() {
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		// Handle form submission logic here
-		console.log("Form submitted:", data);
+		router.post("/login", data);
 	});
 
 	return (

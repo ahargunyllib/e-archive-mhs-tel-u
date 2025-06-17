@@ -29,9 +29,9 @@ import { Link, router } from "@inertiajs/react";
 import { PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { UserRoles } from "../../shared/lib/enums";
+import type { User } from "../../shared/types";
 
-const CreateUserSchema = z
+const EditUserSchema = z
 	.object({
 		name: z.string().min(1, "Nama tidak boleh kosong"),
 		username: z.string().min(1, "Username tidak boleh kosong"),
@@ -50,24 +50,28 @@ const CreateUserSchema = z
 		message: "Password dan konfirmasi password harus sama",
 	});
 
-type CreateUserRequest = z.infer<typeof CreateUserSchema>;
+type EditUserRequest = z.infer<typeof EditUserSchema>;
 
-export default function CreateUser() {
-	const form = useForm<CreateUserRequest>({
-		resolver: zodResolver(CreateUserSchema),
+type Props = {
+	user: User;
+};
+
+export default function EditUser({ user }: Props) {
+	const form = useForm<EditUserRequest>({
+		resolver: zodResolver(EditUserSchema),
 		defaultValues: {
-			name: "",
-			username: "",
-			email: "",
-			role: 1,
+			name: user.name,
+			username: user.username,
+			email: user.email,
+			role: user.role,
 			password: "",
 			confirmPassword: "",
-			avatar: undefined,
+			avatar: undefined, // TODO
 		},
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		router.post("/dashboard/users", data);
+		router.put(`/dashboard/users/${user.id}`, data);
 	});
 
 	return (
@@ -189,16 +193,9 @@ export default function CreateUser() {
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												{UserRoles.map((role) => {
-													return (
-														<SelectItem
-															key={role.key}
-															value={role.key.toString()}
-														>
-															{role.value}
-														</SelectItem>
-													);
-												})}
+												<SelectItem value="1">Admin</SelectItem>
+												<SelectItem value="2">User</SelectItem>
+												<SelectItem value="3">Guest</SelectItem>
 											</SelectContent>
 										</Select>
 										<FormMessage />

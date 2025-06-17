@@ -5,18 +5,30 @@ import {
 	AvatarImage,
 } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
+import type { User } from "@/shared/types";
+import { Link, router } from "@inertiajs/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { PenLineIcon, Trash2Icon } from "lucide-react";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "../../../../shared/components/ui/alert-dialog";
+import { useAuth } from "../../../../shared/hooks/use-auth";
+import { UserRoleMap } from "../../../../shared/lib/enums";
 
-export default function UsersTable() {
-	const columns: ColumnDef<{
-		id: string;
-		name: string;
-		username: string;
-		email: string;
-		role: string;
-		avatar: string | null;
-	}>[] = [
+type Props = {
+	users: User[];
+};
+
+export default function UsersTable({ users }: Props) {
+	const columns: ColumnDef<User>[] = [
 		{
 			header: "No",
 			cell: ({ row }) => row.index + 1,
@@ -36,14 +48,18 @@ export default function UsersTable() {
 		{
 			accessorKey: "role",
 			header: "Role",
+			cell: ({ row }) => {
+				const role = row.original.role;
+				return UserRoleMap[role] || "Unknown";
+			},
 		},
 		{
-			accessorKey: "avatar",
+			accessorKey: "photo_profile",
 			header: "Avatar",
 			cell: ({ row }) => (
 				<Avatar className="rounded-lg size-12">
 					<AvatarImage
-						src={row.original.avatar || ""}
+						src={row.original.photo_profile || ""}
 						alt={row.original.name}
 					/>
 					<AvatarFallback className="rounded-lg">
@@ -57,109 +73,54 @@ export default function UsersTable() {
 		},
 		{
 			header: "Aksi",
-			cell: () => (
-				<div className="flex flex-row items-center">
-					<Button variant="ghost" size="icon">
-						<PenLineIcon className="size-4 text-[#FFBD00]" />
-					</Button>
-					<Button variant="ghost" size="icon">
-						<Trash2Icon className="size-4 text-[#DC2625]" />
-					</Button>
-				</div>
-			),
+			cell: ({ row }) => {
+				const { user } = useAuth();
+				return (
+					<div className="flex flex-row items-center">
+						<Link href={`/dashboard/users/${row.original.id}/edit`}>
+							<Button variant="ghost" size="icon">
+								<PenLineIcon className="size-4 text-[#FFBD00]" />
+							</Button>
+						</Link>
+						{user.role === 1 && (
+							<AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button variant="ghost" size="icon">
+										<Trash2Icon className="size-4 text-[#DC2625]" />
+									</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>
+											Are you absolutely sure?
+										</AlertDialogTitle>
+										<AlertDialogDescription>
+											This action cannot be undone. This will permanently delete
+											the user and remove the data from our servers.
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>Cancel</AlertDialogCancel>
+										<AlertDialogAction asChild>
+											<Button
+												variant="destructive"
+												className="bg-[#DC2625] hover:bg-[#B91C1C]"
+												onClick={() => {
+													router.delete(`/dashboard/users/${row.original.id}`);
+												}}
+											>
+												Delete
+											</Button>
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
+						)}
+					</div>
+				);
+			},
 		},
 	];
 
-	// Sample data for the table
-	const data: {
-		id: string;
-		name: string;
-		username: string;
-		email: string;
-		role: string;
-		avatar: string | null;
-	}[] = [
-		{
-			id: "1",
-			name: "John Doe",
-			username: "johndoe",
-			email: "johndoe@example.com",
-			role: "Admin",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "2",
-			name: "Jane Smith",
-			username: "janesmith",
-			email: "janesmith@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "3",
-			name: "Alice Johnson",
-			username: "alicej",
-			email: "alicej@example.com",
-			role: "Moderator",
-			avatar: null,
-		},
-		{
-			id: "4",
-			name: "Bob Brown",
-			username: "bobbrown",
-			email: "bobbrown@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "5",
-			name: "Charlie Davis",
-			username: "charlied",
-			email: "charlied@example.com",
-			role: "Admin",
-			avatar: null,
-		},
-		{
-			id: "6",
-			name: "Emily White",
-			username: "emilyw",
-			email: "emilyw@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "7",
-			name: "Frank Green",
-			username: "frankg",
-			email: "frankg@example.com",
-			role: "Moderator",
-			avatar: null,
-		},
-		{
-			id: "8",
-			name: "Grace Lee",
-			username: "gracel",
-			email: "gracel@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-		{
-			id: "9",
-			name: "Henry Adams",
-			username: "henrya",
-			email: "henrya@example.com",
-			role: "Admin",
-			avatar: null,
-		},
-		{
-			id: "10",
-			name: "Ivy Clark",
-			username: "ivyc",
-			email: "ivyc@example.com",
-			role: "User",
-			avatar: "https://via.placeholder.com/150",
-		},
-	];
-
-	return <DataTable columns={columns} data={data} />;
+	return <DataTable columns={columns} data={users} />;
 }
