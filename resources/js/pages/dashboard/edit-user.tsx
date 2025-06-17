@@ -71,7 +71,7 @@ export default function EditUser({ user }: Props) {
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		router.put(`/dashboard/user/${user.id}/edit`, data);
+		router.put(`/dashboard/users/${user.id}`, data);
 	});
 
 	return (
