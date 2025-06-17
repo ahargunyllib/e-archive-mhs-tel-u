@@ -19,6 +19,7 @@ export type User = {
 	username: string;
 	email: string;
 	photo_profile: string | null;
+	role: number;
 	created_at: string;
 	updated_at: string;
 };
