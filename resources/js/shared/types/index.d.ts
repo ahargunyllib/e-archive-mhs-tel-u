@@ -1,4 +1,5 @@
 import type { Config } from "ziggy-js";
+import type { UserRoleMap } from "../lib/enums";
 
 export interface Auth {
 	user: User;
@@ -23,7 +24,7 @@ export type User = {
 	username: string;
 	email: string;
 	photo_profile: string | null;
-	role: number;
+	role: keyof typeof UserRoleMap;
 	created_at: string;
 	updated_at: string;
 };
