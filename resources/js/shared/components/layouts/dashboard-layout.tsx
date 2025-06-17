@@ -10,6 +10,7 @@ import {
 	UserIcon,
 	UsersIcon,
 } from "lucide-react";
+import { useAuth } from "../../hooks/use-auth";
 import { cn } from "../../lib/utils";
 import type { SharedData } from "../../types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -48,12 +49,9 @@ export default function DashboardLayout({
 	children: React.ReactNode;
 	className?: string;
 }) {
-	const {
-		url,
-		props: {
-			auth: { user },
-		},
-	} = usePage<SharedData>();
+	const { url } = usePage<SharedData>();
+	const { user } = useAuth();
+
 	return (
 		<section className="min-h-dvh relative">
 			<nav className="w-full flex items-center justify-between px-20 py-4">
