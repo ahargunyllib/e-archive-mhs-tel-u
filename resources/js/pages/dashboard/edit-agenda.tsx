@@ -52,8 +52,8 @@ const EditAgendaSchema = z.object({
 	estimated_cost: z.coerce
 		.number()
 		.min(0, "Biaya estimasi tidak boleh kurang dari 0"),
-	proposal: z.instanceof(File),
-	report: z.instanceof(File),
+	proposal: z.instanceof(File).optional(),
+	report: z.instanceof(File).optional(),
 	status: z.number().min(1, "Status tidak boleh kosong"),
 });
 
@@ -67,7 +67,7 @@ export default function EditAgenda({ agenda }: Props) {
 	const form = useForm<EditAgendaRequest>({
 		resolver: zodResolver(EditAgendaSchema),
 		defaultValues: {
-			date: agenda.date,
+			date: new Date(agenda.date),
 			name: agenda.name,
 			work_program: agenda.work_program,
 			set_type: agenda.set_type,
@@ -343,7 +343,7 @@ export default function EditAgenda({ agenda }: Props) {
 													onClick={() => {
 														const input = document.createElement("input");
 														input.type = "file";
-														input.accept = "image/*";
+														input.accept = ".pdf,.docx,.doc";
 														input.onchange = (event) => {
 															const file = (event.target as HTMLInputElement)
 																.files?.[0];
@@ -403,7 +403,7 @@ export default function EditAgenda({ agenda }: Props) {
 													onClick={() => {
 														const input = document.createElement("input");
 														input.type = "file";
-														input.accept = "image/*";
+														input.accept = ".pdf,.docx,.doc";
 														input.onchange = (event) => {
 															const file = (event.target as HTMLInputElement)
 																.files?.[0];

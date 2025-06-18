@@ -67,7 +67,7 @@ export default function EditAgenda({ agenda }: Props) {
 	const form = useForm<EditAgendaRequest>({
 		resolver: zodResolver(EditAgendaSchema),
 		defaultValues: {
-			date: agenda.date,
+			date: new Date(agenda.date),
 			name: agenda.name,
 			work_program: agenda.work_program,
 			set_type: agenda.set_type,
@@ -377,6 +377,15 @@ export default function EditAgenda({ agenda }: Props) {
 															<Trash2Icon className="size-4" />
 														</Button>
 													</div>
+												) : agenda.proposal ? (
+													<a
+														target="_blank"
+														href={`/storage/${agenda.proposal}`}
+														className="text-sm text-blue-500 hover:text-blue-500/80 hover:underline"
+														rel="noreferrer"
+													>
+														Proposal
+													</a>
 												) : (
 													<span className="text-sm text-muted-foreground/80">
 														Tidak ada file yang dipilih
@@ -438,6 +447,15 @@ export default function EditAgenda({ agenda }: Props) {
 															<Trash2Icon className="size-4" />
 														</Button>
 													</div>
+												) : agenda.report ? (
+													<a
+														target="_blank"
+														href={`/storage/${agenda.report}`}
+														className="text-sm text-blue-500 hover:text-blue-500/80 hover:underline"
+														rel="noreferrer"
+													>
+														Laporan
+													</a>
 												) : (
 													<span className="text-sm text-muted-foreground/80">
 														Tidak ada file yang dipilih

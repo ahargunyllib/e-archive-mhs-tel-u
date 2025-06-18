@@ -37,6 +37,7 @@ import { Link, router } from "@inertiajs/react";
 import { CalendarIcon, PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { AgendaSetTypes, AgendaStatuses } from "../../shared/lib/enums";
 
 const CreateAgendaSchema = z.object({
 	date: z.date({
@@ -47,9 +48,9 @@ const CreateAgendaSchema = z.object({
 	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
 	description: z.string().min(1, "Deskripsi tidak boleh kosong"),
 	relationship: z.string().min(1, "Hubungan tidak boleh kosong"),
-	estimated_cost: z.number().min(1, "Biaya estimasi tidak boleh kosong"),
-	proposal: z.instanceof(File),
-	report: z.instanceof(File),
+	estimated_cost: z.coerce.number().min(1, "Biaya estimasi tidak boleh kosong"),
+	proposal: z.instanceof(File).optional(),
+	report: z.instanceof(File).optional(),
 	status: z.number().min(1, "Status tidak boleh kosong"),
 });
 
@@ -65,7 +66,7 @@ export default function CreateAgenda() {
 			set_type: 1,
 			description: "",
 			relationship: "",
-			estimated_cost: 1,
+			estimated_cost: 0,
 			proposal: undefined,
 			report: undefined,
 			status: 1,
@@ -227,9 +228,14 @@ export default function CreateAgenda() {
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												<SelectItem value="1">Himpunan 1</SelectItem>
-												<SelectItem value="2">Himpunan 2</SelectItem>
-												<SelectItem value="3">Himpunan 3</SelectItem>
+												{AgendaSetTypes.map((type) => (
+													<SelectItem
+														key={type.key}
+														value={type.key.toString()}
+													>
+														{type.value}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 										<FormMessage />
@@ -298,23 +304,14 @@ export default function CreateAgenda() {
 											Biaya Estimasi
 											<span className="text-red-500">*</span>
 										</FormLabel>
-										<Select
-											onValueChange={(val) =>
-												field.onChange(Number.parseInt(val))
-											}
-											value={field.value.toString()}
-										>
-											<FormControl>
-												<SelectTrigger className="w-full">
-													<SelectValue placeholder="Pilih biaya estimasi" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem value="1">Biaya estimasi 1</SelectItem>
-												<SelectItem value="2">Biaya estimasi 2</SelectItem>
-												<SelectItem value="3">Biaya estimasi 3</SelectItem>
-											</SelectContent>
-										</Select>
+										<FormControl>
+											<Input
+												id="estimated_cost"
+												placeholder="Masukkan biaya estimasi"
+												className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+												{...field}
+											/>
+										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -342,7 +339,7 @@ export default function CreateAgenda() {
 													onClick={() => {
 														const input = document.createElement("input");
 														input.type = "file";
-														input.accept = "image/*";
+														input.accept = ".pdf,.docx,.doc";
 														input.onchange = (event) => {
 															const file = (event.target as HTMLInputElement)
 																.files?.[0];
@@ -402,7 +399,7 @@ export default function CreateAgenda() {
 													onClick={() => {
 														const input = document.createElement("input");
 														input.type = "file";
-														input.accept = "image/*";
+														input.accept = ".pdf,.docx,.doc";
 														input.onchange = (event) => {
 															const file = (event.target as HTMLInputElement)
 																.files?.[0];
@@ -467,9 +464,14 @@ export default function CreateAgenda() {
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												<SelectItem value="1">Proses</SelectItem>
-												<SelectItem value="2">Disetujui</SelectItem>
-												<SelectItem value="3">Ditolak</SelectItem>
+												{AgendaStatuses.map((status) => (
+													<SelectItem
+														key={status.key}
+														value={status.key.toString()}
+													>
+														{status.value}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 										<FormMessage />

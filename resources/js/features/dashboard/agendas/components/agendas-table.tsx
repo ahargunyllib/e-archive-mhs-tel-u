@@ -32,7 +32,7 @@ export default function AgendasTable({ agendas }: Props) {
 			accessorKey: "date",
 			header: "Tanggal",
 			cell: ({ row }) => {
-				return row.original.date.toLocaleDateString("id-ID", {
+				return new Date(row.original.date).toLocaleDateString("id-ID", {
 					day: "2-digit",
 					month: "2-digit",
 					year: "numeric",
@@ -40,7 +40,7 @@ export default function AgendasTable({ agendas }: Props) {
 			},
 		},
 		{
-			accessorKey: "workProgram",
+			accessorKey: "work_program",
 			header: "Program Kerja",
 		},
 		{
@@ -48,7 +48,7 @@ export default function AgendasTable({ agendas }: Props) {
 			header: "Nama kegiatan",
 		},
 		{
-			accessorKey: "type",
+			accessorKey: "set_type",
 			header: "Tipe Himpunan",
 			cell: ({ row }) => AgendaSetTypeMap[row.original.set_type],
 		},
