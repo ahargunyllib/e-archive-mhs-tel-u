@@ -13,15 +13,19 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { Link } from "@inertiajs/react";
 import { PlusIcon, UploadIcon } from "lucide-react";
+import type { Member } from "../../shared/types";
 
-export default function Members() {
-	const paginationData = {
-		page: 1,
-		limit: 10,
-		total: 100,
-		totalPages: 10,
+type Props = {
+	members: Member[]; // Adjust type as needed
+	pagination: {
+		page: number;
+		limit: number;
+		total: number;
+		totalPages: number;
 	};
+};
 
+export default function Members({ members, pagination }: Props) {
 	return (
 		<DashboardLayout>
 			<div className="flex flex-row justify-between items-center">
@@ -62,12 +66,12 @@ export default function Members() {
 			<div className="flex flex-col gap-6 bg-white rounded-2xl px-6 py-5 border border-[#EAECF0]">
 				<FilterMembers />
 
-				<MembersTable />
+				<MembersTable members={members} />
 
 				<Pagination
-					currentPage={paginationData.page}
-					totalPages={paginationData.totalPages}
-					limit={paginationData.limit}
+					currentPage={pagination.page}
+					totalPages={pagination.totalPages}
+					limit={pagination.limit}
 				/>
 			</div>
 		</DashboardLayout>

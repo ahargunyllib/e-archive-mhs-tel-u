@@ -1,15 +1,32 @@
 import { DataTable } from "@/shared/components/data-table";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/shared/components/ui/alert-dialog";
 import { Button } from "@/shared/components/ui/button";
+import { useAuth } from "@/shared/hooks/use-auth";
+import type { Member } from "@/shared/types";
+import { Link, router } from "@inertiajs/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { EyeIcon, PenLineIcon, Trash2Icon } from "lucide-react";
+import {
+	MemberDivisonMap,
+	MemberSetTypeMap,
+} from "../../../../shared/lib/enums";
 
-export default function MembersTable() {
-	const columns: ColumnDef<{
-		id: string;
-		name: string;
-		division: string;
-		type: string;
-	}>[] = [
+type Props = {
+	members: Member[];
+};
+
+export default function MembersTable({ members }: Props) {
+	const columns: ColumnDef<Member>[] = [
 		{
 			header: "No",
 			cell: ({ row }) => row.index + 1,
@@ -21,97 +38,68 @@ export default function MembersTable() {
 		{
 			accessorKey: "division",
 			header: "Divisi",
+			cell: ({ row }) => MemberDivisonMap[row.original.division],
 		},
 		{
 			accessorKey: "type",
 			header: "Tipe Himpunan",
+			cell: ({ row }) => MemberSetTypeMap[row.original.set_type],
 		},
 		{
 			header: "Aksi",
-			cell: () => (
-				<div className="flex flex-row items-center">
-					<Button variant="ghost" size="icon">
-						<EyeIcon className="size-4 text-[#2274C3]" />
-					</Button>
-					<Button variant="ghost" size="icon">
-						<PenLineIcon className="size-4 text-[#FFBD00]" />
-					</Button>
-					<Button variant="ghost" size="icon">
-						<Trash2Icon className="size-4 text-[#DC2625]" />
-					</Button>
-				</div>
-			),
+			cell: ({ row }) => {
+				const { user } = useAuth();
+				return (
+					<div className="flex flex-row items-center">
+						<Link href={`/dashboard/members/${row.original.id}`}>
+							<Button variant="ghost" size="icon">
+								<EyeIcon className="size-4 text-[#2274C3]" />
+							</Button>
+						</Link>
+						<Link href={`/dashboard/members/${row.original.id}/edit`}>
+							<Button variant="ghost" size="icon">
+								<PenLineIcon className="size-4 text-[#FFBD00]" />
+							</Button>
+						</Link>
+						{user.role === 1 && (
+							<AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button variant="ghost" size="icon">
+										<Trash2Icon className="size-4 text-[#DC2625]" />
+									</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>
+											Are you absolutely sure?
+										</AlertDialogTitle>
+										<AlertDialogDescription>
+											This action cannot be undone. This will permanently delete
+											the member and remove the data from our servers.
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>Cancel</AlertDialogCancel>
+										<AlertDialogAction asChild>
+											<Button
+												variant="destructive"
+												className="bg-[#DC2625] hover:bg-[#B91C1C]"
+												onClick={() => {
+													router.delete(`/dashboard/users/${row.original.id}`);
+												}}
+											>
+												Delete
+											</Button>
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
+						)}
+					</div>
+				);
+			},
 		},
 	];
 
-	// Sample data for the table
-	const data: {
-		id: string;
-		name: string;
-		division: string;
-		type: string;
-	}[] = [
-		{
-			id: "1",
-			name: "John Doe",
-			division: "Kaderisasi",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "2",
-			name: "Jane Smith",
-			division: "Pengembangan Informasi",
-			type: "Himpunan Fakultas",
-		},
-		{
-			id: "3",
-			name: "Alice Johnson",
-			division: "Akademik",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "4",
-			name: "Bob Brown",
-			division: "Dana dan Usaha",
-			type: "Himpunan Fakultas",
-		},
-		{
-			id: "5",
-			name: "Charlie Davis",
-			division: "Sosial dan Masyarakat",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "6",
-			name: "Emily White",
-			division: "Riset dan Teknologi",
-			type: "Himpunan Fakultas",
-		},
-		{
-			id: "7",
-			name: "Frank Green",
-			division: "Hubungan Eksternal",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "8",
-			name: "Grace Lee",
-			division: "Kewirausahaan",
-			type: "Himpunan Fakultas",
-		},
-		{
-			id: "9",
-			name: "Henry Adams",
-			division: "Keorganisasian",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "10",
-			name: "Ivy Clark",
-			division: "Minat dan Bakat",
-			type: "Himpunan Fakultas",
-		},
-	];
-
-	return <DataTable columns={columns} data={data} />;
+	return <DataTable columns={columns} data={members} />;
 }
