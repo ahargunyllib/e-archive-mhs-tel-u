@@ -38,7 +38,7 @@ export default function EventCalendarCard() {
 						"size-12 p-0 font-normal aria-selected:opacity-100 aria-selected:bg-[#009180] aria-selected:text-[#F9FAFB]",
 					),
 					caption_label: "font-bold text-[#080C18]",
-					head_cell: "text-[#101828] text-xs font-medium w-12",
+					head_cell: "text-[#101828] text-sm font-medium w-12",
 				}}
 				locale={id}
 			/>

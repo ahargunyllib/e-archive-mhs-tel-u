@@ -48,12 +48,12 @@ export default function Achievements({ achievements, pagination }: Props) {
 					</Breadcrumb>
 				</div>
 				<div className="flex flex-row items-center gap-4">
-					<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-xs">
+					<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm">
 						<UploadIcon className="size-4" />
 						Export data ke csv
 					</Button>
 					<Link href="/dashboard/achievements/create">
-						<Button className="bg-[#00332D] hover:bg-[#00332D]/80 text-[#F9FAFB] rounded-full font-medium text-xs p-1 pr-2">
+						<Button className="bg-[#00332D] hover:bg-[#00332D]/80 text-[#F9FAFB] rounded-full font-medium text-sm p-1 pr-2">
 							<div className="bg-[#17C3AF] p-1 rounded-full aspect-square">
 								<PlusIcon className="size-4" />
 							</div>

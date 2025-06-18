@@ -32,7 +32,7 @@ export default function UploadDocumentAgendaStatusTableCard() {
 								style={{ width: `${val}%` }}
 							/>
 						</div>
-						<div className="text-xs text-[#667085] mb-1">{val}%</div>
+						<div className="text-sm text-[#667085] mb-1">{val}%</div>
 					</div>
 				);
 			},

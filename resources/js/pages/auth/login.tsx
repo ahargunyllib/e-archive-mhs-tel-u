@@ -57,7 +57,7 @@ export default function Login() {
 							{/* Header */}
 							<div className="space-y-2 text-center">
 								<h1 className="font-bold text-black text-2xl">Masuk</h1>
-								<p className="font-medium text-[#344054] text-xs">
+								<p className="font-medium text-[#344054] text-sm">
 									Gunakan kredensial resmi untuk mengakses dashboard.
 								</p>
 							</div>
@@ -129,7 +129,7 @@ export default function Login() {
 											<FormMessage />
 											<Link
 												href="/forgot-password"
-												className="text-[#101828] text-xs font-medium hover:underline text-end"
+												className="text-[#101828] text-sm font-medium hover:underline text-end"
 											>
 												Lupa kata sandi?
 											</Link>
@@ -143,7 +143,7 @@ export default function Login() {
 							</Button>
 						</form>
 					</Form>
-					<span className="text-[#667085] font-semibold text-xs">
+					<span className="text-[#667085] font-semibold text-sm">
 						© E-Archive Kemahasiswaan 2025 - All Rights Reserved
 					</span>
 				</div>

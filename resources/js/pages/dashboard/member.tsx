@@ -413,7 +413,7 @@ export default function EditMember({ member }: Props) {
 							<Button
 								type="button"
 								variant="outline"
-								className="font-medium text-xs py-3 px-8 rounded-md h-fit"
+								className="font-medium text-sm py-3 px-8 rounded-md h-fit"
 								asChild
 							>
 								<Link href="/dashboard/members">Kembali</Link>

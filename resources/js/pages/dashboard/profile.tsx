@@ -80,7 +80,7 @@ export default function Profile() {
 				<div className="flex flex-row items-center gap-4">
 					{!isEditing && (
 						<Button
-							className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-xs"
+							className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm"
 							onClick={() => setIsEditing(true)}
 						>
 							<PenLineIcon className="size-4" />
@@ -213,13 +213,13 @@ export default function Profile() {
 											setIsEditing(false);
 											form.reset();
 										}}
-										className="font-medium text-xs py-3 px-8 rounded-md h-fit"
+										className="font-medium text-sm py-3 px-8 rounded-md h-fit"
 									>
 										Batal
 									</Button>
 									<Button
 										type="submit"
-										className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-xs py-3 px-8 rounded-md h-fit"
+										className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-sm py-3 px-8 rounded-md h-fit"
 									>
 										Simpan Perubahan
 									</Button>

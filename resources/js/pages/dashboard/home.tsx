@@ -17,7 +17,7 @@ export default function Home() {
 		<DashboardLayout>
 			<div className="flex flex-row justify-between items-center">
 				<h1 className="font-bold text-xl text-[#F9FAFB]">Dashboard</h1>
-				<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-xs">
+				<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm">
 					Pilih Periode
 					<CalendarDaysIcon className="size-4" />
 				</Button>

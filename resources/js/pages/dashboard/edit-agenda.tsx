@@ -339,7 +339,7 @@ export default function EditAgenda({ agenda }: Props) {
 													id="proposal"
 													type="button"
 													variant="secondary"
-													className="font-medium text-xs py-3 px-8 rounded-md h-fit"
+													className="font-medium text-sm py-3 px-8 rounded-md h-fit"
 													onClick={() => {
 														const input = document.createElement("input");
 														input.type = "file";
@@ -399,7 +399,7 @@ export default function EditAgenda({ agenda }: Props) {
 													id="report"
 													type="button"
 													variant="secondary"
-													className="font-medium text-xs py-3 px-8 rounded-md h-fit"
+													className="font-medium text-sm py-3 px-8 rounded-md h-fit"
 													onClick={() => {
 														const input = document.createElement("input");
 														input.type = "file";
@@ -485,14 +485,14 @@ export default function EditAgenda({ agenda }: Props) {
 							<Button
 								type="button"
 								variant="outline"
-								className="font-medium text-xs py-3 px-8 rounded-md h-fit"
+								className="font-medium text-sm py-3 px-8 rounded-md h-fit"
 								asChild
 							>
 								<Link href="/dashboard/agendas">Batal</Link>
 							</Button>
 							<Button
 								type="submit"
-								className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-xs py-3 px-8 rounded-md h-fit"
+								className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-sm py-3 px-8 rounded-md h-fit"
 							>
 								Simpan
 							</Button>

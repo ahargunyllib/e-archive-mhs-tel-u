@@ -43,10 +43,10 @@ export default function AchievementChartCard() {
 					Grafik prestasi himpunan
 				</span>
 				<div className="flex flex-row items-center gap-2">
-					<p className="text-[#98A2B3] text-xs">Peningkatan prestasi</p>
+					<p className="text-[#98A2B3] text-sm">Peningkatan prestasi</p>
 					<div className="flex items-center gap-1">
 						<PlusIcon className="size-3 text-[#00BF11]" />
-						<span className="text-[#00BF11] font-semibold text-xs">5.6%</span>
+						<span className="text-[#00BF11] font-semibold text-sm">5.6%</span>
 					</div>
 				</div>
 			</div>

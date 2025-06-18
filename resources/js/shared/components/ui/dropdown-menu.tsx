@@ -184,7 +184,7 @@ function DropdownMenuShortcut({
 		<span
 			data-slot="dropdown-menu-shortcut"
 			className={cn(
-				"text-muted-foreground ml-auto text-xs tracking-widest",
+				"text-muted-foreground ml-auto text-sm tracking-widest",
 				className,
 			)}
 			{...props}
@@ -240,18 +240,18 @@ function DropdownMenuSubContent({
 
 export {
 	DropdownMenu,
-	DropdownMenuPortal,
-	DropdownMenuTrigger,
+	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
 	DropdownMenuGroup,
-	DropdownMenuLabel,
 	DropdownMenuItem,
-	DropdownMenuCheckboxItem,
+	DropdownMenuLabel,
+	DropdownMenuPortal,
 	DropdownMenuRadioGroup,
 	DropdownMenuRadioItem,
 	DropdownMenuSeparator,
 	DropdownMenuShortcut,
 	DropdownMenuSub,
-	DropdownMenuSubTrigger,
 	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
+	DropdownMenuTrigger,
 };

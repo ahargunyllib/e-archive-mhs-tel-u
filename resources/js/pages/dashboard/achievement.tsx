@@ -277,7 +277,7 @@ export default function EditAchievement({ achievement }: Props) {
 												id="certificate"
 												type="button"
 												variant="secondary"
-												className="font-medium text-xs py-3 px-8 rounded-md h-fit"
+												className="font-medium text-sm py-3 px-8 rounded-md h-fit"
 												onClick={() => {
 													const input = document.createElement("input");
 													input.type = "file";
@@ -335,7 +335,7 @@ export default function EditAchievement({ achievement }: Props) {
 							<Button
 								type="button"
 								variant="outline"
-								className="font-medium text-xs py-3 px-8 rounded-md h-fit"
+								className="font-medium text-sm py-3 px-8 rounded-md h-fit"
 								asChild
 							>
 								<Link href="/dashboard/achievements">Kembali</Link>

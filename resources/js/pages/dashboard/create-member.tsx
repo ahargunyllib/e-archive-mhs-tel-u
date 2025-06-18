@@ -398,14 +398,14 @@ export default function CreateMember() {
 							<Button
 								type="button"
 								variant="outline"
-								className="font-medium text-xs py-3 px-8 rounded-md h-fit"
+								className="font-medium text-sm py-3 px-8 rounded-md h-fit"
 								asChild
 							>
 								<Link href="/dashboard/members">Batal</Link>
 							</Button>
 							<Button
 								type="submit"
-								className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-xs py-3 px-8 rounded-md h-fit"
+								className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-sm py-3 px-8 rounded-md h-fit"
 							>
 								Simpan
 							</Button>

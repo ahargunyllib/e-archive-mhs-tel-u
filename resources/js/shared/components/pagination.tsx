@@ -56,7 +56,7 @@ export default function Pagination({
 							key={page}
 							variant="ghost"
 							className={cn(
-								"text-xs font-medium",
+								"text-sm font-medium",
 								currentPage === page ? "text-[#101828]" : "text-[#BFBFBF]",
 							)}
 						>
@@ -82,12 +82,12 @@ export default function Pagination({
 			</div>
 
 			<div className="flex flex-row items-center gap-2">
-				<span className="text-[#BFBFBF] text-xs">Item per halaman</span>
+				<span className="text-[#BFBFBF] text-sm">Item per halaman</span>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button
 							variant="ghost"
-							className="bg-white hover:bg-white/80 text-[#009180] rounded-full font-medium text-xs border border-[#009180]"
+							className="bg-white hover:bg-white/80 text-[#009180] rounded-full font-medium text-sm border border-[#009180]"
 						>
 							<ChevronDownIcon className="size-4" />
 							{limit}

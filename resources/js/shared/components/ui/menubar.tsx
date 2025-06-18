@@ -200,7 +200,7 @@ function MenubarShortcut({
 		<span
 			data-slot="menubar-shortcut"
 			className={cn(
-				"text-muted-foreground ml-auto text-xs tracking-widest",
+				"text-muted-foreground ml-auto text-sm tracking-widest",
 				className,
 			)}
 			{...props}
@@ -256,19 +256,19 @@ function MenubarSubContent({
 
 export {
 	Menubar,
-	MenubarPortal,
-	MenubarMenu,
-	MenubarTrigger,
+	MenubarCheckboxItem,
 	MenubarContent,
 	MenubarGroup,
-	MenubarSeparator,
-	MenubarLabel,
 	MenubarItem,
-	MenubarShortcut,
-	MenubarCheckboxItem,
+	MenubarLabel,
+	MenubarMenu,
+	MenubarPortal,
 	MenubarRadioGroup,
 	MenubarRadioItem,
+	MenubarSeparator,
+	MenubarShortcut,
 	MenubarSub,
-	MenubarSubTrigger,
 	MenubarSubContent,
+	MenubarSubTrigger,
+	MenubarTrigger,
 };
