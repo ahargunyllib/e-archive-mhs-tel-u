@@ -62,19 +62,21 @@ export default function DashboardLayout({
 						alt="Logo"
 						className="relative h-12 object-contain"
 					/>
-					<div className="flex items-center bg-[#F2F4F7] rounded-full h-13 p-2">
+					<div className="flex items-center rounded-full h-13 p-2 bg-white">
 						{navItems.map((item) => (
-							<Link
-								key={item.name}
-								href={item.href}
-								className={cn(
-									"flex items-center gap-x-2 p-3",
-									url.startsWith(item.href) &&
-										"bg-[#090E17] text-[#F9FAFB] rounded-full",
-								)}
-							>
-								<item.icon className="size-4" />
-								<span className="font-medium text-sm">{item.name}</span>
+							<Link key={item.name} href={item.href}>
+								<Button
+									variant="ghost"
+									className={cn(
+										"flex items-center gap-x-2 p-3 rounded-full",
+										url.startsWith(item.href)
+											? "bg-[#090E17] text-[#F9FAFB]"
+											: "hover:bg-[#F2F4F7]/80 text-[#101828]",
+									)}
+								>
+									<item.icon className="size-4" />
+									<span className="font-medium text-sm">{item.name}</span>
+								</Button>
 							</Link>
 						))}
 					</div>
@@ -88,7 +90,7 @@ export default function DashboardLayout({
 
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
-								<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full h-13">
+								<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full h-13 !px-3">
 									<Avatar>
 										<AvatarImage
 											src={`/storage/${user.photo_profile}`} // TODO
