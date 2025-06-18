@@ -1,5 +1,7 @@
 import type { Config } from "ziggy-js";
 import type {
+	AgendaSetTypeMap,
+	AgendaStatusMap,
 	MemberBatchYearMap,
 	MemberDivisonMap,
 	MemberPeriodMap,
@@ -47,6 +49,22 @@ export type Member = {
 	ipk: number;
 	tak: number;
 	erpt_score: number;
+	created_at: string;
+	updated_at: string;
+};
+
+export type Agenda = {
+	id: string;
+	date: Date;
+	name: string;
+	work_program: string;
+	set_type: keyof typeof AgendaSetTypeMap;
+	description: string;
+	relationship: string;
+	estimated_cost: number;
+	proposal: string;
+	report: string;
+	status: keyof typeof AgendaStatusMap;
 	created_at: string;
 	updated_at: string;
 };
