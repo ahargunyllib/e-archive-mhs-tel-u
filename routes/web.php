@@ -40,7 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/dashboard/agendas', [AgendaController::class, 'store'])->name('dashboard.agendas.store');
     Route::get('/dashboard/agendas/{id}', [AgendaController::class, 'show'])->name('dashboard.agendas.show');
     Route::get('/dashboard/agendas/{id}/edit', [AgendaController::class, 'edit'])->name('dashboard.agendas.edit');
-    Route::put('/dashboard/agendas/{id}', [AgendaController::class, 'update'])->name('dashboard.agendas.update');
+    Route::post('/dashboard/agendas/{id}', [AgendaController::class, 'update'])->name('dashboard.agendas.update');
     Route::delete('/dashboard/agendas/{id}', [AgendaController::class, 'delete'])->name('dashboard.agendas.delete');
 
     Route::get('/dashboard/achievements', function () {
