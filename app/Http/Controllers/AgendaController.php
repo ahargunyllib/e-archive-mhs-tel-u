@@ -71,6 +71,9 @@ class AgendaController extends Controller
     function store(Request $request)
     {
         try {
+            $request['set_type'] = (int)$request->input('set_type');
+            $request['status'] = (int)$request->input('status');
+
             $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'required|string|max:1000',
@@ -79,10 +82,20 @@ class AgendaController extends Controller
                 'set_type' => 'required|numeric',
                 'relationship' => 'required|string|max:255',
                 'estimated_cost' => 'required|numeric',
-                'proposal' => 'required|string|max:255',
-                'report' => 'required|string|max:255',
+                'proposal' => 'nullable|mimes:pdf,doc,docx|max:10240',
+                'report' => 'nullable|mimes:pdf,doc,docx|max:10240',
                 'status' => 'required|numeric',
             ]);
+
+            if ($request->hasFile('proposal')) {
+                $path = $request->file('proposal')->store('proposals', 'public');
+                $request['proposal'] = $path;
+            }
+
+            if ($request->hasFile('report')) {
+                $path = $request->file('report')->store('reports', 'public');
+                $request['report'] = $path;
+            }
 
             DB::table('agendas')->insert([
                 'id' => Ulid::generate(),
@@ -120,6 +133,9 @@ class AgendaController extends Controller
     function update(Request $request, $id)
     {
         try {
+            $request['set_type'] = (int)$request->input('set_type');
+            $request['status'] = (int)$request->input('status');
+
             $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'required|string|max:1000',
@@ -128,10 +144,20 @@ class AgendaController extends Controller
                 'set_type' => 'required|numeric',
                 'relationship' => 'required|string|max:255',
                 'estimated_cost' => 'required|numeric',
-                'proposal' => 'required|string|max:255',
-                'report' => 'required|string|max:255',
+                'proposal' => 'nullable|mimes:pdf,doc,docx|max:10240',
+                'report' => 'nullable|mimes:pdf,doc,docx|max:10240',
                 'status' => 'required|numeric',
             ]);
+
+            if ($request->hasFile('proposal')) {
+                $path = $request->file('proposal')->store('proposals', 'public');
+                $request['proposal'] = $path;
+            }
+
+            if ($request->hasFile('report')) {
+                $path = $request->file('report')->store('reports', 'public');
+                $request['report'] = $path;
+            }
 
             DB::table('agendas')
                 ->where('id', $id)
