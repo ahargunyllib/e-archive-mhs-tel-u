@@ -90,3 +90,28 @@ export const AgendaStatuses = Object.entries(AgendaStatusMap).map(
 		value,
 	}),
 );
+
+export const AchievementTypeMap = {
+	1: "Prestasi Akademik",
+	2: "Prestasi Non-Akademik",
+} as const;
+
+export const AchievementTypes = Object.entries(AchievementTypeMap).map(
+	([key, value]) => ({
+		key,
+		value,
+	}),
+);
+
+export const AchievementSetTypeMap = {
+	1: "Teknik Industri",
+	2: "Sistem Informasi",
+	3: "Teknik Logistik",
+} as const;
+
+export const AchievementSetTypes = Object.entries(AchievementSetTypeMap).map(
+	([key, value]) => ({
+		key,
+		value,
+	}),
+);
