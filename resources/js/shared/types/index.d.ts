@@ -1,5 +1,7 @@
 import type { Config } from "ziggy-js";
 import type {
+	AchievementSetTypeMap,
+	AchievementTypeMap,
 	AgendaSetTypeMap,
 	AgendaStatusMap,
 	MemberBatchYearMap,
@@ -65,6 +67,17 @@ export type Agenda = {
 	proposal: string;
 	report: string;
 	status: keyof typeof AgendaStatusMap;
+	created_at: string;
+	updated_at: string;
+};
+
+export type Achievement = {
+	id: string;
+	date: string;
+	name: string;
+	type: keyof typeof AchievementTypeMap;
+	set_type: keyof typeof AchievementSetTypeMap;
+	certificate: string;
 	created_at: string;
 	updated_at: string;
 };
