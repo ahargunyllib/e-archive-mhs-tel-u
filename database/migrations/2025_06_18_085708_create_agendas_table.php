@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer("set_type")->default(1);
             $table->string("relationship");
             $table->float("estimated_cost");
-            $table->string("proposal");
-            $table->string("report");
+            $table->string("proposal")->nullable();
+            $table->string("report")->nullable();
             $table->integer("status")->default(1);
             $table->timestamps();
         });
