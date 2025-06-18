@@ -37,6 +37,7 @@ import { Link, router } from "@inertiajs/react";
 import { CalendarIcon, PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { useAuth } from "../../shared/hooks/use-auth";
 import { AgendaSetTypes, AgendaStatuses } from "../../shared/lib/enums";
 import type { Agenda } from "../../shared/types";
 
@@ -64,6 +65,8 @@ type Props = {
 };
 
 export default function EditAgenda({ agenda }: Props) {
+	const { user } = useAuth();
+
 	const form = useForm<EditAgendaRequest>({
 		resolver: zodResolver(EditAgendaSchema),
 		defaultValues: {
@@ -443,43 +446,45 @@ export default function EditAgenda({ agenda }: Props) {
 								)}
 							/>
 						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-							<FormField
-								control={form.control}
-								name="status"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel
-											className="text-base font-medium text-[#1D2939]"
-											htmlFor="status"
-										>
-											Status
-											<span className="text-red-500">*</span>
-										</FormLabel>
-										<Select
-											onValueChange={(val) =>
-												field.onChange(Number.parseInt(val))
-											}
-											value={field.value.toString()}
-										>
-											<FormControl>
-												<SelectTrigger className="w-full">
-													<SelectValue placeholder="Pilih status" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												{AgendaStatuses.map((status) => (
-													<SelectItem key={status.key} value={status.key}>
-														{status.value}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
+						{user.role === 1 && (
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<FormField
+									control={form.control}
+									name="status"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel
+												className="text-base font-medium text-[#1D2939]"
+												htmlFor="status"
+											>
+												Status
+												<span className="text-red-500">*</span>
+											</FormLabel>
+											<Select
+												onValueChange={(val) =>
+													field.onChange(Number.parseInt(val))
+												}
+												value={field.value.toString()}
+											>
+												<FormControl>
+													<SelectTrigger className="w-full">
+														<SelectValue placeholder="Pilih status" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													{AgendaStatuses.map((status) => (
+														<SelectItem key={status.key} value={status.key}>
+															{status.value}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+						)}
 
 						<div className="flex flex-row gap-2 justify-end">
 							<Button
