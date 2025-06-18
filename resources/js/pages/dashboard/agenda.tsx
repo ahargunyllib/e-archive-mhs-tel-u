@@ -37,8 +37,10 @@ import { Link, router } from "@inertiajs/react";
 import { CalendarIcon, PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { AgendaSetTypes, AgendaStatuses } from "../../shared/lib/enums";
+import type { Agenda } from "../../shared/types";
 
-const CreateAgendaSchema = z.object({
+const EditAgendaSchema = z.object({
 	date: z.date({
 		message: "Tanggal tidak valid",
 	}),
@@ -47,33 +49,39 @@ const CreateAgendaSchema = z.object({
 	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
 	description: z.string().min(1, "Deskripsi tidak boleh kosong"),
 	relationship: z.string().min(1, "Hubungan tidak boleh kosong"),
-	estimated_cost: z.number().min(1, "Biaya estimasi tidak boleh kosong"),
+	estimated_cost: z.coerce
+		.number()
+		.min(0, "Biaya estimasi tidak boleh kurang dari 0"),
 	proposal: z.instanceof(File),
 	report: z.instanceof(File),
 	status: z.number().min(1, "Status tidak boleh kosong"),
 });
 
-type CreateAgendaRequest = z.infer<typeof CreateAgendaSchema>;
+type EditAgendaRequest = z.infer<typeof EditAgendaSchema>;
 
-export default function CreateAgenda() {
-	const form = useForm<CreateAgendaRequest>({
-		resolver: zodResolver(CreateAgendaSchema),
+type Props = {
+	agenda: Agenda;
+};
+
+export default function EditAgenda({ agenda }: Props) {
+	const form = useForm<EditAgendaRequest>({
+		resolver: zodResolver(EditAgendaSchema),
 		defaultValues: {
-			date: new Date(),
-			name: "",
-			work_program: "",
-			set_type: 1,
-			description: "",
-			relationship: "",
-			estimated_cost: 1,
+			date: agenda.date,
+			name: agenda.name,
+			work_program: agenda.work_program,
+			set_type: agenda.set_type,
+			description: agenda.description,
+			relationship: agenda.relationship,
+			estimated_cost: agenda.estimated_cost,
 			proposal: undefined,
 			report: undefined,
-			status: 1,
+			status: agenda.status,
 		},
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		router.post("/dashboard/agendas", data);
+		router.put(`/dashboard/agendas/${agenda.id}`, data);
 	});
 
 	return (
@@ -93,7 +101,7 @@ export default function CreateAgenda() {
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
 								<BreadcrumbPage>
-									Tambah data agenda kegiatan himpunan
+									Detail data agenda kegiatan himpunan
 								</BreadcrumbPage>
 							</BreadcrumbItem>
 						</BreadcrumbList>
@@ -103,7 +111,7 @@ export default function CreateAgenda() {
 
 			<div className="flex flex-col gap-6 bg-white rounded-2xl px-6 py-5 border border-[#EAECF0]">
 				<h1 className="font-bold text-xl text-[#101828]">
-					Formulir Tambah Data Agenda Kegiatan Himpunan
+					Detail Data Agenda Kegiatan Himpunan
 				</h1>
 				<Form {...form}>
 					<form onSubmit={onSubmitHandler} className="space-y-6">
@@ -121,7 +129,7 @@ export default function CreateAgenda() {
 											<span className="text-red-500">*</span>
 										</FormLabel>
 										<Popover>
-											<PopoverTrigger asChild>
+											<PopoverTrigger asChild disabled>
 												<FormControl>
 													<Button
 														variant={"outline"}
@@ -173,6 +181,7 @@ export default function CreateAgenda() {
 												id="name"
 												placeholder="Masukkan nama kegiatan"
 												{...field}
+												disabled
 											/>
 										</FormControl>
 										<FormMessage />
@@ -198,6 +207,7 @@ export default function CreateAgenda() {
 												id="work_program"
 												placeholder="Masukkan program kerja"
 												{...field}
+												disabled
 											/>
 										</FormControl>
 										<FormMessage />
@@ -222,14 +232,16 @@ export default function CreateAgenda() {
 											value={field.value.toString()}
 										>
 											<FormControl>
-												<SelectTrigger className="w-full">
+												<SelectTrigger className="w-full" disabled>
 													<SelectValue placeholder="Pilih tipe himpunan" />
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												<SelectItem value="1">Himpunan 1</SelectItem>
-												<SelectItem value="2">Himpunan 2</SelectItem>
-												<SelectItem value="3">Himpunan 3</SelectItem>
+												{AgendaSetTypes.map((type) => (
+													<SelectItem key={type.key} value={type.key}>
+														{type.value}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 										<FormMessage />
@@ -256,6 +268,7 @@ export default function CreateAgenda() {
 											className="resize-none"
 											rows={4}
 											{...field}
+											disabled
 										/>
 									</FormControl>
 									<FormMessage />
@@ -280,6 +293,7 @@ export default function CreateAgenda() {
 												id="relationship"
 												placeholder="Masukkan kerjasama"
 												{...field}
+												disabled
 											/>
 										</FormControl>
 										<FormMessage />
@@ -298,23 +312,15 @@ export default function CreateAgenda() {
 											Biaya Estimasi
 											<span className="text-red-500">*</span>
 										</FormLabel>
-										<Select
-											onValueChange={(val) =>
-												field.onChange(Number.parseInt(val))
-											}
-											value={field.value.toString()}
-										>
-											<FormControl>
-												<SelectTrigger className="w-full">
-													<SelectValue placeholder="Pilih biaya estimasi" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem value="1">Biaya estimasi 1</SelectItem>
-												<SelectItem value="2">Biaya estimasi 2</SelectItem>
-												<SelectItem value="3">Biaya estimasi 3</SelectItem>
-											</SelectContent>
-										</Select>
+										<FormControl>
+											<Input
+												id="estimated_cost"
+												placeholder="Masukkan biaya estimasi"
+												className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+												{...field}
+												disabled
+											/>
+										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -352,6 +358,7 @@ export default function CreateAgenda() {
 														};
 														input.click();
 													}}
+													disabled
 												>
 													<PaperclipIcon className="size-4" />
 													Upload File
@@ -412,6 +419,7 @@ export default function CreateAgenda() {
 														};
 														input.click();
 													}}
+													disabled
 												>
 													<PaperclipIcon className="size-4" />
 													Upload File
@@ -462,14 +470,16 @@ export default function CreateAgenda() {
 											value={field.value.toString()}
 										>
 											<FormControl>
-												<SelectTrigger className="w-full">
+												<SelectTrigger className="w-full" disabled>
 													<SelectValue placeholder="Pilih status" />
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												<SelectItem value="1">Proses</SelectItem>
-												<SelectItem value="2">Disetujui</SelectItem>
-												<SelectItem value="3">Ditolak</SelectItem>
+												{AgendaStatuses.map((status) => (
+													<SelectItem key={status.key} value={status.key}>
+														{status.value}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 										<FormMessage />
@@ -485,13 +495,7 @@ export default function CreateAgenda() {
 								className="font-medium text-xs py-3 px-8 rounded-md h-fit"
 								asChild
 							>
-								<Link href="/dashboard/agendas">Batal</Link>
-							</Button>
-							<Button
-								type="submit"
-								className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-xs py-3 px-8 rounded-md h-fit"
-							>
-								Simpan
+								<Link href="/dashboard/agendas">Kembali</Link>
 							</Button>
 						</div>
 					</form>

@@ -1,16 +1,29 @@
 import { DataTable } from "@/shared/components/data-table";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/shared/components/ui/alert-dialog";
 import { Button } from "@/shared/components/ui/button";
+import { useAuth } from "@/shared/hooks/use-auth";
+import { AgendaSetTypeMap } from "@/shared/lib/enums";
+import type { Agenda } from "@/shared/types";
+import { Link, router } from "@inertiajs/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { EyeIcon, PenLineIcon, Trash2Icon } from "lucide-react";
 
-export default function AgendasTable() {
-	const columns: ColumnDef<{
-		id: string;
-		date: string;
-		workProgram: string;
-		name: string;
-		type: string;
-	}>[] = [
+type Props = {
+	agendas: Agenda[];
+};
+
+export default function AgendasTable({ agendas }: Props) {
+	const columns: ColumnDef<Agenda>[] = [
 		{
 			header: "No",
 			cell: ({ row }) => row.index + 1,
@@ -18,6 +31,13 @@ export default function AgendasTable() {
 		{
 			accessorKey: "date",
 			header: "Tanggal",
+			cell: ({ row }) => {
+				return row.original.date.toLocaleDateString("id-ID", {
+					day: "2-digit",
+					month: "2-digit",
+					year: "numeric",
+				});
+			},
 		},
 		{
 			accessorKey: "workProgram",
@@ -30,104 +50,65 @@ export default function AgendasTable() {
 		{
 			accessorKey: "type",
 			header: "Tipe Himpunan",
+			cell: ({ row }) => AgendaSetTypeMap[row.original.set_type],
 		},
 		{
 			header: "Aksi",
-			cell: () => (
-				<div className="flex flex-row items-center">
-					<Button variant="ghost" size="icon">
-						<EyeIcon className="size-4 text-[#2274C3]" />
-					</Button>
-					<Button variant="ghost" size="icon">
-						<PenLineIcon className="size-4 text-[#FFBD00]" />
-					</Button>
-					<Button variant="ghost" size="icon">
-						<Trash2Icon className="size-4 text-[#DC2625]" />
-					</Button>
-				</div>
-			),
+			cell: ({ row }) => {
+				const { user } = useAuth();
+				return (
+					<div className="flex flex-row items-center">
+						<Link href={`/dashboard/agendas/${row.original.id}`}>
+							<Button variant="ghost" size="icon">
+								<EyeIcon className="size-4 text-[#2274C3]" />
+							</Button>
+						</Link>
+						<Link href={`/dashboard/agendas/${row.original.id}/edit`}>
+							<Button variant="ghost" size="icon">
+								<PenLineIcon className="size-4 text-[#FBBF24]" />
+							</Button>
+						</Link>
+						{user.role === 1 && (
+							<AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button variant="ghost" size="icon">
+										<Trash2Icon className="size-4 text-[#DC2625]" />
+									</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>
+											Are you absolutely sure?
+										</AlertDialogTitle>
+										<AlertDialogDescription>
+											This action cannot be undone. This will permanently delete
+											the agenda and remove the data from our servers.
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>Cancel</AlertDialogCancel>
+										<AlertDialogAction asChild>
+											<Button
+												variant="destructive"
+												className="bg-[#DC2625] hover:bg-[#B91C1C]"
+												onClick={() => {
+													router.delete(
+														`/dashboard/agendas/${row.original.id}`,
+													);
+												}}
+											>
+												Delete
+											</Button>
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
+						)}
+					</div>
+				);
+			},
 		},
 	];
 
-	// Sample data for the table
-	const data: {
-		id: string;
-		date: string;
-		workProgram: string;
-		name: string;
-		type: string;
-	}[] = [
-		{
-			id: "1",
-			date: "2025-01-10",
-			workProgram: "Penerimaan Anggota",
-			name: "Open Recruitment Anggota Baru",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "2",
-			date: "2025-02-15",
-			workProgram: "Akademik",
-			name: "	Latihan Kepemimpinan Dasar (LKD)",
-			type: "Himpunan Fakultas",
-		},
-		{
-			id: "3",
-			date: "2025-03-20",
-			workProgram: "Akademik",
-			name: "Seminar Nasional Keprofesian",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "4",
-			date: "2025-04-25",
-			workProgram: "Sosial Masyarakat",
-			name: "Bakti Sosial ke Desa Binaan",
-			type: "Himpunan Fakultas",
-		},
-		{
-			id: "5",
-			date: "2025-05-30",
-			workProgram: "Media dan Informasi",
-			name: "Pelatihan Desain Grafis",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "6",
-			date: "2025-06-05",
-			workProgram: "Kewirausahaan",
-			name: "Bazaar Produk Mahasiswa",
-			type: "Himpunan Fakultas",
-		},
-		{
-			id: "7",
-			date: "2025-07-10",
-			workProgram: "Riset dan Teknologi",
-			name: "Workshop IoT untuk Pemula",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "8",
-			date: "2025-08-15",
-			workProgram: "Hubungan Eksternal",
-			name: "Company Visit ke Startup Lokal",
-			type: "Himpunan Fakultas",
-		},
-		{
-			id: "9",
-			date: "2025-09-20",
-			workProgram: "Minat dan Bakat",
-			name: "Turnamen Futsal Internal",
-			type: "Himpunan Jurusan",
-		},
-		{
-			id: "10",
-			date: "2025-10-25",
-			workProgram: "Keorganisasian",
-			name: "Rapat Kerja Tengah Tahun",
-			type: "Himpunan Fakultas",
-		},
-	];
-
-	return <DataTable columns={columns} data={data} />;
+	return <DataTable columns={columns} data={agendas} />;
 }

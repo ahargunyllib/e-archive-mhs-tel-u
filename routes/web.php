@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,13 +35,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/dashboard/members/{id}', [MemberController::class, 'update'])->name('dashboard.members.update');
     Route::delete('/dashboard/members/{id}', [MemberController::class, 'delete'])->name('dashboard.members.delete');
 
-    Route::get('/dashboard/agendas', function () {
-        return Inertia::render('dashboard/agendas');
-    })->name('dashboard.agendas');
-
-    Route::get('/dashboard/agendas/create', function () {
-        return Inertia::render('dashboard/create-agenda');
-    })->name('dashboard.agendas.create');
+    Route::get('/dashboard/agendas', [AgendaController::class, 'index'])->name('dashboard.agendas');
+    Route::get('/dashboard/agendas/create', [AgendaController::class, 'create'])->name('dashboard.agendas.create');
+    Route::post('/dashboard/agendas', [AgendaController::class, 'store'])->name('dashboard.agendas.store');
+    Route::get('/dashboard/agendas/{id}', [AgendaController::class, 'show'])->name('dashboard.agendas.show');
+    Route::get('/dashboard/agendas/{id}/edit', [AgendaController::class, 'edit'])->name('dashboard.agendas.edit');
+    Route::put('/dashboard/agendas/{id}', [AgendaController::class, 'update'])->name('dashboard.agendas.update');
+    Route::delete('/dashboard/agendas/{id}', [AgendaController::class, 'delete'])->name('dashboard.agendas.delete');
 
     Route::get('/dashboard/achievements', function () {
         return Inertia::render('dashboard/achievements');
