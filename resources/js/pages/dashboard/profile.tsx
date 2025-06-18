@@ -99,7 +99,10 @@ export default function Profile() {
 						<div className="flex flex-col items-center justify-center gap-2 rounded-xl bg-[#F7F6FA] p-16">
 							<div className="relative">
 								<Avatar className="size-32 border">
-									<AvatarImage src="/images/avatar.png" alt="User Avatar" />
+									<AvatarImage
+										src={`/storage/${user.photo_profile}`}
+										alt="User Avatar"
+									/>
 									<AvatarFallback className="size-32 border">
 										{form.getValues("username")[0].toUpperCase() || "-"}
 									</AvatarFallback>

@@ -91,7 +91,7 @@ export default function DashboardLayout({
 								<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full h-13">
 									<Avatar>
 										<AvatarImage
-											src={user.photo_profile ?? undefined} // TODO
+											src={`/storage/${user.photo_profile}`} // TODO
 											alt="Avatar"
 										/>
 										<AvatarFallback>{user.name[0]}</AvatarFallback>

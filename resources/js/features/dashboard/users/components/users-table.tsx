@@ -59,7 +59,7 @@ export default function UsersTable({ users }: Props) {
 			cell: ({ row }) => (
 				<Avatar className="rounded-lg size-12">
 					<AvatarImage
-						src={row.original.photo_profile || ""}
+						src={`/storage/${row.original.photo_profile}` || ""}
 						alt={row.original.name}
 					/>
 					<AvatarFallback className="rounded-lg">
