@@ -74,7 +74,7 @@ export default function DashboardLayout({
 								)}
 							>
 								<item.icon className="size-4" />
-								<span className="font-medium text-xs">{item.name}</span>
+								<span className="font-medium text-sm">{item.name}</span>
 							</Link>
 						))}
 					</div>
