@@ -85,7 +85,9 @@ export default function MembersTable({ members }: Props) {
 												variant="destructive"
 												className="bg-[#DC2625] hover:bg-[#B91C1C]"
 												onClick={() => {
-													router.delete(`/dashboard/users/${row.original.id}`);
+													router.delete(
+														`/dashboard/members/${row.original.id}`,
+													);
 												}}
 											>
 												Delete
