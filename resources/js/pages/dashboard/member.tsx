@@ -34,8 +34,9 @@ import {
 	MemberPeriods,
 	MemberSetTypes,
 } from "../../shared/lib/enums";
+import type { Member } from "../../shared/types";
 
-const CreateMemberSchema = z.object({
+const EditMemberSchema = z.object({
 	name: z.string().min(1, "Nama tidak boleh kosong"),
 	address: z.string().min(1, "Alamat tidak boleh kosong"),
 	contact: z.string().min(1, "Kontak tidak boleh kosong"),
@@ -57,27 +58,31 @@ const CreateMemberSchema = z.object({
 		.max(100, "Skor ERPT tidak boleh lebih dari 100"),
 });
 
-type CreateMemberRequest = z.infer<typeof CreateMemberSchema>;
+type EditMemberRequest = z.infer<typeof EditMemberSchema>;
 
-export default function CreateMember() {
-	const form = useForm<CreateMemberRequest>({
-		resolver: zodResolver(CreateMemberSchema),
+type Props = {
+	member: Member;
+};
+
+export default function EditMember({ member }: Props) {
+	const form = useForm<EditMemberRequest>({
+		resolver: zodResolver(EditMemberSchema),
 		defaultValues: {
-			name: "",
-			address: "",
-			contact: "",
-			division: 1,
-			set_type: 1,
-			batch_year: 1,
-			period: 1,
-			ipk: 0,
-			tak: 0,
-			erpt_score: 0,
+			name: member.name,
+			address: member.address,
+			contact: member.contact,
+			division: member.division,
+			set_type: member.set_type,
+			batch_year: member.batch_year,
+			period: member.period,
+			ipk: member.ipk,
+			tak: member.tak,
+			erpt_score: member.erpt_score,
 		},
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		router.post("/dashboard/members", data);
+		router.put(`/dashboard/members/${member.id}`, data);
 	});
 
 	return (
@@ -96,7 +101,7 @@ export default function CreateMember() {
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
-								<BreadcrumbPage>Tambah data anggota himpunan</BreadcrumbPage>
+								<BreadcrumbPage>Detail data anggota himpunan</BreadcrumbPage>
 							</BreadcrumbItem>
 						</BreadcrumbList>
 					</Breadcrumb>
@@ -105,7 +110,7 @@ export default function CreateMember() {
 
 			<div className="flex flex-col gap-6 bg-white rounded-2xl px-6 py-5 border border-[#EAECF0]">
 				<h1 className="font-bold text-xl text-[#101828]">
-					Formulir Tambah Data Anggota Himpunan
+					Detail Data Anggota Himpunan
 				</h1>
 				<Form {...form}>
 					<form onSubmit={onSubmitHandler} className="space-y-6">
@@ -123,7 +128,12 @@ export default function CreateMember() {
 											<span className="text-red-500">*</span>
 										</FormLabel>
 										<FormControl>
-											<Input id="name" placeholder="Masukkan nama" {...field} />
+											<Input
+												id="name"
+												placeholder="Masukkan nama"
+												{...field}
+												disabled
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -146,6 +156,7 @@ export default function CreateMember() {
 												id="address"
 												placeholder="Masukkan alamat"
 												{...field}
+												disabled
 											/>
 										</FormControl>
 										<FormMessage />
@@ -171,6 +182,7 @@ export default function CreateMember() {
 												id="contact"
 												placeholder="Masukkan kontak"
 												{...field}
+												disabled
 											/>
 										</FormControl>
 										<FormMessage />
@@ -195,7 +207,7 @@ export default function CreateMember() {
 											value={field.value.toString()}
 										>
 											<FormControl>
-												<SelectTrigger className="w-full">
+												<SelectTrigger className="w-full" disabled>
 													<SelectValue placeholder="Pilih divisi" />
 												</SelectTrigger>
 											</FormControl>
@@ -231,7 +243,7 @@ export default function CreateMember() {
 										value={field.value.toString()}
 									>
 										<FormControl>
-											<SelectTrigger className="w-full">
+											<SelectTrigger className="w-full" disabled>
 												<SelectValue placeholder="Pilih tipe himpunan" />
 											</SelectTrigger>
 										</FormControl>
@@ -267,7 +279,7 @@ export default function CreateMember() {
 											value={field.value.toString()}
 										>
 											<FormControl>
-												<SelectTrigger className="w-full">
+												<SelectTrigger className="w-full" disabled>
 													<SelectValue placeholder="Pilih angkatan" />
 												</SelectTrigger>
 											</FormControl>
@@ -302,7 +314,7 @@ export default function CreateMember() {
 											value={field.value.toString()}
 										>
 											<FormControl>
-												<SelectTrigger className="w-full">
+												<SelectTrigger className="w-full" disabled>
 													<SelectValue placeholder="Pilih periode" />
 												</SelectTrigger>
 											</FormControl>
@@ -338,6 +350,7 @@ export default function CreateMember() {
 												placeholder="Masukkan IPK"
 												className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 												{...field}
+												disabled
 											/>
 										</FormControl>
 										<FormMessage />
@@ -362,6 +375,7 @@ export default function CreateMember() {
 												placeholder="Masukkan TAK"
 												className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 												{...field}
+												disabled
 											/>
 										</FormControl>
 										<FormMessage />
@@ -387,6 +401,7 @@ export default function CreateMember() {
 											placeholder="Masukkan skor ERPT"
 											className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 											{...field}
+											disabled
 										/>
 									</FormControl>
 									<FormMessage />
@@ -401,13 +416,7 @@ export default function CreateMember() {
 								className="font-medium text-xs py-3 px-8 rounded-md h-fit"
 								asChild
 							>
-								<Link href="/dashboard/members">Batal</Link>
-							</Button>
-							<Button
-								type="submit"
-								className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-xs py-3 px-8 rounded-md h-fit"
-							>
-								Simpan
+								<Link href="/dashboard/members">Kembali</Link>
 							</Button>
 						</div>
 					</form>

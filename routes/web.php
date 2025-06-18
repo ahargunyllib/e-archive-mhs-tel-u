@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -25,13 +26,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/dashboard/users/{id}', [UserController::class, 'update'])->name('dashboard.users.update');
     Route::delete('/dashboard/users/{id}', [UserController::class, 'delete'])->name('dashboard.users.delete');
 
-    Route::get('/dashboard/members', function () {
-        return Inertia::render('dashboard/members');
-    })->name('dashboard.members');
-
-    Route::get('/dashboard/members/create', function () {
-        return Inertia::render('dashboard/create-member');
-    })->name('dashboard.members.create');
+    Route::get('/dashboard/members', [MemberController::class, 'index'])->name('dashboard.members');
+    Route::get('/dashboard/members/create', [MemberController::class, 'create'])->name('dashboard.members.create');
+    Route::post('/dashboard/members', [MemberController::class, 'store'])->name('dashboard.members.store');
+    Route::get('/dashboard/members/{id}', [MemberController::class, 'show'])->name('dashboard.members.show');
+    Route::get('/dashboard/members/{id}/edit', [MemberController::class, 'edit'])->name('dashboard.members.edit');
+    Route::put('/dashboard/members/{id}', [MemberController::class, 'update'])->name('dashboard.members.update');
+    Route::delete('/dashboard/members/{id}', [MemberController::class, 'delete'])->name('dashboard.members.delete');
 
     Route::get('/dashboard/agendas', function () {
         return Inertia::render('dashboard/agendas');

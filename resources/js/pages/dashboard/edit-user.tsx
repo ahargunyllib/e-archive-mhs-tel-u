@@ -88,7 +88,7 @@ export default function EditUser({ user }: Props) {
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
-								<BreadcrumbPage>Tambah users</BreadcrumbPage>
+								<BreadcrumbPage>Edit users</BreadcrumbPage>
 							</BreadcrumbItem>
 						</BreadcrumbList>
 					</Breadcrumb>
@@ -96,9 +96,7 @@ export default function EditUser({ user }: Props) {
 			</div>
 
 			<div className="flex flex-col gap-6 bg-white rounded-2xl px-6 py-5 border border-[#EAECF0]">
-				<h1 className="font-bold text-xl text-[#101828]">
-					Formulir Tambah User
-				</h1>
+				<h1 className="font-bold text-xl text-[#101828]">Formulir Edit User</h1>
 				<Form {...form}>
 					<form onSubmit={onSubmitHandler} className="space-y-6">
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
