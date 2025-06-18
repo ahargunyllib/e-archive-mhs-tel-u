@@ -5,7 +5,6 @@ import type {
 	AgendaSetTypeMap,
 	AgendaStatusMap,
 	MemberBatchYearMap,
-	MemberDivisonMap,
 	MemberPeriodMap,
 	MemberSetTypeMap,
 	UserRoleMap,
@@ -44,7 +43,7 @@ export type Member = {
 	name: string;
 	address: string;
 	contact: string;
-	division: keyof typeof MemberDivisonMap;
+	division: string;
 	set_type: keyof typeof MemberSetTypeMap;
 	batch_year: keyof typeof MemberBatchYearMap;
 	period: keyof typeof MemberPeriodMap;

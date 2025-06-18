@@ -30,7 +30,6 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import {
 	MemberBatchYears,
-	MemberDivisions,
 	MemberPeriods,
 	MemberSetTypes,
 } from "../../shared/lib/enums";
@@ -40,7 +39,7 @@ const EditMemberSchema = z.object({
 	name: z.string().min(1, "Nama tidak boleh kosong"),
 	address: z.string().min(1, "Alamat tidak boleh kosong"),
 	contact: z.string().min(1, "Kontak tidak boleh kosong"),
-	division: z.number().min(1, "Divisi tidak boleh kosong"),
+	division: z.string().min(1, "Divisi tidak boleh kosong"),
 	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
 	batch_year: z.number().min(1, "Angkatan tidak boleh kosong"),
 	period: z.number().min(1, "Periode tidak boleh kosong"),
@@ -200,25 +199,14 @@ export default function EditMember({ member }: Props) {
 										>
 											Divisi
 										</FormLabel>
-										<Select
-											onValueChange={(val) =>
-												field.onChange(Number.parseInt(val))
-											}
-											value={field.value.toString()}
-										>
-											<FormControl>
-												<SelectTrigger className="w-full" disabled>
-													<SelectValue placeholder="Pilih divisi" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												{MemberDivisions.map((division) => (
-													<SelectItem key={division.key} value={division.key}>
-														{division.value}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
+										<FormControl>
+											<Input
+												id="division"
+												placeholder="Masukkan divisi"
+												{...field}
+												disabled
+											/>
+										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}

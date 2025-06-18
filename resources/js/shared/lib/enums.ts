@@ -9,17 +9,6 @@ export const UserRoles = Object.entries(UserRoleMap).map(([key, value]) => ({
 	value,
 }));
 
-export const MemberDivisonMap = {
-	1: "Kaderisasi",
-} as const;
-
-export const MemberDivisions = Object.entries(MemberDivisonMap).map(
-	([key, value]) => ({
-		key,
-		value,
-	}),
-);
-
 export const MemberSetTypeMap = {
 	1: "Teknik Industri",
 	2: "Sistem Informasi",

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('contact');
-            $table->integer('division')->default(1);
+            $table->string('division');
             $table->integer('set_type')->default(1);
             $table->integer('batch_year')->default(1);
             $table->integer('period')->default(1);

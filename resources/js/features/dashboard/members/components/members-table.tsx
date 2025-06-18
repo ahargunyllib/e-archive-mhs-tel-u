@@ -16,10 +16,7 @@ import type { Member } from "@/shared/types";
 import { Link, router } from "@inertiajs/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { EyeIcon, PenLineIcon, Trash2Icon } from "lucide-react";
-import {
-	MemberDivisonMap,
-	MemberSetTypeMap,
-} from "../../../../shared/lib/enums";
+import { MemberSetTypeMap } from "../../../../shared/lib/enums";
 
 type Props = {
 	members: Member[];
@@ -38,7 +35,6 @@ export default function MembersTable({ members }: Props) {
 		{
 			accessorKey: "division",
 			header: "Divisi",
-			cell: ({ row }) => MemberDivisonMap[row.original.division],
 		},
 		{
 			accessorKey: "type",
