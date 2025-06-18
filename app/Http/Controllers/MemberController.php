@@ -109,7 +109,7 @@ class MemberController extends Controller
         $member = DB::table('members')->where('id', $id)->first();
 
         if (!$member) {
-            return redirect()->route('dashboard.members')->with('error', 'User not found.');
+            return redirect()->route('dashboard.members')->with('error', 'Member not found.');
         }
 
         return inertia('dashboard/edit-member', [
