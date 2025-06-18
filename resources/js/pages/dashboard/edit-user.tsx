@@ -71,7 +71,16 @@ export default function EditUser({ user }: Props) {
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		router.put(`/dashboard/users/${user.id}`, data);
+		const formData = new FormData();
+		formData.append("name", data.name);
+		formData.append("username", data.username);
+		formData.append("email", data.email);
+		formData.append("role", data.role.toString());
+		formData.append("password", data.password);
+		if (data.avatar) {
+			formData.append("profile_picture", data.avatar);
+		}
+		router.post(`/dashboard/users/${user.id}`, formData);
 	});
 
 	return (
