@@ -53,7 +53,7 @@ export default function Members({ members, pagination }: Props) {
 						Export data ke csv
 					</Button>
 					<Link href="/dashboard/members/create">
-						<Button className="bg-[#00332D] hover:bg-[#00332D]/80 text-[#F9FAFB] rounded-full font-medium text-sm p-1 pr-2">
+						<Button className="bg-[#00332D] hover:bg-[#00332D]/80 text-[#F9FAFB] rounded-full font-medium text-sm p-1 pr-4">
 							<div className="bg-[#17C3AF] p-1 rounded-full aspect-square">
 								<PlusIcon className="size-4" />
 							</div>
