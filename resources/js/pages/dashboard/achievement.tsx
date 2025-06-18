@@ -37,8 +37,9 @@ import { CalendarIcon, PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { AchievementSetTypes, AchievementTypes } from "../../shared/lib/enums";
+import type { Achievement } from "../../shared/types";
 
-const CreateAchievementSchema = z.object({
+const EditAchievementSchema = z.object({
 	date: z.date({
 		message: "Tanggal tidak valid",
 	}),
@@ -48,16 +49,20 @@ const CreateAchievementSchema = z.object({
 	certificate: z.instanceof(File),
 });
 
-type CreateAchievementRequest = z.infer<typeof CreateAchievementSchema>;
+type EditAchievementRequest = z.infer<typeof EditAchievementSchema>;
 
-export default function CreateAchievement() {
-	const form = useForm<CreateAchievementRequest>({
-		resolver: zodResolver(CreateAchievementSchema),
+type Props = {
+	achievement: Achievement;
+};
+
+export default function EditAchievement({ achievement }: Props) {
+	const form = useForm<EditAchievementRequest>({
+		resolver: zodResolver(EditAchievementSchema),
 		defaultValues: {
-			date: new Date(),
-			type: 1,
-			name: "",
-			set_type: 1,
+			date: new Date(achievement.date),
+			type: achievement.type,
+			name: achievement.name,
+			set_type: achievement.set_type,
 			certificate: undefined,
 		},
 	});
@@ -72,7 +77,7 @@ export default function CreateAchievement() {
 			formData.append("certificate", data.certificate);
 		}
 
-		router.post("/dashboard/achievements", formData);
+		router.post("/dashboard/achievements/update", formData);
 	});
 
 	return (
@@ -118,7 +123,7 @@ export default function CreateAchievement() {
 											<span className="text-red-500">*</span>
 										</FormLabel>
 										<Popover>
-											<PopoverTrigger asChild>
+											<PopoverTrigger asChild disabled>
 												<FormControl>
 													<Button
 														variant={"outline"}
@@ -172,7 +177,7 @@ export default function CreateAchievement() {
 											value={field.value.toString()}
 										>
 											<FormControl>
-												<SelectTrigger className="w-full">
+												<SelectTrigger className="w-full" disabled>
 													<SelectValue placeholder="Pilih jenis prestasi" />
 												</SelectTrigger>
 											</FormControl>
@@ -210,6 +215,7 @@ export default function CreateAchievement() {
 												id="name"
 												placeholder="Masukkan nama prestasi"
 												{...field}
+												disabled
 											/>
 										</FormControl>
 										<FormMessage />
@@ -234,7 +240,7 @@ export default function CreateAchievement() {
 											value={field.value.toString()}
 										>
 											<FormControl>
-												<SelectTrigger className="w-full">
+												<SelectTrigger className="w-full" disabled>
 													<SelectValue placeholder="Pilih tipe himpunan" />
 												</SelectTrigger>
 											</FormControl>
@@ -275,7 +281,7 @@ export default function CreateAchievement() {
 												onClick={() => {
 													const input = document.createElement("input");
 													input.type = "file";
-													input.accept = "image/*,.doc,.docx,.pdf";
+													input.accept = "image/*";
 													input.onchange = (event) => {
 														const file = (event.target as HTMLInputElement)
 															.files?.[0];
@@ -285,6 +291,7 @@ export default function CreateAchievement() {
 													};
 													input.click();
 												}}
+												disabled
 											>
 												<PaperclipIcon className="size-4" />
 												Upload File
@@ -303,6 +310,15 @@ export default function CreateAchievement() {
 														<Trash2Icon className="size-4" />
 													</Button>
 												</div>
+											) : achievement.certificate ? (
+												<a
+													target="_blank"
+													className="text-sm text-blue-600 hover:underline"
+													href={`/storage/${achievement.certificate}`}
+													rel="noreferrer"
+												>
+													Sertifikat
+												</a>
 											) : (
 												<span className="text-sm text-muted-foreground/80">
 													Tidak ada file yang dipilih
@@ -322,13 +338,7 @@ export default function CreateAchievement() {
 								className="font-medium text-xs py-3 px-8 rounded-md h-fit"
 								asChild
 							>
-								<Link href="/dashboard/achievements">Batal</Link>
-							</Button>
-							<Button
-								type="submit"
-								className="bg-[#17C3AF] hover:bg-[#17C3AF]/80 text-white font-medium text-xs py-3 px-8 rounded-md h-fit"
-							>
-								Simpan
+								<Link href="/dashboard/achievements">Kembali</Link>
 							</Button>
 						</div>
 					</form>

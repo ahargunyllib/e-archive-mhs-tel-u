@@ -37,8 +37,9 @@ import { CalendarIcon, PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { AchievementSetTypes, AchievementTypes } from "../../shared/lib/enums";
+import type { Achievement } from "../../shared/types";
 
-const CreateAchievementSchema = z.object({
+const EditAchievementSchema = z.object({
 	date: z.date({
 		message: "Tanggal tidak valid",
 	}),
@@ -48,16 +49,20 @@ const CreateAchievementSchema = z.object({
 	certificate: z.instanceof(File),
 });
 
-type CreateAchievementRequest = z.infer<typeof CreateAchievementSchema>;
+type EditAchievementRequest = z.infer<typeof EditAchievementSchema>;
 
-export default function CreateAchievement() {
-	const form = useForm<CreateAchievementRequest>({
-		resolver: zodResolver(CreateAchievementSchema),
+type Props = {
+	achievement: Achievement;
+};
+
+export default function EditAchievement({ achievement }: Props) {
+	const form = useForm<EditAchievementRequest>({
+		resolver: zodResolver(EditAchievementSchema),
 		defaultValues: {
-			date: new Date(),
-			type: 1,
-			name: "",
-			set_type: 1,
+			date: new Date(achievement.date),
+			type: achievement.type,
+			name: achievement.name,
+			set_type: achievement.set_type,
 			certificate: undefined,
 		},
 	});
@@ -72,7 +77,7 @@ export default function CreateAchievement() {
 			formData.append("certificate", data.certificate);
 		}
 
-		router.post("/dashboard/achievements", formData);
+		router.post("/dashboard/achievements/update", formData);
 	});
 
 	return (

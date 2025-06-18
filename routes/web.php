@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -43,13 +44,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/dashboard/agendas/{id}', [AgendaController::class, 'update'])->name('dashboard.agendas.update');
     Route::delete('/dashboard/agendas/{id}', [AgendaController::class, 'delete'])->name('dashboard.agendas.delete');
 
-    Route::get('/dashboard/achievements', function () {
-        return Inertia::render('dashboard/achievements');
-    })->name('dashboard.achievements');
-
-    Route::get('/dashboard/achievements/create', function () {
-        return Inertia::render('dashboard/create-achievement');
-    })->name('dashboard.achievements.create');
+    Route::get('/dashboard/achievements', [AchievementController::class, 'index'])->name('dashboard.achievements');
+    Route::get('/dashboard/achievements/create', [AchievementController::class, 'create'])->name('dashboard.achievements.create');
+    Route::post('/dashboard/achievements', [AchievementController::class, 'store'])->name('dashboard.achievements.store');
+    Route::get('/dashboard/achievements/{id}', [AchievementController::class, 'show'])->name('dashboard.achievements.show');
+    Route::get('/dashboard/achievements/{id}/edit', [AchievementController::class, 'edit'])->name('dashboard.achievements.edit');
+    Route::post('/dashboard/achievements/{id}', [AchievementController::class, 'update'])->name('dashboard.achievements.update');
+    Route::delete('/dashboard/achievements/{id}', [AchievementController::class, 'delete'])->name('dashboard.achievements.delete');
 
     Route::get('/dashboard/profile', [ProfileController::class, 'index'])
         ->name('dashboard.profile');

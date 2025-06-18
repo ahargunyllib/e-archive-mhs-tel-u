@@ -13,15 +13,19 @@ import { Link } from "@inertiajs/react";
 import { PlusIcon, UploadIcon } from "lucide-react";
 import AchievementsTable from "../../features/dashboard/achievements/components/achievements-table";
 import FilterAchievements from "../../features/dashboard/achievements/components/filter-achievements";
+import type { Achievement } from "../../shared/types";
 
-export default function Achievements() {
-	const paginationData = {
-		page: 1,
-		limit: 10,
-		total: 100,
-		totalPages: 10,
+type Props = {
+	achievements: Achievement[];
+	pagination: {
+		page: number;
+		limit: number;
+		total: number;
+		totalPages: number;
 	};
+};
 
+export default function Achievements({ achievements, pagination }: Props) {
 	return (
 		<DashboardLayout>
 			<div className="flex flex-row justify-between items-center">
@@ -62,12 +66,12 @@ export default function Achievements() {
 			<div className="flex flex-col gap-6 bg-white rounded-2xl px-6 py-5 border border-[#EAECF0]">
 				<FilterAchievements />
 
-				<AchievementsTable />
+				<AchievementsTable achievements={achievements} />
 
 				<Pagination
-					currentPage={paginationData.page}
-					totalPages={paginationData.totalPages}
-					limit={paginationData.limit}
+					currentPage={pagination.page}
+					totalPages={pagination.totalPages}
+					limit={pagination.limit}
 				/>
 			</div>
 		</DashboardLayout>
