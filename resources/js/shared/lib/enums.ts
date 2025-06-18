@@ -64,3 +64,29 @@ export const MemberPeriods = Object.entries(MemberPeriodMap).map(
 		value,
 	}),
 );
+
+export const AgendaSetTypeMap = {
+	1: "Teknik Industri",
+	2: "Sistem Informasi",
+	3: "Teknik Logistik",
+} as const;
+
+export const AgendaSetTypes = Object.entries(AgendaSetTypeMap).map(
+	([key, value]) => ({
+		key,
+		value,
+	}),
+);
+
+export const AgendaStatusMap = {
+	1: "Proses",
+	2: "Disetujui",
+	3: "Ditolak",
+} as const;
+
+export const AgendaStatuses = Object.entries(AgendaStatusMap).map(
+	([key, value]) => ({
+		key,
+		value,
+	}),
+);
