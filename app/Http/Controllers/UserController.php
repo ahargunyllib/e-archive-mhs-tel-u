@@ -51,13 +51,33 @@ class UserController extends Controller
     function store(Request $request)
     {
         try {
+            // change role to numeric
+            $request['role'] = (int)$request->input('role');
+
             $request->validate([
                 'name' => 'required|string|max:255',
                 'username' => 'required|string|max:255|alpha_dash',
-                'email' => 'required|string|email|max:255|unique:users',
+                'email' => 'required|string|email|max:255',
                 'role' => 'required|numeric',
                 'password' => 'required|string|min:8',
+                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
+
+            // Check if username or email already exists
+            $existingUser = DB::table('users')
+                ->where('username', $request->input('username'))
+                ->orWhere('email', $request->input('email'))
+                ->first();
+            if ($existingUser) {
+                return redirect()->route('dashboard.users.create')->with('error', 'Username or email already exists.');
+            }
+
+            // Handle profile picture upload if provided
+            if ($request->hasFile('profile_picture')) {
+                $profilePicturePath = $request->file('profile_picture')->store('profile-pictures', 'public');
+            } else {
+                $profilePicturePath = null; // or set a default picture path
+            }
 
             DB::table('users')->insert([
                 'id' => Uuid::uuid7(),
@@ -66,6 +86,7 @@ class UserController extends Controller
                 'email' => $request->input('email'),
                 'role' => $request->input('role'),
                 'password' => bcrypt($request->input('password')),
+                'photo_profile' => $profilePicturePath,
             ]);
 
             return redirect()->route('dashboard.users')->with('success', 'User created successfully.');
@@ -90,12 +111,35 @@ class UserController extends Controller
     function update(Request $request, $id)
     {
         try {
+            // change role to numeric
+            $request['role'] = (int)$request->input('role');
+
             $request->validate([
                 'name' => 'required|string|max:255',
                 'username' => 'required|string|max:255|alpha_dash',
-                'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+                'email' => 'required|string|email|max:255',
                 'role' => 'required|numeric',
+                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
+
+            // Check if username or email already exists for other users
+            $existingUser = DB::table('users')
+                ->where(function ($query) use ($request, $id) {
+                    $query->where('username', $request->input('username'))
+                        ->orWhere('email', $request->input('email'));
+                })
+                ->where('id', '!=', $id)
+                ->first();
+            if ($existingUser) {
+                return redirect()->route('dashboard.users.edit', ['id' => $id])->with('error', 'Username or email already exists.');
+            }
+
+            // Handle profile picture upload if provided
+            if ($request->hasFile('profile_picture')) {
+                $profilePicturePath =  $request->file('profile_picture')->store('profile-pictures', 'public');
+            } else {
+                $profilePicturePath = null; // or keep the existing picture
+            }
 
             DB::table('users')
                 ->where('id', $id)
@@ -104,6 +148,7 @@ class UserController extends Controller
                     'username' => $request->input('username'),
                     'email' => $request->input('email'),
                     'role' => $request->input('role'),
+                    'photo_profile' => $profilePicturePath,
                 ]);
 
             return redirect()->route('dashboard.users')->with('success', 'User updated successfully.');
