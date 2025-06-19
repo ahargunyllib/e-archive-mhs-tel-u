@@ -49,7 +49,7 @@ const CreateAgendaSchema = z.object({
 	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
 	description: z.string().min(1, "Deskripsi tidak boleh kosong"),
 	relationship: z.string().min(1, "Hubungan tidak boleh kosong"),
-	estimated_cost: z.coerce.number().min(1, "Biaya estimasi tidak boleh kosong"),
+	estimated_cost: z.coerce.number(),
 	proposal: z.instanceof(File).optional(),
 	report: z.instanceof(File).optional(),
 	status: z.number().min(1, "Status tidak boleh kosong"),
