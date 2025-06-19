@@ -82,7 +82,7 @@ export default function EditAgenda({ agenda }: Props) {
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		router.put(`/dashboard/agendas/${agenda.id}`, data);
+		router.post(`/dashboard/agendas/${agenda.id}`, data);
 	});
 
 	return (
