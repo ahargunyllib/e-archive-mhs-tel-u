@@ -96,6 +96,8 @@ class MemberController extends Controller
                 'ipk' => $request->input('ipk'),
                 'tak' => $request->input('tak'),
                 'erpt_score' => $request->input('erpt_score'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             return redirect()->route('dashboard.members')->with('success', 'Member created successfully.');
@@ -146,6 +148,7 @@ class MemberController extends Controller
                     'ipk' => $request->input('ipk'),
                     'tak' => $request->input('tak'),
                     'erpt_score' => $request->input('erpt_score'),
+                    'updated_at' => now(),
                 ]);
 
             return redirect()->route('dashboard.members')->with('success', 'Member updated successfully.');

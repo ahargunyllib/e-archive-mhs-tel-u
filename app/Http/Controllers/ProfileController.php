@@ -29,6 +29,7 @@ class ProfileController extends Controller
                     'name' => $request->input('name'),
                     'username' => $request->input('username'),
                     'email' => $request->input('email'),
+                    'updated_at' => now(),
                 ]);
 
             return redirect()->route('dashboard.profile')->with('success', 'Profile updated successfully.');

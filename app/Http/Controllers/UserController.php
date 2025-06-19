@@ -87,6 +87,8 @@ class UserController extends Controller
                 'role' => $request->input('role'),
                 'password' => bcrypt($request->input('password')),
                 'photo_profile' => $profilePicturePath,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             return redirect()->route('dashboard.users')->with('success', 'User created successfully.');
@@ -149,6 +151,7 @@ class UserController extends Controller
                     'email' => $request->input('email'),
                     'role' => $request->input('role'),
                     'photo_profile' => $profilePicturePath,
+                    'updated_at' => now(),
                 ]);
 
             return redirect()->route('dashboard.users')->with('success', 'User updated successfully.');

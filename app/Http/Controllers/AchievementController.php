@@ -89,6 +89,8 @@ class AchievementController extends Controller
                 'type' => $request->input('type'),
                 'set_type' => $request->input('set_type'),
                 'certificate' => $request->input('certificate'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             return redirect()->route('dashboard.achievements')->with('success', 'Achievement created successfully.');
@@ -137,6 +139,7 @@ class AchievementController extends Controller
                     'type' => $request->input('type'),
                     'set_type' => $request->input('set_type'),
                     'certificate' => $request->input('certificate'),
+                    'updated_at' => now(),
                 ]);
 
             return redirect()->route('dashboard.achievements')->with('success', 'Achievement updated successfully.');

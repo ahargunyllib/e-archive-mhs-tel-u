@@ -109,6 +109,8 @@ class AgendaController extends Controller
                 'proposal' => $request->input('proposal'),
                 'report' => $request->input('report'),
                 'status' => $request->input('status'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             return redirect()->route('dashboard.agendas')->with('success', 'Agenda created successfully.');
@@ -172,6 +174,7 @@ class AgendaController extends Controller
                     'proposal' => $request->input('proposal'),
                     'report' => $request->input('report'),
                     'status' => $request->input('status'),
+                    'updated_at' => now(),
                 ]);
 
             return redirect()->route('dashboard.agendas')->with('success', 'Agenda updated successfully.');
