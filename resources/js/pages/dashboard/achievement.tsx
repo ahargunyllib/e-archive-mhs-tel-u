@@ -96,7 +96,7 @@ export default function EditAchievement({ achievement }: Props) {
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
-								<BreadcrumbPage>Tambah data prestasi himpunan</BreadcrumbPage>
+								<BreadcrumbPage>Detail data prestasi himpunan</BreadcrumbPage>
 							</BreadcrumbItem>
 						</BreadcrumbList>
 					</Breadcrumb>
@@ -105,7 +105,7 @@ export default function EditAchievement({ achievement }: Props) {
 
 			<div className="flex flex-col gap-6 bg-white rounded-2xl px-6 py-5 border border-[#EAECF0]">
 				<h1 className="font-bold text-xl text-[#101828]">
-					Formulir Tambah Prestasi Himpunan
+					Detail Data Prestasi Himpunan
 				</h1>
 				<Form {...form}>
 					<form onSubmit={onSubmitHandler} className="space-y-6">
@@ -119,7 +119,7 @@ export default function EditAchievement({ achievement }: Props) {
 											className="text-base font-medium text-[#1D2939]"
 											htmlFor="date"
 										>
-											Tanggal Kegiatan
+											Tanggal
 											<span className="text-red-500">*</span>
 										</FormLabel>
 										<Popover>

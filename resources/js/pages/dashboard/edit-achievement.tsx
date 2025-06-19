@@ -119,7 +119,7 @@ export default function EditAchievement({ achievement }: Props) {
 											className="text-base font-medium text-[#1D2939]"
 											htmlFor="date"
 										>
-											Tanggal Kegiatan
+											Tanggal
 											<span className="text-red-500">*</span>
 										</FormLabel>
 										<Popover>
