@@ -74,7 +74,7 @@ class AchievementController extends Controller
                 'date' => 'required|date',
                 'type' => 'required|numeric',
                 'set_type' => 'required|numeric',
-                'certificate' => 'required|image|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
+                'certificate' => 'required|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
             ]);
 
             if ($request->hasFile('certificate')) {
@@ -121,7 +121,7 @@ class AchievementController extends Controller
                 'date' => 'required|date',
                 'type' => 'required|numeric',
                 'set_type' => 'required|numeric',
-                'certificate' => 'required|image|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
+                'certificate' => 'required|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
             ]);
 
             if ($request->hasFile('certificate')) {
