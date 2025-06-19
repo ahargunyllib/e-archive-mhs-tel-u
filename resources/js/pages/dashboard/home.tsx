@@ -11,8 +11,32 @@ import {
 	StarIcon,
 	UsersIcon,
 } from "lucide-react";
+import type { AchievementTypeMap } from "../../shared/lib/enums";
+import type { Agenda } from "../../shared/types";
 
-export default function Home() {
+type Props = {
+	totalMembers: number;
+	totalAgendas: number;
+	totalAchievements: number;
+	totalProposals: number;
+	agendas: Agenda[];
+	achievementStatistics: {
+		year: string;
+		count: number;
+		type: keyof typeof AchievementTypeMap;
+	}[];
+	agendaProgresses: Agenda[];
+};
+
+export default function Home({
+	totalMembers,
+	totalAgendas,
+	totalAchievements,
+	totalProposals,
+	agendas,
+	achievementStatistics,
+	agendaProgresses,
+}: Props) {
 	return (
 		<DashboardLayout>
 			<div className="flex flex-row justify-between items-center">
@@ -28,35 +52,39 @@ export default function Home() {
 					<StatisticCard
 						icon={UsersIcon}
 						title="Total anggota himpunan"
-						value={1300}
+						value={totalMembers}
 						label="Anggota"
 					/>
 					<StatisticCard
 						icon={CalendarIcon}
 						title="Total agenda himpunan"
-						value={300}
+						value={totalAgendas}
 						label="Agenda"
 					/>
 					<StatisticCard
 						icon={StarIcon}
 						title="Prestasi yang diraih"
-						value={422}
+						value={totalAchievements}
 						label="Prestasi"
 					/>
 					<StatisticCard
 						icon={FileTextIcon}
 						title="Proposal & laporan dikirimkan"
-						value={123}
+						value={totalProposals}
 						label="Proposal"
 					/>
 				</div>
 
 				<div className="flex flex-row gap-4">
-					<EventCalendarCard />
+					<EventCalendarCard agendas={agendas} />
 
 					<div className="flex flex-col gap-4 w-full">
-						<AchievementChartCard />
-						<UploadDocumentAgendaStatusTableCard />
+						<AchievementChartCard
+							achievementStatistics={achievementStatistics}
+						/>
+						<UploadDocumentAgendaStatusTableCard
+							agendaProgresses={agendaProgresses}
+						/>
 					</div>
 				</div>
 			</div>

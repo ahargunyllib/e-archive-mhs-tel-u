@@ -1,29 +1,57 @@
 import { buttonVariants } from "@/shared/components/ui/button";
 import { Calendar } from "@/shared/components/ui/calendar";
 import { cn } from "@/shared/lib/utils";
+import type { Agenda } from "@/shared/types";
+import { router } from "@inertiajs/react";
 import { id } from "date-fns/locale";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function EventCalendarCard() {
-	const events = [
-		{
-			title: "Team Sync Meeting",
-			from: "2025-06-12T09:00:00",
-			to: "2025-06-12T10:00:00",
-		},
-		{
-			title: "Design Review",
-			from: "2025-06-12T11:30:00",
-			to: "2025-06-12T12:30:00",
-		},
-		{
-			title: "Client Presentation",
-			from: "2025-06-12T14:00:00",
-			to: "2025-06-12T15:00:00",
-		},
-	];
+type Props = {
+	agendas: Agenda[];
+};
 
-	const [date, setDate] = useState<Date | undefined>(new Date());
+export default function EventCalendarCard({ agendas }: Props) {
+	const initializeDateFromUrl = () => {
+		const params = new URLSearchParams(window.location.search);
+		const urlDate = params.get("date");
+
+		if (urlDate) {
+			const parsedDate = new Date(urlDate);
+			if (!Number.isNaN(parsedDate.getTime())) {
+				return parsedDate;
+			}
+		}
+
+		return new Date();
+	};
+
+	const [date, setDate] = useState<Date | undefined>(initializeDateFromUrl());
+
+	useEffect(() => {
+		if (!date) return;
+
+		// add time to date to ensure it is in the correct tz
+		const formattedDate = new Date(
+			date.getFullYear(),
+			date.getMonth(),
+			date.getDate(),
+			date.getHours() + 7,
+		)
+			.toISOString()
+			.split("T")[0];
+
+		// Update URL first
+		const url = new URL(window.location.href);
+		url.searchParams.set("date", formattedDate);
+
+		// Then make Inertia request
+		router.visit(url.toString(), {
+			method: "get",
+			preserveState: true,
+			preserveScroll: true,
+			replace: true,
+		});
+	}, [date]);
 
 	return (
 		<div className="bg-white rounded-2xl p-6 border border-[#EAECF0] space-y-6 w-fit">
@@ -53,25 +81,24 @@ export default function EventCalendarCard() {
 					</div>
 				</div>
 				<div className="w-full flex flex-col gap-3">
-					{events.map((event) => (
+					{agendas.map((agenda) => (
 						<div
-							key={event.title}
+							key={agenda.id}
 							className="bg-[#F2F4F7] relative rounded-xl p-4 pl-6 text-sm after:bg-[#17C3AF] after:absolute after:inset-y-4 after:left-3 after:w-0.5 after:rounded-full"
 						>
-							<div className="font-bold">{event.title}</div>
+							<div className="font-bold">{agenda.name}</div>
 							<div className="text-[#667085] text-sm">
-								{new Date(event.from).toLocaleTimeString([], {
-									hour: "2-digit",
-									minute: "2-digit",
-								})}{" "}
-								-{" "}
-								{new Date(event.to).toLocaleTimeString([], {
-									hour: "2-digit",
-									minute: "2-digit",
+								{new Date(agenda.date).toLocaleDateString([], {
+									weekday: "long",
 								})}
 							</div>
 						</div>
 					))}
+					{agendas.length === 0 && (
+						<div className="text-[#667085] text-sm">
+							Tidak ada agenda pada tanggal ini
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

@@ -6,6 +6,8 @@ use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,8 +18,38 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return redirect()->route('dashboard.home');
     })->name('dashboard');
 
-    Route::get('/dashboard/home', function () {
-        return Inertia::render('dashboard/home');
+    Route::get('/dashboard/home', function (Request $request) {
+        $totalMembers = DB::table('members')->count();
+        $totalAgendas = DB::table('agendas')->count();
+        $totalAchievements = DB::table('achievements')->count();
+        $totalProposals = DB::table('agendas')->where('proposal', 'IS NOT NULL')->count();
+
+        $date = $request->get('date', now()->format('Y-m-d'));
+        $agendas = DB::table('agendas')
+            ->whereDate('date', $date)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $achievementStatistics = DB::table('achievements')
+            ->select(DB::raw('COUNT(*) as count, EXTRACT(year FROM date) as year, type'))
+            ->orderBy('year', 'desc')
+            ->groupBy('year', 'type')
+            ->get();
+
+        $agendaProgresses = DB::table('agendas')
+            ->limit(5)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return Inertia::render('dashboard/home', [
+            'totalMembers' => $totalMembers,
+            'totalAgendas' => $totalAgendas,
+            'totalAchievements' => $totalAchievements,
+            'totalProposals' => $totalProposals,
+            'agendas' => $agendas,
+            'achievementStatistics' => $achievementStatistics,
+            'agendaProgresses' => $agendaProgresses,
+        ]);
     })->name('dashboard.home');
 
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('dashboard.users');
