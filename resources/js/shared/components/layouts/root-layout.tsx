@@ -1,7 +1,7 @@
 import { useFlashMessages } from "../../hooks/use-flash-messages";
 import { Toaster } from "../ui/sonner";
 
-export default function RooutLayout({
+export default function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
