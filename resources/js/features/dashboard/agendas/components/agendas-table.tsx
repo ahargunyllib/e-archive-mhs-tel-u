@@ -49,7 +49,7 @@ export default function AgendasTable({ agendas }: Props) {
 		},
 		{
 			accessorKey: "set_type",
-			header: "Tipe Himpunan",
+			header: "Nama Himpunan",
 			cell: ({ row }) => AgendaSetTypeMap[row.original.set_type],
 		},
 		{

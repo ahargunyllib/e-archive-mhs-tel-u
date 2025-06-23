@@ -38,7 +38,7 @@ export default function MembersTable({ members }: Props) {
 		},
 		{
 			accessorKey: "type",
-			header: "Tipe Himpunan",
+			header: "Nama Himpunan",
 			cell: ({ row }) => MemberSetTypeMap[row.original.set_type],
 		},
 		{

@@ -44,7 +44,7 @@ const CreateAchievementSchema = z.object({
 	}),
 	type: z.number().min(1, "Jenis prestasi tidak boleh kosong"),
 	name: z.string().min(1, "Nama prestasi tidak boleh kosong"),
-	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
+	set_type: z.number().min(1, "Nama himpunan tidak boleh kosong"),
 	certificate: z.instanceof(File),
 });
 
@@ -225,7 +225,7 @@ export default function CreateAchievement() {
 											className="text-base font-medium text-[#1D2939]"
 											htmlFor="set_type"
 										>
-											Tipe Himpunan
+											Nama Himpunan
 										</FormLabel>
 										<Select
 											onValueChange={(val) =>
@@ -235,7 +235,7 @@ export default function CreateAchievement() {
 										>
 											<FormControl>
 												<SelectTrigger className="w-full">
-													<SelectValue placeholder="Pilih tipe himpunan" />
+													<SelectValue placeholder="Pilih nama himpunan" />
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>

@@ -42,7 +42,7 @@ export default function AchievementsTable({ achievements }: Props) {
 		},
 		{
 			accessorKey: "type",
-			header: "Tipe Himpunan",
+			header: "Nama Himpunan",
 			cell: ({ row }) => AchievementSetTypeMap[row.original.set_type],
 		},
 		{

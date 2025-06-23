@@ -39,7 +39,7 @@ const CreateMemberSchema = z.object({
 	address: z.string().min(1, "Alamat tidak boleh kosong"),
 	contact: z.string().min(1, "Kontak tidak boleh kosong"),
 	division: z.string().min(1, "Divisi tidak boleh kosong"),
-	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
+	set_type: z.number().min(1, "Nama himpunan tidak boleh kosong"),
 	batch_year: z.number().min(1, "Angkatan tidak boleh kosong"),
 	period: z.number().min(1, "Periode tidak boleh kosong"),
 });
@@ -194,7 +194,7 @@ export default function CreateMember() {
 										className="text-base font-medium text-[#1D2939]"
 										htmlFor="set_type"
 									>
-										Tipe Himpunan
+										Nama Himpunan
 										<span className="text-red-500">*</span>
 									</FormLabel>
 									<Select
@@ -205,7 +205,7 @@ export default function CreateMember() {
 									>
 										<FormControl>
 											<SelectTrigger className="w-full">
-												<SelectValue placeholder="Pilih tipe himpunan" />
+												<SelectValue placeholder="Pilih nama himpunan" />
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>

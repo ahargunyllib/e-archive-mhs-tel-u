@@ -46,7 +46,7 @@ const CreateAgendaSchema = z.object({
 	}),
 	name: z.string().min(1, "Nama kegitan tidak boleh kosong"),
 	work_program: z.string().min(1, "Program kerja tidak boleh kosong"),
-	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
+	set_type: z.number().min(1, "Nama himpunan tidak boleh kosong"),
 	description: z.string().min(1, "Deskripsi tidak boleh kosong"),
 	relationship: z.string().min(1, "Hubungan tidak boleh kosong"),
 	estimated_cost: z.coerce.number(),
@@ -216,7 +216,7 @@ export default function CreateAgenda() {
 											className="text-base font-medium text-[#1D2939]"
 											htmlFor="set_type"
 										>
-											Tipe Himpunan
+											Nama Himpunan
 										</FormLabel>
 										<Select
 											onValueChange={(val) =>
@@ -226,7 +226,7 @@ export default function CreateAgenda() {
 										>
 											<FormControl>
 												<SelectTrigger className="w-full">
-													<SelectValue placeholder="Pilih tipe himpunan" />
+													<SelectValue placeholder="Pilih nama himpunan" />
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
