@@ -10,9 +10,12 @@ export const UserRoles = Object.entries(UserRoleMap).map(([key, value]) => ({
 }));
 
 export const MemberSetTypeMap = {
-	1: "Teknik Industri",
-	2: "Sistem Informasi",
-	3: "Teknik Logistik",
+	1: "HMTI",
+	2: "HMSI",
+	3: "DISCA",
+	4: "MTO",
+	5: "FPS",
+	6: "SIECA",
 } as const;
 
 export const MemberSetTypes = Object.entries(MemberSetTypeMap).map(
@@ -55,9 +58,12 @@ export const MemberPeriods = Object.entries(MemberPeriodMap).map(
 );
 
 export const AgendaSetTypeMap = {
-	1: "Teknik Industri",
-	2: "Sistem Informasi",
-	3: "Teknik Logistik",
+	1: "HMTI",
+	2: "HMSI",
+	3: "DISCA",
+	4: "MTO",
+	5: "FPS",
+	6: "SIECA",
 } as const;
 
 export const AgendaSetTypes = Object.entries(AgendaSetTypeMap).map(
@@ -93,9 +99,12 @@ export const AchievementTypes = Object.entries(AchievementTypeMap).map(
 );
 
 export const AchievementSetTypeMap = {
-	1: "Teknik Industri",
-	2: "Sistem Informasi",
-	3: "Teknik Logistik",
+	1: "HMTI",
+	2: "HMSI",
+	3: "DISCA",
+	4: "MTO",
+	5: "FPS",
+	6: "SIECA",
 } as const;
 
 export const AchievementSetTypes = Object.entries(AchievementSetTypeMap).map(
