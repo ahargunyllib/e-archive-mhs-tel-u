@@ -23,25 +23,63 @@ import {
 } from "../ui/dropdown-menu";
 import RootLayout from "./root-layout";
 
-const navItems = [
-	{ name: "Dashboard", icon: HomeIcon, href: "/dashboard/home" },
-	{ name: "Users", icon: UsersIcon, href: "/dashboard/users" },
-	{
-		name: "Data Anggota Himpunan",
-		icon: FolderIcon,
-		href: "/dashboard/members",
-	},
-	{
-		name: "Data Agenda Kegiatan Himpunan",
-		icon: CalendarDaysIcon,
-		href: "/dashboard/agendas",
-	},
-	{
-		name: "Data Prestasi Himpunan",
-		icon: StarIcon,
-		href: "/dashboard/achievements",
-	},
-];
+const navItems = {
+	1: [
+		{ name: "Dashboard", icon: HomeIcon, href: "/dashboard/home" },
+		{ name: "Users", icon: UsersIcon, href: "/dashboard/users" },
+		{
+			name: "Data Anggota Himpunan",
+			icon: FolderIcon,
+			href: "/dashboard/members",
+		},
+		{
+			name: "Data Agenda Kegiatan Himpunan",
+			icon: CalendarDaysIcon,
+			href: "/dashboard/agendas",
+		},
+		{
+			name: "Data Prestasi Himpunan",
+			icon: StarIcon,
+			href: "/dashboard/achievements",
+		},
+	],
+	2: [
+		{ name: "Dashboard", icon: HomeIcon, href: "/dashboard/home" },
+		{
+			name: "Data Anggota Himpunan",
+			icon: FolderIcon,
+			href: "/dashboard/members",
+		},
+		{
+			name: "Data Agenda Kegiatan Himpunan",
+			icon: CalendarDaysIcon,
+			href: "/dashboard/agendas",
+		},
+		{
+			name: "Data Prestasi Himpunan",
+			icon: StarIcon,
+			href: "/dashboard/achievements",
+		},
+	],
+	3: [
+		{ name: "Dashboard", icon: HomeIcon, href: "/dashboard/home" },
+		{
+			name: "Data Anggota Himpunan",
+			icon: FolderIcon,
+			href: "/dashboard/members",
+		},
+		{
+			name: "Data Agenda Kegiatan Himpunan",
+			icon: CalendarDaysIcon,
+			href: "/dashboard/agendas",
+		},
+		{
+			name: "Data Prestasi Himpunan",
+			icon: StarIcon,
+			href: "/dashboard/achievements",
+		},
+	],
+};
 
 export default function DashboardLayout({
 	children,
@@ -63,7 +101,7 @@ export default function DashboardLayout({
 						className="relative h-12 object-contain"
 					/>
 					<div className="flex items-center rounded-full h-13 p-2 bg-white">
-						{navItems.map((item) => (
+						{navItems[user.role].map((item) => (
 							<Link key={item.name} href={item.href}>
 								<Button
 									variant="ghost"

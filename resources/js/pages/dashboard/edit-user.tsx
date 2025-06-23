@@ -29,6 +29,7 @@ import { Link, router } from "@inertiajs/react";
 import { PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { UserRoles } from "../../shared/lib/enums";
 import type { User } from "../../shared/types";
 
 const EditUserSchema = z
@@ -200,9 +201,20 @@ export default function EditUser({ user }: Props) {
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												<SelectItem value="1">Admin</SelectItem>
-												<SelectItem value="2">User</SelectItem>
-												<SelectItem value="3">Guest</SelectItem>
+												{UserRoles.map((role) => {
+													if (role.value === "Admin") {
+														return;
+													}
+
+													return (
+														<SelectItem
+															key={role.key}
+															value={role.key.toString()}
+														>
+															{role.value}
+														</SelectItem>
+													);
+												})}
 											</SelectContent>
 										</Select>
 										<FormMessage />

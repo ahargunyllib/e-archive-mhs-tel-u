@@ -199,6 +199,10 @@ export default function CreateUser() {
 											</FormControl>
 											<SelectContent>
 												{UserRoles.map((role) => {
+													if (role.value === "Admin") {
+														return;
+													}
+
 													return (
 														<SelectItem
 															key={role.key}

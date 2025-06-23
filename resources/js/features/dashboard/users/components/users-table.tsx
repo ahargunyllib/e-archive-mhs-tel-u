@@ -6,9 +6,9 @@ import {
 } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import type { User } from "@/shared/types";
-import { Link, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { PenLineIcon, Trash2Icon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -77,11 +77,11 @@ export default function UsersTable({ users }: Props) {
 				const { user } = useAuth();
 				return (
 					<div className="flex flex-row items-center">
-						<Link href={`/dashboard/users/${row.original.id}/edit`}>
+						{/* <Link href={`/dashboard/users/${row.original.id}/edit`}>
 							<Button variant="ghost" size="icon">
 								<PenLineIcon className="size-4 text-[#FFBD00]" />
 							</Button>
-						</Link>
+						</Link> */}
 						{user.role === 1 && (
 							<AlertDialog>
 								<AlertDialogTrigger asChild>
