@@ -20,9 +20,6 @@ return new class extends Migration
             $table->integer('set_type')->default(1);
             $table->integer('batch_year')->default(1);
             $table->integer('period')->default(1);
-            $table->float('ipk')->default(0);
-            $table->float('tak')->default(0);
-            $table->float('erpt_score')->default(0);
             $table->timestamps();
         });
     }

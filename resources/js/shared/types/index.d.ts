@@ -47,9 +47,6 @@ export type Member = {
 	set_type: keyof typeof MemberSetTypeMap;
 	batch_year: keyof typeof MemberBatchYearMap;
 	period: keyof typeof MemberPeriodMap;
-	ipk: number;
-	tak: number;
-	erpt_score: number;
 	created_at: string;
 	updated_at: string;
 };

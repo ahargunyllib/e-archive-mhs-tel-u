@@ -24,9 +24,6 @@ class MemberController extends Controller
                 "set_type",
                 "batch_year",
                 "period",
-                "ipk",
-                "tak",
-                "erpt_score",
                 "created_at",
                 "updated_at",
             ])
@@ -79,9 +76,6 @@ class MemberController extends Controller
                 'set_type' => 'required|numeric',
                 'batch_year' => 'required|numeric',
                 'period' => 'required|numeric',
-                'ipk' => 'required|numeric',
-                'tak' => 'required|numeric',
-                'erpt_score' => 'required|numeric',
             ]);
 
             DB::table('members')->insert([
@@ -93,9 +87,6 @@ class MemberController extends Controller
                 'set_type' => $request->input('set_type'),
                 'batch_year' => $request->input('batch_year'),
                 'period' => $request->input('period'),
-                'ipk' => $request->input('ipk'),
-                'tak' => $request->input('tak'),
-                'erpt_score' => $request->input('erpt_score'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -130,9 +121,6 @@ class MemberController extends Controller
                 'set_type' => 'required|numeric',
                 'batch_year' => 'required|numeric',
                 'period' => 'required|numeric',
-                'ipk' => 'required|numeric',
-                'tak' => 'required|numeric',
-                'erpt_score' => 'required|numeric',
             ]);
 
             DB::table('members')
@@ -145,9 +133,6 @@ class MemberController extends Controller
                     'set_type' => $request->input('set_type'),
                     'batch_year' => $request->input('batch_year'),
                     'period' => $request->input('period'),
-                    'ipk' => $request->input('ipk'),
-                    'tak' => $request->input('tak'),
-                    'erpt_score' => $request->input('erpt_score'),
                     'updated_at' => now(),
                 ]);
 

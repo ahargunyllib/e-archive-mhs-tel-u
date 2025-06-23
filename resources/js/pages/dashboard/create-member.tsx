@@ -42,18 +42,6 @@ const CreateMemberSchema = z.object({
 	set_type: z.number().min(1, "Tipe himpunan tidak boleh kosong"),
 	batch_year: z.number().min(1, "Angkatan tidak boleh kosong"),
 	period: z.number().min(1, "Periode tidak boleh kosong"),
-	ipk: z.coerce
-		.number()
-		.min(0, "IPK tidak boleh kurang dari 0")
-		.max(4, "IPK tidak boleh lebih dari 4"),
-	tak: z.coerce
-		.number()
-		.min(0, "TAK tidak boleh kurang dari 0")
-		.max(100, "TAK tidak boleh lebih dari 100"),
-	erpt_score: z.coerce
-		.number()
-		.min(0, "Skor ERPT tidak boleh kurang dari 0")
-		.max(100, "Skor ERPT tidak boleh lebih dari 100"),
 });
 
 type CreateMemberRequest = z.infer<typeof CreateMemberSchema>;
@@ -69,9 +57,6 @@ export default function CreateMember() {
 			set_type: 1,
 			batch_year: 1,
 			period: 1,
-			ipk: 0,
-			tak: 0,
-			erpt_score: 0,
 		},
 	});
 
@@ -307,80 +292,6 @@ export default function CreateMember() {
 								)}
 							/>
 						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-							<FormField
-								control={form.control}
-								name="ipk"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel
-											className="text-base font-medium text-[#1D2939]"
-											htmlFor="ipk"
-										>
-											IPK
-											<span className="text-red-500">*</span>
-										</FormLabel>
-										<FormControl>
-											<Input
-												id="ipk"
-												placeholder="Masukkan IPK"
-												className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="tak"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel
-											className="text-base font-medium text-[#1D2939]"
-											htmlFor="tak"
-										>
-											TAK
-											<span className="text-red-500">*</span>
-										</FormLabel>
-										<FormControl>
-											<Input
-												id="tak"
-												placeholder="Masukkan TAK"
-												className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-						<FormField
-							control={form.control}
-							name="erpt_score"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel
-										className="text-base font-medium text-[#1D2939]"
-										htmlFor="erpt_score"
-									>
-										Skor ERPT
-										<span className="text-red-500">*</span>
-									</FormLabel>
-									<FormControl>
-										<Input
-											id="erpt_score"
-											placeholder="Masukkan skor ERPT"
-											className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
 
 						<div className="flex flex-row gap-2 justify-end">
 							<Button
