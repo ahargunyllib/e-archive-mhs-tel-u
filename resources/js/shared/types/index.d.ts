@@ -74,6 +74,8 @@ export type Achievement = {
 	type: keyof typeof AchievementTypeMap;
 	set_type: keyof typeof AchievementSetTypeMap;
 	certificate: string;
+	achiever: string;
+	member: string | null;
 	created_at: string;
 	updated_at: string;
 };

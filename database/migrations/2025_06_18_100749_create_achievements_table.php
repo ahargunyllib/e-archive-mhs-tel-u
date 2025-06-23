@@ -17,6 +17,8 @@ return new class extends Migration
             $table->date('date');
             $table->integer("type")->default(1); // 1: internal, 2: external
             $table->integer("set_type")->default(1); // 1: regular, 2: special
+            $table->string('achiever');
+            $table->string('member')->nullable();
             $table->string('certificate');
             $table->timestamps();
         });

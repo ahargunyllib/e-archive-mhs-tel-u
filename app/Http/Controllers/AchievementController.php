@@ -22,6 +22,8 @@ class AchievementController extends Controller
                 "type",
                 "set_type",
                 "certificate",
+                "achiever",
+                "member",
                 "created_at",
                 "updated_at",
             ])
@@ -75,6 +77,8 @@ class AchievementController extends Controller
                 'type' => 'required|numeric',
                 'set_type' => 'required|numeric',
                 'certificate' => 'required|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
+                'achiever' => 'required|string|max:255',
+                'member' => 'nullable|string|max:255',
             ]);
 
             if ($request->hasFile('certificate')) {
@@ -89,6 +93,8 @@ class AchievementController extends Controller
                 'type' => $request->input('type'),
                 'set_type' => $request->input('set_type'),
                 'certificate' => $request->input('certificate'),
+                'achiever' => $request->input('achiever'),
+                'member' => $request->input('member'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -124,6 +130,8 @@ class AchievementController extends Controller
                 'type' => 'required|numeric',
                 'set_type' => 'required|numeric',
                 'certificate' => 'required|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
+                'achiever' => 'required|string|max:255',
+                'member' => 'nullable|string|max:255',
             ]);
 
             if ($request->hasFile('certificate')) {
@@ -139,6 +147,8 @@ class AchievementController extends Controller
                     'type' => $request->input('type'),
                     'set_type' => $request->input('set_type'),
                     'certificate' => $request->input('certificate'),
+                    'achiever' => $request->input('achiever'),
+                    'member' => $request->input('member'),
                     'updated_at' => now(),
                 ]);
 

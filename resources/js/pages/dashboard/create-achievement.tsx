@@ -46,6 +46,8 @@ const CreateAchievementSchema = z.object({
 	name: z.string().min(1, "Nama prestasi tidak boleh kosong"),
 	set_type: z.number().min(1, "Nama himpunan tidak boleh kosong"),
 	certificate: z.instanceof(File),
+	achiever: z.string().min(1, "Nama pencapai tidak boleh kosong"),
+	member: z.string(),
 });
 
 type CreateAchievementRequest = z.infer<typeof CreateAchievementSchema>;
@@ -59,6 +61,8 @@ export default function CreateAchievement() {
 			name: "",
 			set_type: 1,
 			certificate: undefined,
+			achiever: "",
+			member: undefined,
 		},
 	});
 
@@ -70,6 +74,10 @@ export default function CreateAchievement() {
 		formData.append("set_type", data.set_type.toString());
 		if (data.certificate) {
 			formData.append("certificate", data.certificate);
+		}
+		formData.append("achiever", data.achiever);
+		if (data.member) {
+			formData.append("member", data.member);
 		}
 
 		router.post("/dashboard/achievements", formData);
@@ -249,6 +257,53 @@ export default function CreateAchievement() {
 												))}
 											</SelectContent>
 										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<FormField
+								control={form.control}
+								name="achiever"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="achiever"
+										>
+											Nama Pencapai
+											<span className="text-red-500">*</span>
+										</FormLabel>
+										<FormControl>
+											<Input
+												id="achiever"
+												placeholder="Masukkan nama pencapai"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="member"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="member"
+										>
+											Kelompok
+										</FormLabel>
+										<FormControl>
+											<Input
+												id="member"
+												placeholder="Masukkan kelompok"
+												{...field}
+											/>
+										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
