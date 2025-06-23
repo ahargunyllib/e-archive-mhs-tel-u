@@ -12,7 +12,7 @@ import {
 } from "@/shared/components/ui/breadcrumb";
 import { Button } from "@/shared/components/ui/button";
 import { Link } from "@inertiajs/react";
-import { PlusIcon, UploadIcon } from "lucide-react";
+import { DownloadCloudIcon, PlusIcon, UploadIcon } from "lucide-react";
 import type { Member } from "../../shared/types";
 
 type Props = {
@@ -50,6 +50,10 @@ export default function Members({ members, pagination }: Props) {
 				<div className="flex flex-row items-center gap-4">
 					<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm">
 						<UploadIcon className="size-4" />
+						Import data csv
+					</Button>
+					<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm">
+						<DownloadCloudIcon className="size-4" />
 						Export data ke csv
 					</Button>
 					<Link href="/dashboard/members/create">
