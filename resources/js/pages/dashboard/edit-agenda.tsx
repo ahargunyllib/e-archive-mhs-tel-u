@@ -130,7 +130,7 @@ export default function EditAgenda({ agenda }: Props) {
 											<span className="text-red-500">*</span>
 										</FormLabel>
 										<Popover>
-											<PopoverTrigger asChild>
+											<PopoverTrigger asChild disabled={user.role === 1}>
 												<FormControl>
 													<Button
 														variant={"outline"}
@@ -182,6 +182,7 @@ export default function EditAgenda({ agenda }: Props) {
 												id="name"
 												placeholder="Masukkan nama kegiatan"
 												{...field}
+												disabled={user.role === 1}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -207,6 +208,7 @@ export default function EditAgenda({ agenda }: Props) {
 												id="work_program"
 												placeholder="Masukkan program kerja"
 												{...field}
+												disabled={user.role === 1}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -231,7 +233,10 @@ export default function EditAgenda({ agenda }: Props) {
 											value={field.value.toString()}
 										>
 											<FormControl>
-												<SelectTrigger className="w-full">
+												<SelectTrigger
+													className="w-full"
+													disabled={user.role === 1}
+												>
 													<SelectValue placeholder="Pilih nama himpunan" />
 												</SelectTrigger>
 											</FormControl>
@@ -267,6 +272,7 @@ export default function EditAgenda({ agenda }: Props) {
 											className="resize-none"
 											rows={4}
 											{...field}
+											disabled={user.role === 1}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -291,6 +297,7 @@ export default function EditAgenda({ agenda }: Props) {
 												id="relationship"
 												placeholder="Masukkan kerjasama"
 												{...field}
+												disabled={user.role === 1}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -315,6 +322,7 @@ export default function EditAgenda({ agenda }: Props) {
 												placeholder="Masukkan biaya estimasi"
 												className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 												{...field}
+												disabled={user.role === 1}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -354,6 +362,7 @@ export default function EditAgenda({ agenda }: Props) {
 														};
 														input.click();
 													}}
+													disabled={user.role === 1}
 												>
 													<PaperclipIcon className="size-4" />
 													Upload File
@@ -414,6 +423,7 @@ export default function EditAgenda({ agenda }: Props) {
 														};
 														input.click();
 													}}
+													disabled={user.role === 1}
 												>
 													<PaperclipIcon className="size-4" />
 													Upload File
