@@ -85,7 +85,7 @@ export default function EditAchievement({ achievement }: Props) {
 			formData.append("member", data.member);
 		}
 
-		router.post("/dashboard/achievements/update", formData);
+		router.post(`/dashboard/achievements/${achievement.id}`, formData);
 	});
 
 	return (
