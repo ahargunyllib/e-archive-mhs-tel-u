@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Uid\Ulid;
 
 class MemberController extends Controller
@@ -178,6 +179,68 @@ class MemberController extends Controller
             return redirect()->route('dashboard.members')->with('success', 'Member deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->route('dashboard.members')->with('error', 'Failed to delete member: ' . $e->getMessage());
+        }
+    }
+
+    function import(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|file|mimes:csv|max:2048',
+            ]);
+
+            $file = $request->file('file');
+            $fileContents = file($file->getPathname());
+            $members = [];
+
+            foreach ($fileContents as $line) {
+                $data = str_getcsv($line);
+
+                if (count($data) < 8) {
+                    continue; // Skip lines with insufficient data
+                }
+
+                $line = [
+                    'id' => Ulid::generate(),
+                    'name' => $data[0],
+                    'address' => $data[1],
+                    'contact' => $data[2],
+                    'division' => (int)$data[3],
+                    'set_type' => (int)$data[4],
+                    'batch_year' => (int)$data[5],
+                    'period' => (int)$data[6],
+                    'photo_profile' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+
+                // validate
+                $validator = Validator::make($line, [
+                    'name' => 'required|string|max:255',
+                    'address' => 'required|string|max:255',
+                    'contact' => 'required|string|max:255',
+                    'division' => 'required|numeric',
+                    'set_type' => 'required|numeric',
+                    'batch_year' => 'required|numeric',
+                    'period' => 'required|numeric',
+                ]);
+
+                if ($validator->fails()) {
+                    return redirect()->route('dashboard.members')->with('error', 'Invalid data in CSV file: ' . implode(', ', $validator->errors()->all()));
+                }
+
+                $members[] = $line;
+            }
+
+            if (empty($members)) {
+                return redirect()->route('dashboard.members')->with('error', 'No valid members found in the CSV file.');
+            }
+
+            DB::table('members')->insert($members);
+
+            return redirect()->route('dashboard.members')->with('success', 'Members imported successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('dashboard.members')->with('error', 'Failed to import members: ' . $e->getMessage());
         }
     }
 }

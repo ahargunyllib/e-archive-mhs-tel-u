@@ -57,6 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/dashboard/members', [MemberController::class, 'store'])->name('dashboard.members.store');
     Route::get('/dashboard/members/{id}', [MemberController::class, 'show'])->name('dashboard.members.show');
     Route::get('/dashboard/members/{id}/edit', [MemberController::class, 'edit'])->name('dashboard.members.edit');
+    Route::post('/dashboard/members/import', [MemberController::class, 'import'])->name('dashboard.members.import');
     Route::post('/dashboard/members/{id}', [MemberController::class, 'update'])->name('dashboard.members.update');
     Route::delete('/dashboard/members/{id}', [MemberController::class, 'delete'])->name('dashboard.members.delete');
 
