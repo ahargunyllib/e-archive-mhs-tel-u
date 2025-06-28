@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('set_type')->default(1);
             $table->integer('batch_year')->default(1);
             $table->integer('period')->default(1);
+            $table->string('photo_profile')->nullable();
             $table->timestamps();
         });
     }

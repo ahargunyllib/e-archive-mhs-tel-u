@@ -26,6 +26,7 @@ import {
 } from "@/shared/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, router } from "@inertiajs/react";
+import { PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import {
@@ -42,6 +43,7 @@ const CreateMemberSchema = z.object({
 	set_type: z.number().min(1, "Nama himpunan tidak boleh kosong"),
 	batch_year: z.number().min(1, "Angkatan tidak boleh kosong"),
 	period: z.number().min(1, "Periode tidak boleh kosong"),
+	avatar: z.instanceof(File).optional(),
 });
 
 type CreateMemberRequest = z.infer<typeof CreateMemberSchema>;
@@ -57,11 +59,23 @@ export default function CreateMember() {
 			set_type: 1,
 			batch_year: 1,
 			period: 1,
+			avatar: undefined,
 		},
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		router.post("/dashboard/members", data);
+		const formData = new FormData();
+		formData.append("name", data.name);
+		formData.append("address", data.address);
+		formData.append("contact", data.contact);
+		formData.append("division", data.division);
+		formData.append("set_type", data.set_type.toString());
+		formData.append("batch_year", data.batch_year.toString());
+		formData.append("period", data.period.toString());
+		if (data.avatar) {
+			formData.append("avatar", data.avatar);
+		}
+		router.post("/dashboard/members", formData);
 	});
 
 	return (
@@ -292,7 +306,66 @@ export default function CreateMember() {
 								)}
 							/>
 						</div>
-
+						<FormField
+							control={form.control}
+							name="avatar"
+							render={({ field: { value, onChange, ...restFieldProps } }) => (
+								<FormItem>
+									<FormLabel
+										className="text-base font-medium text-[#1D2939]"
+										htmlFor="avatar"
+									>
+										Avatar
+									</FormLabel>
+									<FormControl>
+										<div className="p-1 border rounded-xl border-[#D0D5DD] flex flex-row gap-2 items-center">
+											<Button
+												id="avatar"
+												type="button"
+												variant="secondary"
+												className="font-medium text-sm py-3 px-8 rounded-md h-fit"
+												onClick={() => {
+													const input = document.createElement("input");
+													input.type = "file";
+													input.accept = "image/*";
+													input.onchange = (event) => {
+														const file = (event.target as HTMLInputElement)
+															.files?.[0];
+														if (file) {
+															onChange(file);
+														}
+													};
+													input.click();
+												}}
+											>
+												<PaperclipIcon className="size-4" />
+												Upload File
+											</Button>
+											{value ? (
+												<div className="w-full flex flex-row items-center justify-between">
+													<span className="text-sm text-[#101828]">
+														{value.name}
+													</span>
+													<Button
+														type="button"
+														variant="ghost"
+														className="h-8 w-8 p-0"
+														onClick={() => onChange(undefined)}
+													>
+														<Trash2Icon className="size-4" />
+													</Button>
+												</div>
+											) : (
+												<span className="text-sm text-muted-foreground/80">
+													Tidak ada file yang dipilih
+												</span>
+											)}
+										</div>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<div className="flex flex-row gap-2 justify-end">
 							<Button
 								type="button"

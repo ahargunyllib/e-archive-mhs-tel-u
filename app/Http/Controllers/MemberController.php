@@ -24,6 +24,7 @@ class MemberController extends Controller
                 "set_type",
                 "batch_year",
                 "period",
+                "photo_profile",
                 "created_at",
                 "updated_at",
             ])
@@ -68,6 +69,11 @@ class MemberController extends Controller
     function store(Request $request)
     {
         try {
+            $request['set_type'] = (int)$request->input('set_type');
+            $request['division'] = (int)$request->input('division');
+            $request['batch_year'] = (int)$request->input('batch_year');
+            $request['period'] = (int)$request->input('period');
+
             $request->validate([
                 'name' => 'required|string|max:255',
                 'address' => 'required|string|max:255',
@@ -76,7 +82,15 @@ class MemberController extends Controller
                 'set_type' => 'required|numeric',
                 'batch_year' => 'required|numeric',
                 'period' => 'required|numeric',
+                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
+
+            // Handle profile picture upload if provided
+            if ($request->hasFile('profile_picture')) {
+                $profilePicturePath = $request->file('profile_picture')->store('member-profile-pictures', 'public');
+            } else {
+                $profilePicturePath = null; // or set a default picture path
+            }
 
             DB::table('members')->insert([
                 'id' => Ulid::generate(),
@@ -87,6 +101,7 @@ class MemberController extends Controller
                 'set_type' => $request->input('set_type'),
                 'batch_year' => $request->input('batch_year'),
                 'period' => $request->input('period'),
+                'photo_profile' => $profilePicturePath,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -113,6 +128,11 @@ class MemberController extends Controller
     function update(Request $request, $id)
     {
         try {
+            $request['set_type'] = (int)$request->input('set_type');
+            $request['division'] = (int)$request->input('division');
+            $request['batch_year'] = (int)$request->input('batch_year');
+            $request['period'] = (int)$request->input('period');
+
             $request->validate([
                 'name' => 'required|string|max:255',
                 'address' => 'required|string|max:255',
@@ -121,7 +141,15 @@ class MemberController extends Controller
                 'set_type' => 'required|numeric',
                 'batch_year' => 'required|numeric',
                 'period' => 'required|numeric',
+                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
+
+            // Handle profile picture upload if provided
+            if ($request->hasFile('profile_picture')) {
+                $profilePicturePath = $request->file('profile_picture')->store('member-profile-pictures', 'public');
+            } else {
+                $profilePicturePath = null; // or set a default picture path
+            }
 
             DB::table('members')
                 ->where('id', $id)
@@ -133,6 +161,7 @@ class MemberController extends Controller
                     'set_type' => $request->input('set_type'),
                     'batch_year' => $request->input('batch_year'),
                     'period' => $request->input('period'),
+                    'photo_profile' => $profilePicturePath,
                     'updated_at' => now(),
                 ]);
 

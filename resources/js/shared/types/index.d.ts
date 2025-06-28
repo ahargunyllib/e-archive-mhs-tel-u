@@ -47,6 +47,7 @@ export type Member = {
 	set_type: keyof typeof MemberSetTypeMap;
 	batch_year: keyof typeof MemberBatchYearMap;
 	period: keyof typeof MemberPeriodMap;
+	photo_profile: string | null;
 	created_at: string;
 	updated_at: string;
 };
