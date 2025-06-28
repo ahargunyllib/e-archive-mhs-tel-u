@@ -73,6 +73,7 @@ class AgendaController extends Controller
         try {
             $request['set_type'] = (int)$request->input('set_type');
             $request['status'] = (int)$request->input('status');
+            $request['estimated_cost'] = (float)$request->input('estimated_cost');
 
             $request->validate([
                 'name' => 'required|string|max:255',
@@ -137,6 +138,7 @@ class AgendaController extends Controller
         try {
             $request['set_type'] = (int)$request->input('set_type');
             $request['status'] = (int)$request->input('status');
+            $request['estimated_cost'] = (float)$request->input('estimated_cost');
 
             $request->validate([
                 'name' => 'required|string|max:255',

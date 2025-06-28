@@ -82,7 +82,22 @@ export default function EditAgenda({ agenda }: Props) {
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
-		router.post(`/dashboard/agendas/${agenda.id}`, data);
+		const formData = new FormData();
+		formData.append("date", data.date.toISOString());
+		formData.append("name", data.name);
+		formData.append("work_program", data.work_program);
+		formData.append("set_type", data.set_type.toString());
+		formData.append("description", data.description);
+		formData.append("relationship", data.relationship);
+		formData.append("estimated_cost", data.estimated_cost.toString());
+		if (data.proposal) {
+			formData.append("proposal", data.proposal);
+		}
+		if (data.report) {
+			formData.append("report", data.report);
+		}
+		formData.append("status", data.status.toString());
+		router.post(`/dashboard/agendas/${agenda.id}`, formData);
 	});
 
 	return (
