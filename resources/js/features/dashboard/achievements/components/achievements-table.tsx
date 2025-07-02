@@ -32,18 +32,22 @@ export default function AchievementsTable({ achievements }: Props) {
 			cell: ({ row }) => row.index + 1,
 		},
 		{
+			accessorKey: "achiever",
+			header: "Nama",
+		},
+		{
 			accessorKey: "name",
 			header: "Nama prestasi",
 		},
 		{
 			accessorKey: "type",
-			header: "Jenis prestasi",
-			cell: ({ row }) => AchievementTypeMap[row.original.type],
-		},
-		{
-			accessorKey: "type",
 			header: "Nama Himpunan",
 			cell: ({ row }) => AchievementSetTypeMap[row.original.set_type],
+		},
+		{
+			accessorKey: "date",
+			header: "Tanggal",
+			cell: ({ row }) => new Date(row.original.date).toLocaleDateString(),
 		},
 		{
 			header: "Aksi",
