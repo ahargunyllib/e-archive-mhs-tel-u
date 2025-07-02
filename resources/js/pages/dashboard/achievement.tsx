@@ -36,6 +36,7 @@ import { Link, router } from "@inertiajs/react";
 import { CalendarIcon, PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { useAuth } from "../../shared/hooks/use-auth";
 import { AchievementSetTypes, AchievementTypes } from "../../shared/lib/enums";
 import type { Achievement } from "../../shared/types";
 
@@ -92,6 +93,8 @@ export default function EditAchievement({ achievement }: Props) {
 
 		router.post(`/dashboard/achievements/${achievement.id}`, formData);
 	});
+
+	const { user } = useAuth();
 
 	return (
 		<DashboardLayout>
@@ -377,6 +380,7 @@ export default function EditAchievement({ achievement }: Props) {
 														className="text-sm text-blue-600 hover:underline"
 														href={`/storage/${achievement.certificate}`}
 														rel="noreferrer"
+														hidden={user.role !== 1}
 													>
 														Sertifikat
 													</a>
@@ -447,6 +451,7 @@ export default function EditAchievement({ achievement }: Props) {
 														className="text-sm text-blue-600 hover:underline"
 														href={`/storage/${achievement.file}`}
 														rel="noreferrer"
+														hidden={user.role !== 1}
 													>
 														Karya/Dokumentasi Lomba
 													</a>
