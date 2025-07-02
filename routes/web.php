@@ -19,10 +19,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('/dashboard/home', function (Request $request) {
-        $totalMembers = DB::table('members')->count();
-        $totalAgendas = DB::table('agendas')->count();
-        $totalAchievements = DB::table('achievements')->count();
-        $totalProposals = DB::table('agendas')->where('proposal', 'IS NOT NULL')->count();
+        $currYear = now()->year;
+        $totalMembers = DB::table('members')
+            ->whereYear('created_at', $currYear)
+            ->count();
+        $totalAgendas = DB::table('agendas')
+            ->whereYear('created_at', $currYear)
+            ->count();
+        $totalAchievements = DB::table('achievements')
+            ->whereYear('created_at', $currYear)
+            ->count();
+        $totalProposals = DB::table('agendas')->where('proposal', 'IS NOT NULL')
+            ->whereYear('created_at', $currYear)
+            ->count();
 
         $date = $request->get('date', now()->format('Y-m-d'));
         $agendas = DB::table('agendas')
