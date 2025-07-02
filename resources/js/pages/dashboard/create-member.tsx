@@ -381,7 +381,7 @@ export default function CreateMember() {
 										<FormControl>
 											<Input
 												id="instagram"
-												placeholder="Masukkan Instagram"
+												placeholder="Masukkan username Instagram"
 												{...field}
 											/>
 										</FormControl>
@@ -403,7 +403,7 @@ export default function CreateMember() {
 										<FormControl>
 											<Input
 												id="linkedin"
-												placeholder="Masukkan LinkedIn"
+												placeholder="Masukkan username LinkedIn"
 												{...field}
 											/>
 										</FormControl>

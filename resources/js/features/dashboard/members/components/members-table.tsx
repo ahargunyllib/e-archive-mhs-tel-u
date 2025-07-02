@@ -33,13 +33,62 @@ export default function MembersTable({ members }: Props) {
 			header: "Nama mahasiswa",
 		},
 		{
+			accessorKey: "type",
+			header: "Nama Himpunan",
+			cell: ({ row }) => MemberSetTypeMap[row.original.set_type],
+		},
+		{
 			accessorKey: "division",
 			header: "Divisi",
 		},
 		{
-			accessorKey: "type",
-			header: "Nama Himpunan",
-			cell: ({ row }) => MemberSetTypeMap[row.original.set_type],
+			accessorKey: "email",
+			header: "Email",
+			cell: ({ row }) =>
+				row.original.email ? (
+					<a
+						href={`mailto:${row.original.email}`}
+						className="text-blue-600 hover:underline"
+					>
+						{row.original.email}
+					</a>
+				) : (
+					"Tidak ada email"
+				),
+		},
+		{
+			accessorKey: "instagram",
+			header: "Instagram",
+			cell: ({ row }) =>
+				row.original.instagram ? (
+					<a
+						href={`https://instagram.com/${row.original.instagram}`}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-blue-600 hover:underline"
+					>
+						{row.original.instagram}
+					</a>
+				) : (
+					"Tidak ada Instagram"
+				),
+		},
+		{
+			accessorKey: "linkedin",
+			header: "LinkedIn",
+			cell: ({ row }) =>
+				row.original.linkedin ? (
+					<a
+						href={`https://linkedin.com/in/${row.original.linkedin}`}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-blue-600 hover:underline"
+					>
+						{row.original.linkedin}
+					</a>
+				) : (
+					"Tidak ada LinkedIn"
+				),
 		},
 		{
 			header: "Aksi",
