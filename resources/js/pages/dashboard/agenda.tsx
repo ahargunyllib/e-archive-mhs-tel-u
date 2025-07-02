@@ -421,7 +421,8 @@ export default function EditAgenda({ agenda }: Props) {
 											className="text-base font-medium text-[#1D2939]"
 											htmlFor="report"
 										>
-											Laporan Akhir Kegiatan
+											Laporan Akhir Kegiatan (Laporan Pertanggung
+											Jawaban/Dokumentasi Kegiatan)
 										</FormLabel>
 										<FormControl>
 											<div className="p-1 border rounded-xl border-[#D0D5DD] flex flex-row gap-2 items-center">
