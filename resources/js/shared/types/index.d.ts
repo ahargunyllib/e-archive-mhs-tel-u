@@ -81,6 +81,7 @@ export type Achievement = {
 	certificate: string;
 	achiever: string;
 	member: string | null;
+	file: string | null;
 	created_at: string;
 	updated_at: string;
 };

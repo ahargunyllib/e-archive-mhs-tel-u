@@ -46,6 +46,7 @@ const CreateAchievementSchema = z.object({
 	name: z.string().min(1, "Nama prestasi tidak boleh kosong"),
 	set_type: z.number().min(1, "Nama himpunan tidak boleh kosong"),
 	certificate: z.instanceof(File),
+	file: z.instanceof(File).optional(),
 	achiever: z.string().min(1, "Nama pencapai tidak boleh kosong"),
 	member: z.string(),
 });
@@ -61,6 +62,7 @@ export default function CreateAchievement() {
 			name: "",
 			set_type: 1,
 			certificate: undefined,
+			file: undefined,
 			achiever: "",
 			member: undefined,
 		},
@@ -74,6 +76,9 @@ export default function CreateAchievement() {
 		formData.append("set_type", data.set_type.toString());
 		if (data.certificate) {
 			formData.append("certificate", data.certificate);
+		}
+		if (data.file) {
+			formData.append("file", data.file);
 		}
 		formData.append("achiever", data.achiever);
 		if (data.member) {
@@ -309,66 +314,128 @@ export default function CreateAchievement() {
 								)}
 							/>
 						</div>
-						<FormField
-							control={form.control}
-							name="certificate"
-							render={({ field: { value, onChange, ...restFieldProps } }) => (
-								<FormItem>
-									<FormLabel
-										className="text-base font-medium text-[#1D2939]"
-										htmlFor="certificate"
-									>
-										Sertifikat prestasi
-									</FormLabel>
-									<FormControl>
-										<div className="p-1 border rounded-xl border-[#D0D5DD] flex flex-row gap-2 items-center">
-											<Button
-												id="certificate"
-												type="button"
-												variant="secondary"
-												className="font-medium text-sm py-3 px-8 rounded-md h-fit"
-												onClick={() => {
-													const input = document.createElement("input");
-													input.type = "file";
-													input.accept = "image/*,.doc,.docx,.pdf";
-													input.onchange = (event) => {
-														const file = (event.target as HTMLInputElement)
-															.files?.[0];
-														if (file) {
-															onChange(file);
-														}
-													};
-													input.click();
-												}}
-											>
-												<PaperclipIcon className="size-4" />
-												Upload File
-											</Button>
-											{value ? (
-												<div className="w-full flex flex-row items-center justify-between">
-													<span className="text-sm text-[#101828]">
-														{value.name}
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<FormField
+								control={form.control}
+								name="certificate"
+								render={({ field: { value, onChange, ...restFieldProps } }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="certificate"
+										>
+											Sertifikat prestasi
+										</FormLabel>
+										<FormControl>
+											<div className="p-1 border rounded-xl border-[#D0D5DD] flex flex-row gap-2 items-center">
+												<Button
+													id="certificate"
+													type="button"
+													variant="secondary"
+													className="font-medium text-sm py-3 px-8 rounded-md h-fit"
+													onClick={() => {
+														const input = document.createElement("input");
+														input.type = "file";
+														input.accept = "image/*,.doc,.docx,.pdf";
+														input.onchange = (event) => {
+															const file = (event.target as HTMLInputElement)
+																.files?.[0];
+															if (file) {
+																onChange(file);
+															}
+														};
+														input.click();
+													}}
+												>
+													<PaperclipIcon className="size-4" />
+													Upload File
+												</Button>
+												{value ? (
+													<div className="w-full flex flex-row items-center justify-between">
+														<span className="text-sm text-[#101828]">
+															{value.name}
+														</span>
+														<Button
+															type="button"
+															variant="ghost"
+															className="h-8 w-8 p-0"
+															onClick={() => onChange(undefined)}
+														>
+															<Trash2Icon className="size-4" />
+														</Button>
+													</div>
+												) : (
+													<span className="text-sm text-muted-foreground/80">
+														Tidak ada file yang dipilih
 													</span>
-													<Button
-														type="button"
-														variant="ghost"
-														className="h-8 w-8 p-0"
-														onClick={() => onChange(undefined)}
-													>
-														<Trash2Icon className="size-4" />
-													</Button>
-												</div>
-											) : (
-												<span className="text-sm text-muted-foreground/80">
-													Tidak ada file yang dipilih
-												</span>
-											)}
-										</div>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+												)}
+											</div>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="file"
+								render={({ field: { value, onChange, ...restFieldProps } }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="file"
+										>
+											Karya/Dokumentasi Lomba
+										</FormLabel>
+										<FormControl>
+											<div className="p-1 border rounded-xl border-[#D0D5DD] flex flex-row gap-2 items-center">
+												<Button
+													id="file"
+													type="button"
+													variant="secondary"
+													className="font-medium text-sm py-3 px-8 rounded-md h-fit"
+													onClick={() => {
+														const input = document.createElement("input");
+														input.type = "file";
+														input.accept = "image/*,.doc,.docx,.pdf";
+														input.onchange = (event) => {
+															const file = (event.target as HTMLInputElement)
+																.files?.[0];
+															if (file) {
+																onChange(file);
+															}
+														};
+														input.click();
+													}}
+												>
+													<PaperclipIcon className="size-4" />
+													Upload File
+												</Button>
+												{value ? (
+													<div className="w-full flex flex-row items-center justify-between">
+														<span className="text-sm text-[#101828]">
+															{value.name}
+														</span>
+														<Button
+															type="button"
+															variant="ghost"
+															className="h-8 w-8 p-0"
+															onClick={() => onChange(undefined)}
+														>
+															<Trash2Icon className="size-4" />
+														</Button>
+													</div>
+												) : (
+													<span className="text-sm text-muted-foreground/80">
+														Tidak ada file yang dipilih
+													</span>
+												)}
+											</div>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
 
 						<div className="flex flex-row gap-2 justify-end">
 							<Button

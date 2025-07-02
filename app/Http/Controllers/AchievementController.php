@@ -22,6 +22,7 @@ class AchievementController extends Controller
                 "type",
                 "set_type",
                 "certificate",
+                "file",
                 "achiever",
                 "member",
                 "created_at",
@@ -77,6 +78,7 @@ class AchievementController extends Controller
                 'type' => 'required|numeric',
                 'set_type' => 'required|numeric',
                 'certificate' => 'required|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
+                'file' => 'nullable|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
                 'achiever' => 'required|string|max:255',
                 'member' => 'nullable|string|max:255',
             ]);
@@ -86,6 +88,13 @@ class AchievementController extends Controller
                 $request['certificate'] = $path;
             }
 
+            if ($request->hasFile('file')) {
+                $filePath = $request->file('file')->store('files', 'public');
+                $request['file'] = $filePath;
+            } else {
+                $request['file'] = null; // Ensure file is set to null if not provided
+            }
+
             DB::table('achievements')->insert([
                 'id' => Ulid::generate(),
                 'name' => $request->input('name'),
@@ -93,6 +102,7 @@ class AchievementController extends Controller
                 'type' => $request->input('type'),
                 'set_type' => $request->input('set_type'),
                 'certificate' => $request->input('certificate'),
+                'file' => $request->input('file'),
                 'achiever' => $request->input('achiever'),
                 'member' => $request->input('member'),
                 'created_at' => now(),
@@ -130,6 +140,7 @@ class AchievementController extends Controller
                 'type' => 'required|numeric',
                 'set_type' => 'required|numeric',
                 'certificate' => 'required|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
+                'file' => 'nullable|mimes:pdf,doc,docx,jpeg,png,jpg,gif,svg|max:10240',
                 'achiever' => 'required|string|max:255',
                 'member' => 'nullable|string|max:255',
             ]);
@@ -137,6 +148,13 @@ class AchievementController extends Controller
             if ($request->hasFile('certificate')) {
                 $path = $request->file('certificate')->store('certificates', 'public');
                 $request['certificate'] = $path;
+            }
+
+            if ($request->hasFile('file')) {
+                $filePath = $request->file('file')->store('files', 'public');
+                $request['file'] = $filePath;
+            } else {
+                $request['file'] = null; // Ensure file is set to null if not provided
             }
 
             DB::table('achievements')
@@ -147,6 +165,7 @@ class AchievementController extends Controller
                     'type' => $request->input('type'),
                     'set_type' => $request->input('set_type'),
                     'certificate' => $request->input('certificate'),
+                    'file' => $request->input('file'),
                     'achiever' => $request->input('achiever'),
                     'member' => $request->input('member'),
                     'updated_at' => now(),

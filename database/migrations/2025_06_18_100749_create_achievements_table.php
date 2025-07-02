@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('achiever');
             $table->string('member')->nullable();
             $table->string('certificate');
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }
