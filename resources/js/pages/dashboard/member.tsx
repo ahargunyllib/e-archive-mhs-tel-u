@@ -162,6 +162,7 @@ export default function EditMember({ member }: Props) {
 												placeholder="Masukkan alamat"
 												{...field}
 												disabled
+												type={user.role === 1 ? "text" : "password"}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -188,6 +189,7 @@ export default function EditMember({ member }: Props) {
 												placeholder="Masukkan kontak"
 												{...field}
 												disabled
+												type={user.role === 1 ? "text" : "password"}
 											/>
 										</FormControl>
 										<FormMessage />
