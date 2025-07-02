@@ -324,148 +324,154 @@ export default function EditAchievement({ achievement }: Props) {
 							/>
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-							<FormField
-								control={form.control}
-								name="certificate"
-								render={({ field: { value, onChange, ...restFieldProps } }) => (
-									<FormItem>
-										<FormLabel
-											className="text-base font-medium text-[#1D2939]"
-											htmlFor="certificate"
-										>
-											Sertifikat prestasi
-										</FormLabel>
-										<FormControl>
-											<div className="p-1 border rounded-xl border-[#D0D5DD] flex flex-row gap-2 items-center">
-												<Button
-													id="certificate"
-													type="button"
-													variant="secondary"
-													className="font-medium text-sm py-3 px-8 rounded-md h-fit"
-													onClick={() => {
-														const input = document.createElement("input");
-														input.type = "file";
-														input.accept = "image/*";
-														input.onchange = (event) => {
-															const file = (event.target as HTMLInputElement)
-																.files?.[0];
-															if (file) {
-																onChange(file);
-															}
-														};
-														input.click();
-													}}
-													disabled
-												>
-													<PaperclipIcon className="size-4" />
-													Upload File
-												</Button>
-												{value ? (
-													<div className="w-full flex flex-row items-center justify-between">
-														<span className="text-sm text-[#101828]">
-															{value.name}
-														</span>
-														<Button
-															type="button"
-															variant="ghost"
-															className="h-8 w-8 p-0"
-															onClick={() => onChange(undefined)}
-														>
-															<Trash2Icon className="size-4" />
-														</Button>
-													</div>
-												) : achievement.certificate ? (
-													<a
-														target="_blank"
-														className="text-sm text-blue-600 hover:underline"
-														href={`/storage/${achievement.certificate}`}
-														rel="noreferrer"
-														hidden={user.role !== 1}
+							{user.role === 1 && (
+								<FormField
+									control={form.control}
+									name="certificate"
+									render={({
+										field: { value, onChange, ...restFieldProps },
+									}) => (
+										<FormItem>
+											<FormLabel
+												className="text-base font-medium text-[#1D2939]"
+												htmlFor="certificate"
+											>
+												Sertifikat prestasi
+											</FormLabel>
+											<FormControl>
+												<div className="p-1 border rounded-xl border-[#D0D5DD] flex flex-row gap-2 items-center">
+													<Button
+														id="certificate"
+														type="button"
+														variant="secondary"
+														className="font-medium text-sm py-3 px-8 rounded-md h-fit"
+														onClick={() => {
+															const input = document.createElement("input");
+															input.type = "file";
+															input.accept = "image/*";
+															input.onchange = (event) => {
+																const file = (event.target as HTMLInputElement)
+																	.files?.[0];
+																if (file) {
+																	onChange(file);
+																}
+															};
+															input.click();
+														}}
+														disabled
 													>
-														Sertifikat
-													</a>
-												) : (
-													<span className="text-sm text-muted-foreground/80">
-														Tidak ada file yang dipilih
-													</span>
-												)}
-											</div>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="file"
-								render={({ field: { value, onChange, ...restFieldProps } }) => (
-									<FormItem>
-										<FormLabel
-											className="text-base font-medium text-[#1D2939]"
-											htmlFor="file"
-										>
-											Karya/Dokumentasi Lomba
-										</FormLabel>
-										<FormControl>
-											<div className="p-1 border rounded-xl border-[#D0D5DD] flex flex-row gap-2 items-center">
-												<Button
-													id="file"
-													type="button"
-													variant="secondary"
-													className="font-medium text-sm py-3 px-8 rounded-md h-fit"
-													onClick={() => {
-														const input = document.createElement("input");
-														input.type = "file";
-														input.accept = "image/*";
-														input.onchange = (event) => {
-															const file = (event.target as HTMLInputElement)
-																.files?.[0];
-															if (file) {
-																onChange(file);
-															}
-														};
-														input.click();
-													}}
-													disabled
-												>
-													<PaperclipIcon className="size-4" />
-													Upload File
-												</Button>
-												{value ? (
-													<div className="w-full flex flex-row items-center justify-between">
-														<span className="text-sm text-[#101828]">
-															{value.name}
-														</span>
-														<Button
-															type="button"
-															variant="ghost"
-															className="h-8 w-8 p-0"
-															onClick={() => onChange(undefined)}
+														<PaperclipIcon className="size-4" />
+														Upload File
+													</Button>
+													{value ? (
+														<div className="w-full flex flex-row items-center justify-between">
+															<span className="text-sm text-[#101828]">
+																{value.name}
+															</span>
+															<Button
+																type="button"
+																variant="ghost"
+																className="h-8 w-8 p-0"
+																onClick={() => onChange(undefined)}
+															>
+																<Trash2Icon className="size-4" />
+															</Button>
+														</div>
+													) : achievement.certificate ? (
+														<a
+															target="_blank"
+															className="text-sm text-blue-600 hover:underline"
+															href={`/storage/${achievement.certificate}`}
+															rel="noreferrer"
 														>
-															<Trash2Icon className="size-4" />
-														</Button>
-													</div>
-												) : achievement.file ? (
-													<a
-														target="_blank"
-														className="text-sm text-blue-600 hover:underline"
-														href={`/storage/${achievement.file}`}
-														rel="noreferrer"
-														hidden={user.role !== 1}
+															Sertifikat
+														</a>
+													) : (
+														<span className="text-sm text-muted-foreground/80">
+															Tidak ada file yang dipilih
+														</span>
+													)}
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							)}
+							{user.role === 1 && (
+								<FormField
+									control={form.control}
+									name="file"
+									render={({
+										field: { value, onChange, ...restFieldProps },
+									}) => (
+										<FormItem>
+											<FormLabel
+												className="text-base font-medium text-[#1D2939]"
+												htmlFor="file"
+											>
+												Karya/Dokumentasi Lomba
+											</FormLabel>
+											<FormControl>
+												<div className="p-1 border rounded-xl border-[#D0D5DD] flex flex-row gap-2 items-center">
+													<Button
+														id="file"
+														type="button"
+														variant="secondary"
+														className="font-medium text-sm py-3 px-8 rounded-md h-fit"
+														onClick={() => {
+															const input = document.createElement("input");
+															input.type = "file";
+															input.accept = "image/*";
+															input.onchange = (event) => {
+																const file = (event.target as HTMLInputElement)
+																	.files?.[0];
+																if (file) {
+																	onChange(file);
+																}
+															};
+															input.click();
+														}}
+														disabled
 													>
-														Karya/Dokumentasi Lomba
-													</a>
-												) : (
-													<span className="text-sm text-muted-foreground/80">
-														Tidak ada file yang dipilih
-													</span>
-												)}
-											</div>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+														<PaperclipIcon className="size-4" />
+														Upload File
+													</Button>
+													{value ? (
+														<div className="w-full flex flex-row items-center justify-between">
+															<span className="text-sm text-[#101828]">
+																{value.name}
+															</span>
+															<Button
+																type="button"
+																variant="ghost"
+																className="h-8 w-8 p-0"
+																onClick={() => onChange(undefined)}
+															>
+																<Trash2Icon className="size-4" />
+															</Button>
+														</div>
+													) : achievement.file ? (
+														<a
+															target="_blank"
+															className="text-sm text-blue-600 hover:underline"
+															href={`/storage/${achievement.file}`}
+															rel="noreferrer"
+														>
+															Karya/Dokumentasi Lomba
+														</a>
+													) : (
+														<span className="text-sm text-muted-foreground/80">
+															Tidak ada file yang dipilih
+														</span>
+													)}
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							)}
 						</div>
 
 						<div className="flex flex-row gap-2 justify-end">

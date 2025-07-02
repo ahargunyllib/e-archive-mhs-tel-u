@@ -144,58 +144,60 @@ export default function EditMember({ member }: Props) {
 									</FormItem>
 								)}
 							/>
-							<FormField
-								control={form.control}
-								name="address"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel
-											className="text-base font-medium text-[#1D2939]"
-											htmlFor="address"
-										>
-											Alamat
-											<span className="text-red-500">*</span>
-										</FormLabel>
-										<FormControl>
-											<Input
-												id="address"
-												placeholder="Masukkan alamat"
-												{...field}
-												disabled
-												type={user.role === 1 ? "text" : "password"}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+							{user.role === 1 && (
+								<FormField
+									control={form.control}
+									name="address"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel
+												className="text-base font-medium text-[#1D2939]"
+												htmlFor="address"
+											>
+												Alamat
+												<span className="text-red-500">*</span>
+											</FormLabel>
+											<FormControl>
+												<Input
+													id="address"
+													placeholder="Masukkan alamat"
+													{...field}
+													disabled
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							)}
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-							<FormField
-								control={form.control}
-								name="contact"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel
-											className="text-base font-medium text-[#1D2939]"
-											htmlFor="contact"
-										>
-											Kontak
-											<span className="text-red-500">*</span>
-										</FormLabel>
-										<FormControl>
-											<Input
-												id="contact"
-												placeholder="Masukkan kontak"
-												{...field}
-												disabled
-												type={user.role === 1 ? "text" : "password"}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+							{user.role === 1 && (
+								<FormField
+									control={form.control}
+									name="contact"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel
+												className="text-base font-medium text-[#1D2939]"
+												htmlFor="contact"
+											>
+												Kontak
+												<span className="text-red-500">*</span>
+											</FormLabel>
+											<FormControl>
+												<Input
+													id="contact"
+													placeholder="Masukkan kontak"
+													{...field}
+													disabled
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							)}
 							<FormField
 								control={form.control}
 								name="division"
