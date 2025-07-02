@@ -94,7 +94,7 @@ export default function Members({ members, pagination }: Props) {
 									Pastikan file CSV Anda memiliki kolom yang benar dan tidak ada
 									data yang hilang. Format file CSV berupa
 									`nama,alamat,kontak,divisi,angka nama himpunan,angka
-									angkatan,angka periode`.
+									angkatan,angka periode,nim,email,instagram,linkedin`.
 								</DialogDescription>
 							</DialogHeader>
 							<div className="space-y-4">

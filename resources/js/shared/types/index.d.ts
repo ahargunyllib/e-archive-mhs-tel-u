@@ -40,6 +40,7 @@ export type User = {
 
 export type Member = {
 	id: string;
+	nim: string;
 	name: string;
 	address: string;
 	contact: string;
@@ -48,6 +49,9 @@ export type Member = {
 	batch_year: keyof typeof MemberBatchYearMap;
 	period: keyof typeof MemberPeriodMap;
 	photo_profile: string | null;
+	email: string | null;
+	instagram: string | null;
+	linkedin: string | null;
 	created_at: string;
 	updated_at: string;
 };

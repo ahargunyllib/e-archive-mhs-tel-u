@@ -29,6 +29,7 @@ import { Link, router } from "@inertiajs/react";
 import { PaperclipIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { useAuth } from "../../shared/hooks/use-auth";
 import {
 	MemberBatchYears,
 	MemberPeriods,
@@ -37,6 +38,7 @@ import {
 import type { Member } from "../../shared/types";
 
 const EditMemberSchema = z.object({
+	nim: z.string().min(1, "NIM tidak boleh kosong"),
 	name: z.string().min(1, "Nama tidak boleh kosong"),
 	address: z.string().min(1, "Alamat tidak boleh kosong"),
 	contact: z.string().min(1, "Kontak tidak boleh kosong"),
@@ -45,6 +47,9 @@ const EditMemberSchema = z.object({
 	batch_year: z.number().min(1, "Angkatan tidak boleh kosong"),
 	period: z.number().min(1, "Periode tidak boleh kosong"),
 	avatar: z.instanceof(File).optional(),
+	email: z.string().email("Email tidak valid").optional(),
+	instagram: z.string().optional(),
+	linkedin: z.string().optional(),
 });
 
 type EditMemberRequest = z.infer<typeof EditMemberSchema>;
@@ -82,6 +87,8 @@ export default function EditMember({ member }: Props) {
 		}
 		router.post(`/dashboard/members/${member.id}`, formData);
 	});
+
+	const { user } = useAuth();
 
 	return (
 		<DashboardLayout>
@@ -211,41 +218,67 @@ export default function EditMember({ member }: Props) {
 								)}
 							/>
 						</div>
-						<FormField
-							control={form.control}
-							name="set_type"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel
-										className="text-base font-medium text-[#1D2939]"
-										htmlFor="set_type"
-									>
-										Nama Himpunan
-										<span className="text-red-500">*</span>
-									</FormLabel>
-									<Select
-										onValueChange={(val) =>
-											field.onChange(Number.parseInt(val))
-										}
-										value={field.value.toString()}
-									>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<FormField
+								control={form.control}
+								name="nim"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="nim"
+										>
+											NIM
+											<span className="text-red-500">*</span>
+										</FormLabel>
 										<FormControl>
-											<SelectTrigger className="w-full" disabled>
-												<SelectValue placeholder="Pilih nama himpunan" />
-											</SelectTrigger>
+											<Input
+												id="nim"
+												placeholder="Masukkan NIM"
+												{...field}
+												disabled
+											/>
 										</FormControl>
-										<SelectContent>
-											{MemberSetTypes.map((type) => (
-												<SelectItem key={type.key} value={type.key}>
-													{type.value}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="set_type"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="set_type"
+										>
+											Nama Himpunan
+											<span className="text-red-500">*</span>
+										</FormLabel>
+										<Select
+											onValueChange={(val) =>
+												field.onChange(Number.parseInt(val))
+											}
+											value={field.value.toString()}
+										>
+											<FormControl>
+												<SelectTrigger className="w-full" disabled>
+													<SelectValue placeholder="Pilih nama himpunan" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{MemberSetTypes.map((type) => (
+													<SelectItem key={type.key} value={type.key}>
+														{type.value}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 							<FormField
 								control={form.control}
@@ -313,6 +346,77 @@ export default function EditMember({ member }: Props) {
 												))}
 											</SelectContent>
 										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+							<FormField
+								control={form.control}
+								name="email"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="email"
+										>
+											Email
+										</FormLabel>
+										<FormControl>
+											<Input
+												id="email"
+												placeholder="Masukkan email"
+												{...field}
+												disabled
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="instagram"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="instagram"
+										>
+											Instagram
+										</FormLabel>
+										<FormControl>
+											<Input
+												id="instagram"
+												placeholder="Masukkan Instagram"
+												{...field}
+												disabled
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="linkedin"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="linkedin"
+										>
+											LinkedIn
+										</FormLabel>
+										<FormControl>
+											<Input
+												id="linkedin"
+												placeholder="Masukkan LinkedIn"
+												{...field}
+												disabled
+											/>
+										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}

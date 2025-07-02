@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->string('nim')->unique();
             $table->string('name');
             $table->string('address');
             $table->string('contact');
@@ -21,6 +22,9 @@ return new class extends Migration
             $table->integer('batch_year')->default(1);
             $table->integer('period')->default(1);
             $table->string('photo_profile')->nullable();
+            $table->string('email')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('linkedin')->nullable();
             $table->timestamps();
         });
     }

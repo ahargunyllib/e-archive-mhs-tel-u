@@ -18,6 +18,7 @@ class MemberController extends Controller
         $members = DB::table('members')
             ->select([
                 "id",
+                "nim",
                 "name",
                 "address",
                 "contact",
@@ -26,6 +27,9 @@ class MemberController extends Controller
                 "batch_year",
                 "period",
                 "photo_profile",
+                "email",
+                "instagram",
+                "linkedin",
                 "created_at",
                 "updated_at",
             ])
@@ -76,6 +80,7 @@ class MemberController extends Controller
             $request['period'] = (int)$request->input('period');
 
             $request->validate([
+                'nim' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
                 'address' => 'required|string|max:255',
                 'contact' => 'required|string|max:255',
@@ -84,6 +89,9 @@ class MemberController extends Controller
                 'batch_year' => 'required|numeric',
                 'period' => 'required|numeric',
                 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'email' => 'nullable|email|max:255',
+                'instagram' => 'nullable|string|max:255',
+                'linkedin' => 'nullable|string|max:255',
             ]);
 
             // Handle profile picture upload if provided
@@ -95,6 +103,7 @@ class MemberController extends Controller
 
             DB::table('members')->insert([
                 'id' => Ulid::generate(),
+                'nim' => $request->input('nim'),
                 'name' => $request->input('name'),
                 'address' => $request->input('address'),
                 'contact' => $request->input('contact'),
@@ -103,6 +112,9 @@ class MemberController extends Controller
                 'batch_year' => $request->input('batch_year'),
                 'period' => $request->input('period'),
                 'photo_profile' => $profilePicturePath,
+                'email' => $request->input('email'),
+                'instagram' => $request->input('instagram'),
+                'linkedin' => $request->input('linkedin'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -135,6 +147,7 @@ class MemberController extends Controller
             $request['period'] = (int)$request->input('period');
 
             $request->validate([
+                'nim' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
                 'address' => 'required|string|max:255',
                 'contact' => 'required|string|max:255',
@@ -143,6 +156,9 @@ class MemberController extends Controller
                 'batch_year' => 'required|numeric',
                 'period' => 'required|numeric',
                 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'email' => 'nullable|email|max:255',
+                'instagram' => 'nullable|string|max:255',
+                'linkedin' => 'nullable|string|max:255',
             ]);
 
             // Handle profile picture upload if provided
@@ -155,6 +171,7 @@ class MemberController extends Controller
             DB::table('members')
                 ->where('id', $id)
                 ->update([
+                    'nim' => $request->input('nim'),
                     'name' => $request->input('name'),
                     'address' => $request->input('address'),
                     'contact' => $request->input('contact'),
@@ -163,6 +180,9 @@ class MemberController extends Controller
                     'batch_year' => $request->input('batch_year'),
                     'period' => $request->input('period'),
                     'photo_profile' => $profilePicturePath,
+                    'email' => $request->input('email'),
+                    'instagram' => $request->input('instagram'),
+                    'linkedin' => $request->input('linkedin'),
                     'updated_at' => now(),
                 ]);
 
@@ -209,6 +229,10 @@ class MemberController extends Controller
                     'set_type' => (int)$data[4],
                     'batch_year' => (int)$data[5],
                     'period' => (int)$data[6],
+                    'nim' => $data[7],
+                    'email' => $data[8] ?? null,
+                    'instagram' => $data[9] ?? null,
+                    'linkedin' => $data[10] ?? null,
                     'photo_profile' => null,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -216,6 +240,7 @@ class MemberController extends Controller
 
                 // validate
                 $validator = Validator::make($line, [
+                    'nim' => 'required|string|max:255',
                     'name' => 'required|string|max:255',
                     'address' => 'required|string|max:255',
                     'contact' => 'required|string|max:255',
@@ -223,6 +248,9 @@ class MemberController extends Controller
                     'set_type' => 'required|numeric',
                     'batch_year' => 'required|numeric',
                     'period' => 'required|numeric',
+                    'email' => 'nullable|email|max:255',
+                    'instagram' => 'nullable|string|max:255',
+                    'linkedin' => 'nullable|string|max:255',
                 ]);
 
                 if ($validator->fails()) {

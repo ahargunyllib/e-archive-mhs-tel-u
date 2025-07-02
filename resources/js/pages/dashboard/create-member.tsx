@@ -36,6 +36,7 @@ import {
 } from "../../shared/lib/enums";
 
 const CreateMemberSchema = z.object({
+	nim: z.string().min(1, "NIM tidak boleh kosong"),
 	name: z.string().min(1, "Nama tidak boleh kosong"),
 	address: z.string().min(1, "Alamat tidak boleh kosong"),
 	contact: z.string().min(1, "Kontak tidak boleh kosong"),
@@ -44,6 +45,9 @@ const CreateMemberSchema = z.object({
 	batch_year: z.number().min(1, "Angkatan tidak boleh kosong"),
 	period: z.number().min(1, "Periode tidak boleh kosong"),
 	avatar: z.instanceof(File).optional(),
+	email: z.string().email("Email tidak valid").optional(),
+	instagram: z.string().optional(),
+	linkedin: z.string().optional(),
 });
 
 type CreateMemberRequest = z.infer<typeof CreateMemberSchema>;
@@ -52,6 +56,7 @@ export default function CreateMember() {
 	const form = useForm<CreateMemberRequest>({
 		resolver: zodResolver(CreateMemberSchema),
 		defaultValues: {
+			nim: "",
 			name: "",
 			address: "",
 			contact: "",
@@ -60,11 +65,15 @@ export default function CreateMember() {
 			batch_year: 1,
 			period: 1,
 			avatar: undefined,
+			email: "",
+			instagram: "",
+			linkedin: "",
 		},
 	});
 
 	const onSubmitHandler = form.handleSubmit((data) => {
 		const formData = new FormData();
+		formData.append("nim", data.nim);
 		formData.append("name", data.name);
 		formData.append("address", data.address);
 		formData.append("contact", data.contact);
@@ -74,6 +83,15 @@ export default function CreateMember() {
 		formData.append("period", data.period.toString());
 		if (data.avatar) {
 			formData.append("avatar", data.avatar);
+		}
+		if (data.email) {
+			formData.append("email", data.email);
+		}
+		if (data.instagram) {
+			formData.append("instagram", data.instagram);
+		}
+		if (data.linkedin) {
+			formData.append("linkedin", data.linkedin);
 		}
 		router.post("/dashboard/members", formData);
 	});
@@ -191,7 +209,6 @@ export default function CreateMember() {
 												id="division"
 												placeholder="Masukkan divisi"
 												{...field}
-												disabled
 											/>
 										</FormControl>
 										<FormMessage />
@@ -199,41 +216,62 @@ export default function CreateMember() {
 								)}
 							/>
 						</div>
-						<FormField
-							control={form.control}
-							name="set_type"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel
-										className="text-base font-medium text-[#1D2939]"
-										htmlFor="set_type"
-									>
-										Nama Himpunan
-										<span className="text-red-500">*</span>
-									</FormLabel>
-									<Select
-										onValueChange={(val) =>
-											field.onChange(Number.parseInt(val))
-										}
-										value={field.value.toString()}
-									>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<FormField
+								control={form.control}
+								name="nim"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="nim"
+										>
+											NIM
+											<span className="text-red-500">*</span>
+										</FormLabel>
 										<FormControl>
-											<SelectTrigger className="w-full">
-												<SelectValue placeholder="Pilih nama himpunan" />
-											</SelectTrigger>
+											<Input id="nim" placeholder="Masukkan NIM" {...field} />
 										</FormControl>
-										<SelectContent>
-											{MemberSetTypes.map((type) => (
-												<SelectItem key={type.key} value={type.key}>
-													{type.value}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="set_type"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="set_type"
+										>
+											Nama Himpunan
+											<span className="text-red-500">*</span>
+										</FormLabel>
+										<Select
+											onValueChange={(val) =>
+												field.onChange(Number.parseInt(val))
+											}
+											value={field.value.toString()}
+										>
+											<FormControl>
+												<SelectTrigger className="w-full">
+													<SelectValue placeholder="Pilih nama himpunan" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{MemberSetTypes.map((type) => (
+													<SelectItem key={type.key} value={type.key}>
+														{type.value}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 							<FormField
 								control={form.control}
@@ -301,6 +339,74 @@ export default function CreateMember() {
 												))}
 											</SelectContent>
 										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+							<FormField
+								control={form.control}
+								name="email"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="email"
+										>
+											Email
+										</FormLabel>
+										<FormControl>
+											<Input
+												id="email"
+												placeholder="Masukkan email"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="instagram"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="instagram"
+										>
+											Instagram
+										</FormLabel>
+										<FormControl>
+											<Input
+												id="instagram"
+												placeholder="Masukkan Instagram"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="linkedin"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											className="text-base font-medium text-[#1D2939]"
+											htmlFor="linkedin"
+										>
+											LinkedIn
+										</FormLabel>
+										<FormControl>
+											<Input
+												id="linkedin"
+												placeholder="Masukkan LinkedIn"
+												{...field}
+											/>
+										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
