@@ -40,22 +40,30 @@ import z from "zod";
 import { AgendaSetTypes, AgendaStatuses } from "../../shared/lib/enums";
 import type { Agenda } from "../../shared/types";
 
-const EditAgendaSchema = z.object({
-	date: z.date({
-		message: "Tanggal tidak valid",
-	}),
-	name: z.string().min(1, "Nama kegitan tidak boleh kosong"),
-	work_program: z.string().min(1, "Program kerja tidak boleh kosong"),
-	set_type: z.number().min(1, "Nama himpunan tidak boleh kosong"),
-	description: z.string().min(1, "Deskripsi tidak boleh kosong"),
-	relationship: z.string().min(1, "Hubungan tidak boleh kosong"),
-	estimated_cost: z.coerce
-		.number()
-		.min(0, "Biaya estimasi tidak boleh kurang dari 0"),
-	proposal: z.instanceof(File),
-	report: z.instanceof(File),
-	status: z.number().min(1, "Status tidak boleh kosong"),
-});
+const EditAgendaSchema = z
+	.object({
+		start_date: z.date({
+			message: "Tanggal mulai tidak valid",
+		}),
+		end_date: z.date({
+			message: "Tanggal selesai tidak valid",
+		}),
+		name: z.string().min(1, "Nama kegitan tidak boleh kosong"),
+		work_program: z.string().min(1, "Program kerja tidak boleh kosong"),
+		set_type: z.number().min(1, "Nama himpunan tidak boleh kosong"),
+		description: z.string().min(1, "Deskripsi tidak boleh kosong"),
+		relationship: z.string().min(1, "Hubungan tidak boleh kosong"),
+		estimated_cost: z.coerce
+			.number()
+			.min(0, "Biaya estimasi tidak boleh kurang dari 0"),
+		proposal: z.instanceof(File),
+		report: z.instanceof(File),
+		status: z.number().min(1, "Status tidak boleh kosong"),
+	})
+	.refine((data) => data.start_date <= data.end_date, {
+		message: "Tanggal mulai harus sebelum atau sama dengan tanggal akhir",
+		path: ["start_date", "end_date"],
+	});
 
 type EditAgendaRequest = z.infer<typeof EditAgendaSchema>;
 
@@ -67,7 +75,8 @@ export default function EditAgenda({ agenda }: Props) {
 	const form = useForm<EditAgendaRequest>({
 		resolver: zodResolver(EditAgendaSchema),
 		defaultValues: {
-			date: new Date(agenda.date),
+			start_date: new Date(agenda.start_date),
+			end_date: new Date(agenda.end_date),
 			name: agenda.name,
 			work_program: agenda.work_program,
 			set_type: agenda.set_type,
@@ -82,7 +91,8 @@ export default function EditAgenda({ agenda }: Props) {
 
 	const onSubmitHandler = form.handleSubmit((data) => {
 		const formData = new FormData();
-		formData.append("date", data.date.toISOString());
+		formData.append("start_date", data.start_date.toISOString());
+		formData.append("end_date", data.end_date.toISOString());
 		formData.append("name", data.name);
 		formData.append("work_program", data.work_program);
 		formData.append("set_type", data.set_type.toString());
@@ -133,14 +143,14 @@ export default function EditAgenda({ agenda }: Props) {
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 							<FormField
 								control={form.control}
-								name="date"
+								name="start_date"
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
 											className="text-base font-medium text-[#1D2939]"
-											htmlFor="date"
+											htmlFor="start_date"
 										>
-											Tanggal Kegiatan
+											Tanggal Mulai Kegiatan
 											<span className="text-red-500">*</span>
 										</FormLabel>
 										<Popover>
@@ -181,29 +191,77 @@ export default function EditAgenda({ agenda }: Props) {
 							/>
 							<FormField
 								control={form.control}
-								name="name"
+								name="end_date"
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
 											className="text-base font-medium text-[#1D2939]"
-											htmlFor="name"
+											htmlFor="start_date"
 										>
-											Nama Kegiatan
+											Tanggal Selesai Kegiatan
 											<span className="text-red-500">*</span>
 										</FormLabel>
-										<FormControl>
-											<Input
-												id="name"
-												placeholder="Masukkan nama kegiatan"
-												{...field}
-												disabled
-											/>
-										</FormControl>
+										<Popover>
+											<PopoverTrigger asChild disabled>
+												<FormControl>
+													<Button
+														variant={"outline"}
+														className={cn(
+															"w-full pl-3 text-left font-normal h-12",
+															!field.value && "text-muted-foreground",
+														)}
+													>
+														{field.value ? (
+															new Intl.DateTimeFormat("id-ID", {
+																year: "numeric",
+																month: "long",
+																day: "numeric",
+															}).format(field.value)
+														) : (
+															<span>Pick a date</span>
+														)}
+														<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+													</Button>
+												</FormControl>
+											</PopoverTrigger>
+											<PopoverContent className="w-auto p-0" align="start">
+												<Calendar
+													mode="single"
+													selected={field.value}
+													onSelect={field.onChange}
+													captionLayout="dropdown"
+												/>
+											</PopoverContent>
+										</Popover>
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
 						</div>
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel
+										className="text-base font-medium text-[#1D2939]"
+										htmlFor="name"
+									>
+										Nama Kegiatan
+										<span className="text-red-500">*</span>
+									</FormLabel>
+									<FormControl>
+										<Input
+											id="name"
+											placeholder="Masukkan nama kegiatan"
+											{...field}
+											disabled
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 							<FormField
 								control={form.control}

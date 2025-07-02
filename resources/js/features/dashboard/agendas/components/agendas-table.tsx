@@ -29,10 +29,10 @@ export default function AgendasTable({ agendas }: Props) {
 			cell: ({ row }) => row.index + 1,
 		},
 		{
-			accessorKey: "date",
-			header: "Tanggal",
+			accessorKey: "start_date",
+			header: "Tanggal Mulai",
 			cell: ({ row }) => {
-				return new Date(row.original.date).toLocaleDateString("id-ID", {
+				return new Date(row.original.start_date).toLocaleDateString("id-ID", {
 					day: "2-digit",
 					month: "2-digit",
 					year: "numeric",

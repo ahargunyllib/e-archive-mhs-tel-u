@@ -15,7 +15,8 @@ return new class extends Migration
             $table->ulid("id")->primary();
             $table->string("name");
             $table->string("description");
-            $table->date("date");
+            $table->date("start_date");
+            $table->date("end_date");
             $table->string("work_program");
             $table->integer("set_type")->default(1);
             $table->string("relationship");

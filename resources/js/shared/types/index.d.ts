@@ -58,7 +58,8 @@ export type Member = {
 
 export type Agenda = {
 	id: string;
-	date: string;
+	start_date: string;
+	end_date: string;
 	name: string;
 	work_program: string;
 	set_type: keyof typeof AgendaSetTypeMap;
