@@ -150,7 +150,8 @@ export default function DashboardLayout({
 								</DropdownMenuItem>
 								<DropdownMenuItem>
 									<Link
-										href="/dashboard/settings" // TODO
+										method="post"
+										href="/logout"
 										className="w-full flex items-center gap-x-2"
 									>
 										<LogOutIcon /> Logout
