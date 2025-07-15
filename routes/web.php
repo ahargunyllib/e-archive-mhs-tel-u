@@ -35,7 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         $date = $request->get('date', now()->format('Y-m-d'));
         $agendas = DB::table('agendas')
-            ->whereDate('date', $date)
+            ->whereDate('start_date', $date)
             ->orderBy('created_at', 'desc')
             ->get();
 
