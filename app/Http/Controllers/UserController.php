@@ -59,7 +59,7 @@ class UserController extends Controller
                 'username' => 'required|string|max:255|alpha_dash',
                 'email' => 'required|string|email|max:255',
                 'role' => 'required|numeric',
-                'password' => 'required|string|min:8',
+                'password' => 'required|string|min:6',
                 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
