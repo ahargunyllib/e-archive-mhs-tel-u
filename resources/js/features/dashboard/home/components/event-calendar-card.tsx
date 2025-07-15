@@ -88,7 +88,7 @@ export default function EventCalendarCard({ agendas }: Props) {
 						>
 							<div className="font-bold">{agenda.name}</div>
 							<div className="text-[#667085] text-sm">
-								{new Date(agenda.date).toLocaleDateString([], {
+								{date?.toLocaleDateString([], {
 									weekday: "long",
 								})}
 							</div>
