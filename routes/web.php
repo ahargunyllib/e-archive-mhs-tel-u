@@ -29,7 +29,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $totalAchievements = DB::table('achievements')
             ->whereYear('created_at', $currYear)
             ->count();
-        $totalProposals = DB::table('agendas')->where('proposal', 'IS NOT NULL')
+        $totalProposals = DB::table('agendas')
+            ->whereNotNull('proposal')
+            ->whereNotNull('report')
             ->whereYear('created_at', $currYear)
             ->count();
 
