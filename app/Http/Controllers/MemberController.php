@@ -13,6 +13,7 @@ class MemberController extends Controller
     {
         $page = (int)$request->input('page', 1);
         $limit = (int)$request->input('limit', 10);
+        $search = $request->input('search', '');
 
         $offset = ($page - 1) * $limit;
         $members = DB::table('members')
@@ -32,13 +33,29 @@ class MemberController extends Controller
                 "linkedin",
                 "created_at",
                 "updated_at",
-            ])
+            ]);
+
+        if (!empty($search)) {
+            $members = $members->where('name', 'like', '%' . $search . '%')
+                ->orWhere('nim', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+        }
+
+        $members = $members
             ->orderBy('created_at', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get();
 
-        $count = DB::table('members')->count();
+        $count = DB::table('members');
+
+        if (!empty($search)) {
+            $count = $count->where('name', 'like', '%' . $search . '%')
+                ->orWhere('nim', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+        }
+
+        $count = $count->count();
 
         $totalPages = ceil($count / $limit);
 

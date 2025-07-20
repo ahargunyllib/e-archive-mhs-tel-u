@@ -12,6 +12,7 @@ class AgendaController extends Controller
     {
         $page = (int)$request->input('page', 1);
         $limit = (int)$request->input('limit', 10);
+        $search = $request->input('search', '');
 
         $offset = ($page - 1) * $limit;
         $agendas = DB::table('agendas')
@@ -30,13 +31,24 @@ class AgendaController extends Controller
                 "status",
                 "created_at",
                 "updated_at",
-            ])
+            ]);
+
+        if (!empty($search)) {
+            $agendas = $agendas->where('name', 'like', '%' . $search . '%');
+        }
+        $agendas = $agendas
             ->orderBy('created_at', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get();
 
-        $count = DB::table('agendas')->count();
+        $count = DB::table('agendas');
+
+        if (!empty($search)) {
+            $count = $count->where('name', 'like', '%' . $search . '%');
+        }
+
+        $count = $count->count();
 
         $totalPages = ceil($count / $limit);
 

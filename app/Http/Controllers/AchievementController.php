@@ -12,6 +12,7 @@ class AchievementController extends Controller
     {
         $page = (int)$request->input('page', 1);
         $limit = (int)$request->input('limit', 10);
+        $search = $request->input('search', '');
 
         $offset = ($page - 1) * $limit;
         $achievements = DB::table('achievements')
@@ -27,13 +28,25 @@ class AchievementController extends Controller
                 "member",
                 "created_at",
                 "updated_at",
-            ])
+            ]);
+
+        if (!empty($search)) {
+            $achievements = $achievements->where('name', 'like', '%' . $search . '%');
+        }
+
+        $achievements = $achievements
             ->orderBy('created_at', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get();
 
-        $count = DB::table('achievements')->count();
+        $count = DB::table('achievements');
+
+        if (!empty($search)) {
+            $count = $count->where('name', 'like', '%' . $search . '%');
+        }
+
+        $count = $count->count();
 
         $totalPages = ceil($count / $limit);
 

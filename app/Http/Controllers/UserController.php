@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
 
+use function PHPUnit\Framework\isEmpty;
+
 class UserController extends Controller
 {
     function index(Request $request)
     {
         $page = (int)$request->input('page', 1);
         $limit = (int)$request->input('limit', 10);
+        $search = $request->input('search', '');
 
         $offset = ($page - 1) * $limit;
         $users = DB::table('users')
@@ -22,13 +25,28 @@ class UserController extends Controller
                 "email",
                 "role",
                 "photo_profile",
-            ])
-            ->orderBy('created_at', 'desc')
+            ]);
+
+        if (!empty($search)) {
+            $users = $users->where('name', 'like', '%' . $search . '%')
+                ->orWhere('username', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+        }
+
+        $users = $users->orderBy('created_at', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get();
 
-        $count = DB::table('users')->count();
+        $count = DB::table('users');
+
+        if (!empty($search)) {
+            $count = $count->where('name', 'like', '%' . $search . '%')
+                ->orWhere('username', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+        }
+
+        $count = $count->count();
 
         $totalPages = ceil($count / $limit);
 
