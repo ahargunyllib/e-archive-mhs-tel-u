@@ -15,6 +15,7 @@ class UserController extends Controller
         $page = (int)$request->input('page', 1);
         $limit = (int)$request->input('limit', 10);
         $search = $request->input('search', '');
+        $role = (int)$request->input('role', 0);
 
         $offset = ($page - 1) * $limit;
         $users = DB::table('users')
@@ -33,6 +34,10 @@ class UserController extends Controller
                 ->orWhere('email', 'like', '%' . $search . '%');
         }
 
+        if ($role > 0) {
+            $users = $users->where('role', $role);
+        }
+
         $users = $users->orderBy('created_at', 'desc')
             ->offset($offset)
             ->limit($limit)
@@ -44,6 +49,10 @@ class UserController extends Controller
             $count = $count->where('name', 'like', '%' . $search . '%')
                 ->orWhere('username', 'like', '%' . $search . '%')
                 ->orWhere('email', 'like', '%' . $search . '%');
+        }
+
+        if ($role > 0) {
+            $count = $count->where('role', $role);
         }
 
         $count = $count->count();

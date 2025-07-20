@@ -14,6 +14,7 @@ class MemberController extends Controller
         $page = (int)$request->input('page', 1);
         $limit = (int)$request->input('limit', 10);
         $search = $request->input('search', '');
+        $set_type = (int)$request->input('set_type', 0);
 
         $offset = ($page - 1) * $limit;
         $members = DB::table('members')
@@ -41,6 +42,10 @@ class MemberController extends Controller
                 ->orWhere('email', 'like', '%' . $search . '%');
         }
 
+        if ($set_type > 0) {
+            $members = $members->where('set_type', $set_type);
+        }
+
         $members = $members
             ->orderBy('created_at', 'desc')
             ->offset($offset)
@@ -53,6 +58,10 @@ class MemberController extends Controller
             $count = $count->where('name', 'like', '%' . $search . '%')
                 ->orWhere('nim', 'like', '%' . $search . '%')
                 ->orWhere('email', 'like', '%' . $search . '%');
+        }
+
+        if ($set_type > 0) {
+            $count = $count->where('set_type', $set_type);
         }
 
         $count = $count->count();

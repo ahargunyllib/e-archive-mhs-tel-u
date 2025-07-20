@@ -13,6 +13,7 @@ class AchievementController extends Controller
         $page = (int)$request->input('page', 1);
         $limit = (int)$request->input('limit', 10);
         $search = $request->input('search', '');
+        $set_type = (int)$request->input('set_type', 0);
 
         $offset = ($page - 1) * $limit;
         $achievements = DB::table('achievements')
@@ -34,6 +35,10 @@ class AchievementController extends Controller
             $achievements = $achievements->where('name', 'like', '%' . $search . '%');
         }
 
+        if ($set_type > 0) {
+            $achievements = $achievements->where('set_type', $set_type);
+        }
+
         $achievements = $achievements
             ->orderBy('created_at', 'desc')
             ->offset($offset)
@@ -44,6 +49,10 @@ class AchievementController extends Controller
 
         if (!empty($search)) {
             $count = $count->where('name', 'like', '%' . $search . '%');
+        }
+
+        if ($set_type > 0) {
+            $count = $count->where('set_type', $set_type);
         }
 
         $count = $count->count();

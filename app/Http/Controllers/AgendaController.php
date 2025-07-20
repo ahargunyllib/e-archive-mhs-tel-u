@@ -13,6 +13,7 @@ class AgendaController extends Controller
         $page = (int)$request->input('page', 1);
         $limit = (int)$request->input('limit', 10);
         $search = $request->input('search', '');
+        $setType = (int)$request->input('set_type', 0);
 
         $offset = ($page - 1) * $limit;
         $agendas = DB::table('agendas')
@@ -36,6 +37,11 @@ class AgendaController extends Controller
         if (!empty($search)) {
             $agendas = $agendas->where('name', 'like', '%' . $search . '%');
         }
+
+        if ($setType > 0) {
+            $agendas = $agendas->where('set_type', $setType);
+        }
+
         $agendas = $agendas
             ->orderBy('created_at', 'desc')
             ->offset($offset)
@@ -46,6 +52,10 @@ class AgendaController extends Controller
 
         if (!empty($search)) {
             $count = $count->where('name', 'like', '%' . $search . '%');
+        }
+
+        if ($setType > 0) {
+            $count = $count->where('set_type', $setType);
         }
 
         $count = $count->count();

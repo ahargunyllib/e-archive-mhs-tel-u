@@ -4,14 +4,25 @@ import StatisticCard from "@/features/dashboard/home/components/statistic-card";
 import UploadDocumentAgendaStatusTableCard from "@/features/dashboard/home/components/upload-document-agenda-status-table-card";
 import DashboardLayout from "@/shared/components/layouts/dashboard-layout";
 import { Button } from "@/shared/components/ui/button";
+import { router } from "@inertiajs/react";
 import {
 	CalendarDaysIcon,
 	CalendarIcon,
 	FileTextIcon,
 	StarIcon,
+	Trash2Icon,
 	UsersIcon,
 } from "lucide-react";
-import type { AchievementTypeMap } from "../../shared/lib/enums";
+import { useEffect, useState } from "react";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "../../shared/components/ui/select";
+import useDebounce from "../../shared/hooks/use-debounce";
+import { type AchievementTypeMap, MemberPeriods } from "../../shared/lib/enums";
 import type { Agenda } from "../../shared/types";
 
 type Props = {
@@ -37,14 +48,70 @@ export default function Home({
 	achievementStatistics,
 	agendaProgresses,
 }: Props) {
+	const searchParams = new URLSearchParams(window.location.search);
+	const [filter, setFilter] = useState({
+		period: searchParams.get("period")
+			? Number(searchParams.get("period"))
+			: undefined,
+	});
+	const debouncedPeriod = useDebounce(filter.period, 500);
+
+	useEffect(() => {
+		router.get(
+			window.location.pathname,
+			{
+				period: debouncedPeriod,
+			},
+			{
+				preserveState: true,
+				preserveScroll: true,
+			},
+		);
+	}, [debouncedPeriod]);
+
 	return (
 		<DashboardLayout>
 			<div className="flex flex-row justify-between items-center">
 				<h1 className="font-bold text-xl text-[#F9FAFB]">Dashboard</h1>
-				<Button className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm">
-					Pilih Periode
-					<CalendarDaysIcon className="size-4" />
-				</Button>
+				<div className="flex flex-row gap-2">
+					<Select
+						onValueChange={(val) => {
+							setFilter({ period: Number(val) });
+						}}
+						value={filter.period?.toString()}
+					>
+						<SelectTrigger className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm">
+							<SelectValue
+								placeholder="Pilih Periode"
+								className="text-[#101828]"
+							/>
+							<CalendarDaysIcon className="size-4" />
+						</SelectTrigger>
+						<SelectContent>
+							{MemberPeriods.map((period) => {
+								return (
+									<SelectItem key={period.key} value={period.key.toString()}>
+										{period.value}
+									</SelectItem>
+								);
+							})}
+						</SelectContent>
+					</Select>
+					{filter.period && (
+						<Button
+							className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm h-12"
+							onClick={() => {
+								setFilter({ period: undefined });
+								router.get(window.location.pathname, {
+									preserveState: true,
+									preserveScroll: true,
+								});
+							}}
+						>
+							<Trash2Icon className="size-4 text-[#DC2625]" />
+						</Button>
+					)}
+				</div>
 			</div>
 
 			<div className="flex flex-col gap-4">
