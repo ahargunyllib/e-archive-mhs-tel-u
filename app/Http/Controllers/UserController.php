@@ -10,8 +10,8 @@ class UserController extends Controller
 {
     function index(Request $request)
     {
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 10);
+        $page = (int)$request->input('page', 1);
+        $limit = (int)$request->input('limit', 10);
 
         $offset = ($page - 1) * $limit;
         $users = DB::table('users')
@@ -31,6 +31,8 @@ class UserController extends Controller
         $count = DB::table('users')->count();
 
         $totalPages = ceil($count / $limit);
+
+        $totalPages = $totalPages > 0 ? $totalPages : 1; // Ensure total pages is at least 1
 
         return inertia('dashboard/users', [
             'users' => $users,

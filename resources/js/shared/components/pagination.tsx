@@ -39,6 +39,13 @@ export default function Pagination({
 					disabled={currentPage === 1}
 					variant="ghost"
 					className="text-[#101828] hover:text-[#101828]/80 disabled:text-[#BFBFBF]"
+					onClick={() => {
+						if (currentPage > 1) {
+							const url = new URL(window.location.href);
+							url.searchParams.set("page", String(currentPage - 1));
+							window.location.href = url.toString();
+						}
+					}}
 				>
 					<ChevronLeftIcon className="size-4" />
 				</Button>
@@ -59,6 +66,11 @@ export default function Pagination({
 								"text-sm font-medium",
 								currentPage === page ? "text-[#101828]" : "text-[#BFBFBF]",
 							)}
+							onClick={() => {
+								const url = new URL(window.location.href);
+								url.searchParams.set("page", String(page));
+								window.location.href = url.toString();
+							}}
 						>
 							{page}
 						</Button>
@@ -76,6 +88,13 @@ export default function Pagination({
 					disabled={currentPage === totalPages}
 					variant="ghost"
 					className="text-[#101828] hover:text-[#101828]/80 disabled:text-[#BFBFBF]"
+					onClick={() => {
+						if (currentPage < totalPages) {
+							const url = new URL(window.location.href);
+							url.searchParams.set("page", String(currentPage + 1));
+							window.location.href = url.toString();
+						}
+					}}
 				>
 					<ChevronRightIcon className="size-4" />
 				</Button>
@@ -97,7 +116,12 @@ export default function Pagination({
 						{[10, 20, 50, 100].map((limit) => (
 							<DropdownMenuItem
 								key={limit}
-								onClick={() => {}}
+								onClick={() => {
+									const url = new URL(window.location.href);
+									url.searchParams.set("limit", String(limit));
+									url.searchParams.set("page", "1");
+									window.location.href = url.toString();
+								}}
 								className="cursor-pointer"
 							>
 								{limit}
