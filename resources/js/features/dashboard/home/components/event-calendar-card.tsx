@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/shared/components/ui/button";
 import { Calendar } from "@/shared/components/ui/calendar";
+import { AgendaSetTypeMap } from "@/shared/lib/enums";
 import { cn } from "@/shared/lib/utils";
 import type { Agenda } from "@/shared/types";
 import { router } from "@inertiajs/react";
@@ -86,7 +87,7 @@ export default function EventCalendarCard({ agendas }: Props) {
 							key={agenda.id}
 							className="bg-[#F2F4F7] relative rounded-xl p-4 pl-6 text-sm after:bg-[#17C3AF] after:absolute after:inset-y-4 after:left-3 after:w-0.5 after:rounded-full"
 						>
-							<div className="font-bold">{agenda.name}</div>
+							<div className="font-bold">{`${agenda.name} (${AgendaSetTypeMap[agenda.set_type]})`}</div>
 							<div className="text-[#667085] text-sm">
 								{date?.toLocaleDateString([], {
 									weekday: "long",
