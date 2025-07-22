@@ -1,9 +1,9 @@
 import { DataTable } from "@/shared/components/data-table";
 import { Badge } from "@/shared/components/ui/badge";
+import { AgendaSetTypeMap, AgendaStatusMap } from "@/shared/lib/enums";
 import { cn } from "@/shared/lib/utils";
+import type { Agenda } from "@/shared/types";
 import type { ColumnDef } from "@tanstack/react-table";
-import { AgendaStatusMap } from "../../../../shared/lib/enums";
-import type { Agenda } from "../../../../shared/types";
 
 type Props = {
 	agendaProgresses: Agenda[];
@@ -14,8 +14,10 @@ export default function UploadDocumentAgendaStatusTableCard({
 }: Props) {
 	const columns: ColumnDef<Agenda>[] = [
 		{
-			accessorKey: "work_program",
-			header: "Program Kerja",
+			accessorKey: "set_type",
+			header: "Nama Himpunan",
+			cell: ({ row }) =>
+				AgendaSetTypeMap[row.original.set_type] || "Tidak Diketahui",
 		},
 		{
 			accessorKey: "name",
