@@ -167,7 +167,7 @@ export default function FilterAchievements() {
 				<Button
 					className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm"
 					onClick={() => {
-						setFilter({ search: "", set_type: undefined, year: undefined });
+						setFilter({ search: "", set_type: undefined, year: "" });
 						router.get(
 							window.location.pathname,
 							{
