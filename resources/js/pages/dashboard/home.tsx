@@ -136,8 +136,10 @@ export default function Home({
 						<Button
 							className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm h-12"
 							onClick={() => {
-								setFilter({ ...filter, period: undefined });
+								setFilter({ period: undefined, himpunan: undefined });
 								router.get(window.location.pathname, {
+									period: undefined,
+									himpunan: undefined,
 									preserveState: true,
 									preserveScroll: true,
 								});
