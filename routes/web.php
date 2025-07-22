@@ -110,7 +110,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->whereDate('end_date', '<=', "$endYear-12-31");
         }
         $agendaProgresses = $agendaProgresses
-            ->limit(5)
+            ->whereIn('status', [1, 3])
             ->orderBy('created_at', 'desc')
             ->get();
 
