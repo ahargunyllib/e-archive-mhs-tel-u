@@ -15,6 +15,7 @@ class AchievementController extends Controller
         $search = $request->input('search', '');
         $set_type = (int)$request->input('set_type', 0);
         $period = $request->input('period', '0');
+        $year = $request->input('year', '');
 
         if (!empty($period)) {
             switch ($period) {
@@ -70,6 +71,10 @@ class AchievementController extends Controller
                 ->whereBetween('date', ["$startYear-01-01", "$endYear-12-31"]);
         }
 
+        if (!empty($year)) {
+            $achievements = $achievements->whereYear('date', $year);
+        }
+
         $achievements = $achievements
             ->orderBy('created_at', 'desc')
             ->offset($offset)
@@ -89,6 +94,10 @@ class AchievementController extends Controller
         if (!empty($startYear) && !empty($endYear)) {
             $count = $count
                 ->whereBetween('date', ["$startYear-01-01", "$endYear-12-31"]);
+        }
+
+        if (!empty($year)) {
+            $count = $count->whereYear('date', $year);
         }
 
         $count = $count->count();
