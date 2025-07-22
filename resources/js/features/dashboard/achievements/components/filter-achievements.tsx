@@ -150,6 +150,7 @@ export default function FilterAchievements() {
 										{
 											search: filter.search,
 											set_type: filter.set_type,
+											period: filter.period,
 											page: 1,
 										},
 										{
