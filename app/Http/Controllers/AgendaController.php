@@ -15,6 +15,7 @@ class AgendaController extends Controller
         $search = $request->input('search', '');
         $setType = (int)$request->input('set_type', 0);
         $period = $request->input('period', '0');
+        $year = $request->input('year', '');
 
         if (!empty($period)) {
             switch ($period) {
@@ -74,6 +75,10 @@ class AgendaController extends Controller
                 ->whereDate('end_date', '<=', "$endYear-12-31");
         }
 
+        if (!empty($year)) {
+            $agendas = $agendas->whereYear('start_date', $year);
+        }
+
         $agendas = $agendas
             ->orderBy('created_at', 'desc')
             ->offset($offset)
@@ -94,6 +99,10 @@ class AgendaController extends Controller
             $count = $count
                 ->whereDate('start_date', '>=', "$startYear-01-01")
                 ->whereDate('end_date', '<=', "$endYear-12-31");
+        }
+
+        if (!empty($year)) {
+            $count = $count->whereYear('start_date', $year);
         }
 
         $count = $count->count();

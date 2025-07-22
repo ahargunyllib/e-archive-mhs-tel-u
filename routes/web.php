@@ -20,6 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard/home', function (Request $request) {
         $period = (int) $request->get('period', '0');
+        $himpunan = (int) $request->get('himpunan', '0');
 
         if (!empty($period)) {
             switch ($period) {
@@ -53,6 +54,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         if (!empty($startYear) && !empty($endYear)) {
             $totalMembers = $totalMembers->where('period', $period);
         }
+        if ($himpunan > 0) {
+            $totalMembers = $totalMembers->where('set_type', $himpunan);
+        }
+
         $totalMembers = $totalMembers->count();
 
         $totalAgendas = DB::table('agendas');
@@ -62,6 +67,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->whereDate('start_date', '>=', "$startYear-01-01")
                 ->whereDate('end_date', '<=', "$endYear-12-31");
         }
+        if ($himpunan > 0) {
+            $totalAgendas = $totalAgendas->where('set_type', $himpunan);
+        }
         $totalAgendas = $totalAgendas->count();
 
         $totalAchievements = DB::table('achievements');
@@ -69,6 +77,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         if (!empty($startYear) && !empty($endYear)) {
             $totalAchievements = $totalAchievements
                 ->whereBetween('date', ["$startYear-01-01", "$endYear-12-31"]);
+        }
+        if ($himpunan > 0) {
+            $totalAchievements = $totalAchievements->where('set_type', $himpunan);
         }
         $totalAchievements = $totalAchievements->count();
 
@@ -80,6 +91,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             $totalProposals = $totalProposals
                 ->whereDate('start_date', '>=', "$startYear-01-01")
                 ->whereDate('end_date', '<=', "$endYear-12-31");
+        }
+        if ($himpunan > 0) {
+            $totalProposals = $totalProposals->where('set_type', $himpunan);
         }
         $totalProposals = $totalProposals->count();
 
@@ -97,6 +111,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             $achievementStatistics = $achievementStatistics
                 ->whereBetween('date', ["$startYear-01-01", "$endYear-12-31"]);
         }
+        if ($himpunan > 0) {
+            $achievementStatistics = $achievementStatistics->where('set_type', $himpunan);
+        }
         $achievementStatistics = $achievementStatistics
             ->orderBy('year', 'desc')
             ->groupBy('year', 'type')
@@ -108,6 +125,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             $agendaProgresses = $agendaProgresses
                 ->whereDate('start_date', '>=', "$startYear-01-01")
                 ->whereDate('end_date', '<=', "$endYear-12-31");
+        }
+        if ($himpunan > 0) {
+            $agendaProgresses = $agendaProgresses->where('set_type', $himpunan);
         }
         $agendaProgresses = $agendaProgresses
             ->whereIn('status', [1, 3])
