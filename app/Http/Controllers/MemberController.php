@@ -266,7 +266,7 @@ class MemberController extends Controller
                     'name' => $data[0],
                     'address' => $data[1],
                     'contact' => $data[2],
-                    'division' => (int)$data[3],
+                    'division' => $data[3],
                     'set_type' => (int)$data[4],
                     'batch_year' => (int)$data[5],
                     'period' => (int)$data[6],
