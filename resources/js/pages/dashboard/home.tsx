@@ -22,7 +22,11 @@ import {
 	SelectValue,
 } from "../../shared/components/ui/select";
 import useDebounce from "../../shared/hooks/use-debounce";
-import { type AchievementTypeMap, MemberPeriods } from "../../shared/lib/enums";
+import {
+	type AchievementTypeMap,
+	MemberPeriods,
+	MemberSetTypes,
+} from "../../shared/lib/enums";
 import type { Agenda } from "../../shared/types";
 
 type Props = {
@@ -53,6 +57,9 @@ export default function Home({
 		period: searchParams.get("period")
 			? Number(searchParams.get("period"))
 			: undefined,
+		himpunan: searchParams.get("himpunan")
+			? Number(searchParams.get("himpunan"))
+			: undefined,
 	});
 	const debouncedPeriod = useDebounce(filter.period, 500);
 
@@ -61,22 +68,50 @@ export default function Home({
 			window.location.pathname,
 			{
 				period: debouncedPeriod,
+				himpunan: filter.himpunan,
 			},
 			{
 				preserveState: true,
 				preserveScroll: true,
 			},
 		);
-	}, [debouncedPeriod]);
+	}, [debouncedPeriod, filter.himpunan]);
 
 	return (
 		<DashboardLayout>
 			<div className="flex flex-row justify-between items-center">
 				<h1 className="font-bold text-xl text-[#F9FAFB]">Dashboard</h1>
 				<div className="flex flex-row gap-2">
+					{/* Filter by Himpunan */}
 					<Select
 						onValueChange={(val) => {
-							setFilter({ period: Number(val) });
+							setFilter({ ...filter, himpunan: Number(val) });
+						}}
+						value={filter.himpunan?.toString()}
+					>
+						<SelectTrigger className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm">
+							<SelectValue
+								placeholder="Pilih Himpunan"
+								className="text-[#101828]"
+							/>
+						</SelectTrigger>
+						<SelectContent>
+							{MemberSetTypes.map((set_type) => {
+								return (
+									<SelectItem
+										key={set_type.key}
+										value={set_type.key.toString()}
+									>
+										{set_type.value}
+									</SelectItem>
+								);
+							})}
+						</SelectContent>
+					</Select>
+
+					<Select
+						onValueChange={(val) => {
+							setFilter({ ...filter, period: Number(val) });
 						}}
 						value={filter.period?.toString()}
 					>
@@ -97,11 +132,11 @@ export default function Home({
 							})}
 						</SelectContent>
 					</Select>
-					{filter.period && (
+					{(filter.period || filter.himpunan) && (
 						<Button
 							className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm h-12"
 							onClick={() => {
-								setFilter({ period: undefined });
+								setFilter({ ...filter, period: undefined });
 								router.get(window.location.pathname, {
 									preserveState: true,
 									preserveScroll: true,
