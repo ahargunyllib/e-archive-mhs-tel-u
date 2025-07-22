@@ -245,7 +245,7 @@ class MemberController extends Controller
     {
         try {
             $request->validate([
-                'file' => 'required|file|mimes:csv|max:2048',
+                'file' => 'required|file|max:2048',
             ]);
 
             $file = $request->file('file');
