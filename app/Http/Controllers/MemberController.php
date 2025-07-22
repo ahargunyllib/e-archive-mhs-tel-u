@@ -15,6 +15,7 @@ class MemberController extends Controller
         $limit = (int)$request->input('limit', 10);
         $search = $request->input('search', '');
         $set_type = (int)$request->input('set_type', 0);
+        $period = (int)$request->input('period', 0);
 
         $offset = ($page - 1) * $limit;
         $members = DB::table('members')
@@ -47,6 +48,10 @@ class MemberController extends Controller
             $members = $members->where('set_type', $set_type);
         }
 
+        if ($period > 0) {
+            $members = $members->where('period', $period);
+        }
+
         $members = $members
             ->orderBy('created_at', 'desc')
             ->offset($offset)
@@ -64,6 +69,10 @@ class MemberController extends Controller
 
         if ($set_type > 0) {
             $count = $count->where('set_type', $set_type);
+        }
+
+        if ($period > 0) {
+            $count = $count->where('period', $period);
         }
 
         $count = $count->count();
