@@ -29,9 +29,7 @@ export default function FilterAgendas() {
 		set_type: searchParams.get("set_type")
 			? Number(searchParams.get("set_type"))
 			: undefined,
-		period: searchParams.get("period")
-			? Number(searchParams.get("period"))
-			: undefined,
+		year: searchParams.get("year"),
 	});
 
 	const debouncedFilter = useDebounce(filter.search, 500);
@@ -43,7 +41,7 @@ export default function FilterAgendas() {
 			{
 				search: debouncedFilter,
 				set_type: filter.set_type,
-				period: filter.period,
+				year: filter.year,
 				page: 1,
 			},
 			{
@@ -115,26 +113,24 @@ export default function FilterAgendas() {
 								className="text-base font-medium text-[#1D2939]"
 								htmlFor="set_type"
 							>
-								Periode
+								Tahun
 							</Label>
 							<Select
 								onValueChange={(val) => {
-									setFilter({ ...filter, period: Number(val) });
+									setFilter({ ...filter, year: val });
 								}}
-								value={filter.period?.toString()}
+								value={filter.year?.toString()}
 							>
 								<SelectTrigger className="w-full">
-									<SelectValue placeholder="Pilih periode" />
+									<SelectValue placeholder="Pilih tahun" />
 								</SelectTrigger>
 
 								<SelectContent>
-									{MemberPeriods.map((period) => {
+									{Array.from({ length: 8 }, (_, i) => {
+										const year = new Date().getFullYear() - i;
 										return (
-											<SelectItem
-												key={period.key}
-												value={period.key.toString()}
-											>
-												{period.value}
+											<SelectItem key={year} value={year.toString()}>
+												{year}
 											</SelectItem>
 										);
 									})}
@@ -150,7 +146,7 @@ export default function FilterAgendas() {
 										{
 											search: filter.search,
 											set_type: filter.set_type,
-											period: filter.period,
+											year: filter.year,
 											page: 1,
 										},
 										{
@@ -167,11 +163,11 @@ export default function FilterAgendas() {
 					</div>
 				</DialogContent>
 			</Dialog>
-			{(filter.search || filter.set_type || filter.period) && (
+			{(filter.search || filter.set_type || filter.year) && (
 				<Button
 					className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm"
 					onClick={() => {
-						setFilter({ search: "", set_type: undefined, period: undefined });
+						setFilter({ search: "", set_type: undefined, year: "" });
 						router.get(
 							window.location.pathname,
 							{
