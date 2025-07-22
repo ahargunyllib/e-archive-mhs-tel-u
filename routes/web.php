@@ -19,21 +19,69 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('/dashboard/home', function (Request $request) {
+        $period = (int) $request->get('period', '0');
+
+        if (!empty($period)) {
+            switch ($period) {
+                case 1:
+                    $startYear = 2020;
+                    $endYear = 2021;
+                    break;
+                case 2:
+                    $startYear = 2021;
+                    $endYear = 2022;
+                    break;
+                case 3:
+                    $startYear = 2022;
+                    $endYear = 2023;
+                    break;
+                case 4:
+                    $startYear = 2023;
+                    $endYear = 2024;
+                    break;
+                case 5:
+                    $startYear = 2024;
+                    $endYear = 2025;
+                    break;
+            }
+        }
+
         $currYear = now()->year;
-        $totalMembers = DB::table('members')
-            ->whereYear('created_at', $currYear)
-            ->count();
-        $totalAgendas = DB::table('agendas')
-            ->whereYear('created_at', $currYear)
-            ->count();
-        $totalAchievements = DB::table('achievements')
-            ->whereYear('created_at', $currYear)
-            ->count();
+
+        $totalMembers = DB::table('members');
+
+        if (!empty($startYear) && !empty($endYear)) {
+            $totalMembers = $totalMembers->where('period', $period);
+        }
+        $totalMembers = $totalMembers->count();
+
+        $totalAgendas = DB::table('agendas');
+
+        if (!empty($startYear) && !empty($endYear)) {
+            $totalAgendas = $totalAgendas
+                ->whereDate('start_date', '>=', "$startYear-01-01")
+                ->whereDate('end_date', '<=', "$endYear-12-31");
+        }
+        $totalAgendas = $totalAgendas->count();
+
+        $totalAchievements = DB::table('achievements');
+
+        if (!empty($startYear) && !empty($endYear)) {
+            $totalAchievements = $totalAchievements
+                ->whereBetween('date', ["$startYear-01-01", "$endYear-12-31"]);
+        }
+        $totalAchievements = $totalAchievements->count();
+
         $totalProposals = DB::table('agendas')
             ->whereNotNull('proposal')
-            ->whereNotNull('report')
-            ->whereYear('created_at', $currYear)
-            ->count();
+            ->whereNotNull('report');
+
+        if (!empty($startYear) && !empty($endYear)) {
+            $totalProposals = $totalProposals
+                ->whereDate('start_date', '>=', "$startYear-01-01")
+                ->whereDate('end_date', '<=', "$endYear-12-31");
+        }
+        $totalProposals = $totalProposals->count();
 
         $date = $request->get('date', now()->format('Y-m-d'));
         $agendas = DB::table('agendas')
@@ -43,12 +91,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->get();
 
         $achievementStatistics = DB::table('achievements')
-            ->select(DB::raw('COUNT(*) as count, EXTRACT(year FROM date) as year, type'))
+            ->select(DB::raw('COUNT(*) as count, EXTRACT(year FROM date) as year, type'));
+
+        if (!empty($startYear) && !empty($endYear)) {
+            $achievementStatistics = $achievementStatistics
+                ->whereBetween('date', ["$startYear-01-01", "$endYear-12-31"]);
+        }
+        $achievementStatistics = $achievementStatistics
             ->orderBy('year', 'desc')
             ->groupBy('year', 'type')
             ->get();
 
-        $agendaProgresses = DB::table('agendas')
+        $agendaProgresses = DB::table('agendas');
+
+        if (!empty($startYear) && !empty($endYear)) {
+            $agendaProgresses = $agendaProgresses
+                ->whereDate('start_date', '>=', "$startYear-01-01")
+                ->whereDate('end_date', '<=', "$endYear-12-31");
+        }
+        $agendaProgresses = $agendaProgresses
             ->limit(5)
             ->orderBy('created_at', 'desc')
             ->get();
