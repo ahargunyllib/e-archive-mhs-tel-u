@@ -39,7 +39,8 @@ class MemberController extends Controller
         if (!empty($search)) {
             $members = $members->where('name', 'like', '%' . $search . '%')
                 ->orWhere('nim', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%');
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('division', 'like', '%' . $search . '%');
         }
 
         if ($set_type > 0) {
@@ -57,7 +58,8 @@ class MemberController extends Controller
         if (!empty($search)) {
             $count = $count->where('name', 'like', '%' . $search . '%')
                 ->orWhere('nim', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%');
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('division', 'like', '%' . $search . '%');
         }
 
         if ($set_type > 0) {
