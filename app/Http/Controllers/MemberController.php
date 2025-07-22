@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Uid\Ulid;
 
+use function Illuminate\Log\log;
+
 class MemberController extends Controller
 {
     function index(Request $request)
@@ -253,10 +255,10 @@ class MemberController extends Controller
             $members = [];
 
             foreach ($fileContents as $line) {
-                $data = str_getcsv($line);
+                $data = str_getcsv($line, ";");
 
-                if (count($data) < 8) {
-                    continue; // Skip lines with insufficient data
+                if (count($data) < 11) {
+                    return redirect()->route('dashboard.members')->with('error', 'Invalid CSV format. Check line ' . (count($members) + 1) . '. Expected 11 fields, got ' . count($data) . '.');
                 }
 
                 $line = [
@@ -279,21 +281,21 @@ class MemberController extends Controller
 
                 // validate
                 $validator = Validator::make($line, [
-                    'nim' => 'required|string|max:255',
                     'name' => 'required|string|max:255',
                     'address' => 'required|string|max:255',
                     'contact' => 'required|string|max:255',
-                    'division' => 'required|numeric',
-                    'set_type' => 'required|numeric',
-                    'batch_year' => 'required|numeric',
-                    'period' => 'required|numeric',
+                    'division' => 'required|string|max:255',
+                    'set_type' => 'required|numeric|in:1,2,3,4,5,6',
+                    'batch_year' => 'required|numeric|in:1,2,3,4,5,6,7',
+                    'period' => 'required|numeric|in:1,2,3,4,5',
+                    'nim' => 'required|string|max:255',
                     'email' => 'nullable|email|max:255',
                     'instagram' => 'nullable|string|max:255',
                     'linkedin' => 'nullable|string|max:255',
                 ]);
 
                 if ($validator->fails()) {
-                    return redirect()->route('dashboard.members')->with('error', 'Invalid data in CSV file: ' . implode(', ', $validator->errors()->all()));
+                    return redirect()->route('dashboard.members')->with('error', 'Invalid data in CSV file at line ' . (count($members) + 1) . ': ' . implode(', ', $validator->errors()->all()));
                 }
 
                 $members[] = $line;
