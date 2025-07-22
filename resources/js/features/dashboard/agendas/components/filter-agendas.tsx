@@ -17,7 +17,7 @@ import {
 	SelectValue,
 } from "@/shared/components/ui/select";
 import useDebounce from "@/shared/hooks/use-debounce";
-import { MemberSetTypes } from "@/shared/lib/enums";
+import { MemberPeriods, MemberSetTypes } from "@/shared/lib/enums";
 import { router } from "@inertiajs/react";
 import { SearchIcon, Settings2Icon, Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -28,6 +28,9 @@ export default function FilterAgendas() {
 		search: searchParams.get("search") || "",
 		set_type: searchParams.get("set_type")
 			? Number(searchParams.get("set_type"))
+			: undefined,
+		period: searchParams.get("period")
+			? Number(searchParams.get("period"))
 			: undefined,
 	});
 
@@ -40,6 +43,7 @@ export default function FilterAgendas() {
 			{
 				search: debouncedFilter,
 				set_type: filter.set_type,
+				period: filter.period,
 				page: 1,
 			},
 			{
@@ -106,6 +110,38 @@ export default function FilterAgendas() {
 							</Select>
 						</div>
 
+						<div className="grid gap-2">
+							<Label
+								className="text-base font-medium text-[#1D2939]"
+								htmlFor="set_type"
+							>
+								Periode
+							</Label>
+							<Select
+								onValueChange={(val) => {
+									setFilter({ ...filter, period: Number(val) });
+								}}
+								value={filter.period?.toString()}
+							>
+								<SelectTrigger className="w-full">
+									<SelectValue placeholder="Pilih periode" />
+								</SelectTrigger>
+
+								<SelectContent>
+									{MemberPeriods.map((period) => {
+										return (
+											<SelectItem
+												key={period.key}
+												value={period.key.toString()}
+											>
+												{period.value}
+											</SelectItem>
+										);
+									})}
+								</SelectContent>
+							</Select>
+						</div>
+
 						<DialogClose asChild>
 							<Button
 								onClick={() => {
@@ -130,11 +166,11 @@ export default function FilterAgendas() {
 					</div>
 				</DialogContent>
 			</Dialog>
-			{(filter.search || filter.set_type) && (
+			{(filter.search || filter.set_type || filter.period) && (
 				<Button
 					className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/80 text-[#101828] rounded-full font-medium text-sm"
 					onClick={() => {
-						setFilter({ search: "", set_type: undefined });
+						setFilter({ search: "", set_type: undefined, period: undefined });
 						router.get(
 							window.location.pathname,
 							{

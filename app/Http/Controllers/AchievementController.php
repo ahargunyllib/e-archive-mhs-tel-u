@@ -14,6 +14,32 @@ class AchievementController extends Controller
         $limit = (int)$request->input('limit', 10);
         $search = $request->input('search', '');
         $set_type = (int)$request->input('set_type', 0);
+        $period = $request->input('period', '0');
+
+        if (!empty($period)) {
+            switch ($period) {
+                case 1:
+                    $startYear = 2020;
+                    $endYear = 2021;
+                    break;
+                case 2:
+                    $startYear = 2021;
+                    $endYear = 2022;
+                    break;
+                case 3:
+                    $startYear = 2022;
+                    $endYear = 2023;
+                    break;
+                case 4:
+                    $startYear = 2023;
+                    $endYear = 2024;
+                    break;
+                case 5:
+                    $startYear = 2024;
+                    $endYear = 2025;
+                    break;
+            }
+        }
 
         $offset = ($page - 1) * $limit;
         $achievements = DB::table('achievements')
@@ -39,6 +65,11 @@ class AchievementController extends Controller
             $achievements = $achievements->where('set_type', $set_type);
         }
 
+        if (!empty($startYear) && !empty($endYear)) {
+            $achievements = $achievements
+                ->whereBetween('date', ["$startYear-01-01", "$endYear-12-31"]);
+        }
+
         $achievements = $achievements
             ->orderBy('created_at', 'desc')
             ->offset($offset)
@@ -53,6 +84,11 @@ class AchievementController extends Controller
 
         if ($set_type > 0) {
             $count = $count->where('set_type', $set_type);
+        }
+
+        if (!empty($startYear) && !empty($endYear)) {
+            $count = $count
+                ->whereBetween('date', ["$startYear-01-01", "$endYear-12-31"]);
         }
 
         $count = $count->count();

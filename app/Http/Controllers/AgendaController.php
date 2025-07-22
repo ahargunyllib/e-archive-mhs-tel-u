@@ -14,6 +14,32 @@ class AgendaController extends Controller
         $limit = (int)$request->input('limit', 10);
         $search = $request->input('search', '');
         $setType = (int)$request->input('set_type', 0);
+        $period = $request->input('period', '0');
+
+        if (!empty($period)) {
+            switch ($period) {
+                case 1:
+                    $startYear = 2020;
+                    $endYear = 2021;
+                    break;
+                case 2:
+                    $startYear = 2021;
+                    $endYear = 2022;
+                    break;
+                case 3:
+                    $startYear = 2022;
+                    $endYear = 2023;
+                    break;
+                case 4:
+                    $startYear = 2023;
+                    $endYear = 2024;
+                    break;
+                case 5:
+                    $startYear = 2024;
+                    $endYear = 2025;
+                    break;
+            }
+        }
 
         $offset = ($page - 1) * $limit;
         $agendas = DB::table('agendas')
@@ -42,6 +68,12 @@ class AgendaController extends Controller
             $agendas = $agendas->where('set_type', $setType);
         }
 
+        if (!empty($startYear) && !empty($endYear)) {
+            $agendas = $agendas
+                ->whereDate('start_date', '>=', "$startYear-01-01")
+                ->whereDate('end_date', '<=', "$endYear-12-31");
+        }
+
         $agendas = $agendas
             ->orderBy('created_at', 'desc')
             ->offset($offset)
@@ -56,6 +88,12 @@ class AgendaController extends Controller
 
         if ($setType > 0) {
             $count = $count->where('set_type', $setType);
+        }
+
+        if (!empty($startYear) && !empty($endYear)) {
+            $count = $count
+                ->whereDate('start_date', '>=', "$startYear-01-01")
+                ->whereDate('end_date', '<=', "$endYear-12-31");
         }
 
         $count = $count->count();
