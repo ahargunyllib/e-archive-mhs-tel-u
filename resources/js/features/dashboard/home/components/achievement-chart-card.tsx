@@ -38,7 +38,8 @@ export default function AchievementChartCard({ achievementStatistics }: Props) {
 		for (const stat of achievementStatistics) {
 			const existing = data.find((d) => d.year === stat.year);
 			if (existing) {
-				existing[stat.type] += stat.count;
+				const typeKey = Number(stat.type);
+				existing[typeKey] = (existing[typeKey] || 0) + stat.count;
 				continue;
 			}
 
